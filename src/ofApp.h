@@ -3,9 +3,6 @@
 
 #include "ofMain.h"
 
-#include "ofxExampleTwitterClient.h"
-#include "ofxJSONElement.h"
-
 #include "tweetManager.h"
 #include "guiManager.h"
 #include "vizManager.h"
@@ -39,17 +36,6 @@ class ofApp : public ofBaseApp
     float	radius;
     int		resolution;
     ofPoint position;
-    	
-//	ofxOAuth
-	ofxExampleTwitterClient client;
-	
-//	ofxJSON
-	ofxJSONElement jsonParser;
-	bool bParsed;
-
-//	Twitter
-	void setupTwitter();
-	void postTweet();
 
 };
 
