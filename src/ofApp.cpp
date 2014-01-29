@@ -13,8 +13,6 @@ void ofApp::setup()
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
-	
-
 
 	//mytwitterManager.setup();
 	setupTwitter();
