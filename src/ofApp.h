@@ -8,6 +8,7 @@
 
 #include "tweetManager.h"
 #include "guiManager.h"
+#include "vizManager.h"
 
 class ofApp : public ofBaseApp
 {
@@ -27,21 +28,17 @@ class ofApp : public ofBaseApp
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	tweetManager mytwitterManager;
-	//guiTwitterManager // a candidate name for a new class manger
-	guiManager myguimanager;
-
-
+	tweetManager	myTwitterManager;
+	guiManager		myGuiManager;
+	vizManager		myVizManager;
 	
-	bool drawFill;
-	float red, green, blue, alpha; 	
+	bool	drawFill;
+	float	red, green, blue, alpha;
         
     ofColor backgroundColor; 
-    float radius; 
-    int resolution;
+    float	radius;
+    int		resolution;
     ofPoint position;
-    
-
     	
 //	ofxOAuth
 	ofxExampleTwitterClient client;

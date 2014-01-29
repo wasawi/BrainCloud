@@ -130,6 +130,13 @@
 		065EBAA29F0D9C24EAC889F3 /* multi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = multi.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/multi.h; sourceTree = SOURCE_ROOT; };
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
+		08FC63D81899465D00D6A35E /* ofxImageSequencePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequencePlayer.h; sourceTree = "<group>"; };
+		08FC63D91899465D00D6A35E /* ofxTexture3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTexture3d.cpp; sourceTree = "<group>"; };
+		08FC63DA1899465D00D6A35E /* ofxTexture3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTexture3d.h; sourceTree = "<group>"; };
+		08FC63DB1899465D00D6A35E /* ofxVolumetrics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVolumetrics.cpp; sourceTree = "<group>"; };
+		08FC63DC1899465D00D6A35E /* ofxVolumetrics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVolumetrics.h; sourceTree = "<group>"; };
+		08FC63E01899716D00D6A35E /* ofxVolumetrics.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.frag; sourceTree = "<group>"; };
+		08FC63E11899716E00D6A35E /* ofxVolumetrics.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.vert; sourceTree = "<group>"; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0D6768C572B6CA49227C29EA /* ofxUINumberDialer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUINumberDialer.cpp; path = ../../../addons/ofxUI/src/ofxUINumberDialer.cpp; sourceTree = SOURCE_ROOT; };
 		0DD7FDA4984EBEB092D47D02 /* curlrules.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curlrules.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curlrules.h; sourceTree = SOURCE_ROOT; };
@@ -328,6 +335,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		08FC63D21899465D00D6A35E /* ofxVolumetrics */ = {
+			isa = PBXGroup;
+			children = (
+				08FC63DF1899716D00D6A35E /* shaders */,
+				08FC63D71899465D00D6A35E /* src */,
+			);
+			name = ofxVolumetrics;
+			path = ../../../addons/ofxVolumetrics;
+			sourceTree = "<group>";
+		};
+		08FC63D71899465D00D6A35E /* src */ = {
+			isa = PBXGroup;
+			children = (
+				08FC63D81899465D00D6A35E /* ofxImageSequencePlayer.h */,
+				08FC63D91899465D00D6A35E /* ofxTexture3d.cpp */,
+				08FC63DA1899465D00D6A35E /* ofxTexture3d.h */,
+				08FC63DB1899465D00D6A35E /* ofxVolumetrics.cpp */,
+				08FC63DC1899465D00D6A35E /* ofxVolumetrics.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		08FC63DF1899716D00D6A35E /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				08FC63E01899716D00D6A35E /* ofxVolumetrics.frag */,
+				08FC63E11899716E00D6A35E /* ofxVolumetrics.vert */,
+			);
+			name = shaders;
+			path = bin/data/shaders;
+			sourceTree = SOURCE_ROOT;
+		};
 		1A7DF57EA46ACBE986F0D971 /* include */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +557,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				08FC63D21899465D00D6A35E /* ofxVolumetrics */,
 				A492CE86424AB8905550BFD8 /* ofxUI */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				32A2B0EDC109D0EF4192515F /* ofxOAuth */,
@@ -1144,6 +1184,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)Debug";
+				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1229,6 +1270,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.8;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

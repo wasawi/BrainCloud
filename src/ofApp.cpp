@@ -3,28 +3,28 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {	
-	ofEnableSmoothing();
-	ofSetFrameRate(30);
-	
-
-	myguimanager.setup();
-	
-	//LOG LEVEL
+	// OF vars
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
-
-	//mytwitterManager.setup();
+	ofEnableSmoothing();
+	ofSetFrameRate(30);
+	
+	// setup Managers
+	//myTwitterManager.setup();
 	setupTwitter();
 	//postTweet();
+	myGuiManager.setup();
+//	myVizManager.setup();
 	
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	//mytwitterManager.update();
-	//myguimanager.update();
+//	myTwitterManager.update();
+//	myGuiManager.update();
+//	myVizManager.update();
 }
 
 //--------------------------------------------------------------
@@ -39,7 +39,7 @@ void ofApp::draw()
         ofBackground(255,0,0);
     }
 	
-	myguimanager.draw();
+	myGuiManager.draw();
 	
 	if (bParsed) {
 		ofDrawBitmapString(jsonParser.getRawString(), 10, 14);
@@ -48,8 +48,7 @@ void ofApp::draw()
 }
 
 //--------------------------------------------------------------
-void ofApp::setupTwitter()
-{
+void ofApp::setupTwitter(){
 	// A simplified interface when using the ofxExampleTwitterClient class.
     // Twitter-specific configuration details can be taken care of the
     // ofxOAuth base class.
@@ -136,12 +135,10 @@ void ofApp::postTweet(){
 	}
 }
 
-
-
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	myguimanager.exit();
+	myGuiManager.exit();
 }
 
 //--------------------------------------------------------------
