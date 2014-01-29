@@ -17,19 +17,17 @@ class tweetManager {
 		void setup(string xmlfilename);
 		void update();
 		void draw();
+	void keyReleased(int key);
 		
-		vector<tweet3d> getTweets();
-	
-		//	ofxOAuth
-		ofxExampleTwitterClient client;
+	void drawQueryTwitters();
+	void setupTwitter();
 		
-		//	ofxJSON
-		ofxJSONElement jsonParser;
-		bool bParsed;
-		
-		//	Twitter
-		void setupTwitter();
-		void postTweet();
+	//query eaxmple
+		ofxTwitter twitterClient;
+		ofxTwitterTweet tweet;
+		int actualTweet;
+		bool reloadTweet;		
+		ofImage userImage;
 	
 	private:
 	

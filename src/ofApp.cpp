@@ -14,6 +14,7 @@ void ofApp::setup()
 
 	myGuiManager.setup();
 //	myVizManager.setup();
+	myTwitterManager.setup("hellocat");
 	
 }
 
@@ -90,7 +91,7 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-    
+    myTwitterManager.keyReleased(key);
 }
 
 //--------------------------------------------------------------

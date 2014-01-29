@@ -14,109 +14,99 @@ void tweetManager::update(){
 //--------------------------------------------------------------
 void tweetManager::draw(){
 	
-	if(client.isAuthorized())
-    {
-        //ofBackground(100);
-    }
-    else
-    {
-        //ofBackground(255,0,0);
-		cout << "Error tweetManager not Authorized" << endl;
-    }
+	drawQueryTwitters();
 	
-	
-	if (bParsed) {
-		ofDrawBitmapString(jsonParser.getRawString(), 10, 14);
-	}
+}
+
+//--------------------------------------------------------------
+void tweetManager::drawQueryTwitters(){
+	// Print tweets:
+    
+    int maxLineSize = 90;
+    
+    if(twitterClient.getTotalLoadedTweets() > 0) {
+        
+        tweet = twitterClient.getTweetByIndex(actualTweet);
+        
+        ofSetColor(255, 255, 255, 125);
+        if(tweet.isBannerImageLoaded()) {
+            tweet.user.profile_banner.draw(0, 0, ofGetWidth(), ofGetHeight());
+        }
+        
+        ofSetColor(0);
+        
+        ofDrawBitmapString("User:", ofVec2f(120,150));
+        ofDrawBitmapStringHighlight(tweet.user.screen_name, ofVec2f(220,150));
+        
+        ofDrawBitmapString("Location:", ofVec2f(120,180));
+        ofDrawBitmapStringHighlight(tweet.user.location, ofVec2f(220,180));
+        
+        ofDrawBitmapString("Descript.:", ofVec2f(120,210));
+        string desc = tweet.user.description;
+        for(int i=0;i<(desc.length()/maxLineSize)+1;i++) {
+            ofDrawBitmapStringHighlight(desc.substr(i*maxLineSize,maxLineSize), ofVec2f(220,210+(30*i)));
+        }
+        
+        ofDrawBitmapString("Text:", ofVec2f(120,300));
+        string text = tweet.text;
+        for(int i=0;i<(text.length()/maxLineSize)+1;i++) {
+            ofDrawBitmapStringHighlight(text.substr(i*maxLineSize,maxLineSize), ofVec2f(220,300+(30*i)));
+        }
+        
+        ofSetColor(255, 255, 255);
+        if(tweet.isProfileImageLoaded()) {
+            tweet.user.profile_image.draw(40, 150);
+        }
+        
+        ofSetColor(0);
+        string nav = "Now showing tweet: " + ofToString(actualTweet+1) + " of "+ofToString(twitterClient.getTotalLoadedTweets());
+        ofDrawBitmapString(nav, ofVec2f(220,420));
+        
+    }
+    
+    ofSetColor(0);
+    string info;
+    info += "ofxTwitter query example:";
+    info += "\nPress 'q' to get tweets containing 'cat'";
+    info += "\nPress 'l' to load previous query from disk if avilable";
+    info += "\nPress UP/DOWN to navigate tweets";
+    ofDrawBitmapString(info, ofVec2f(20,20));
+    
+    twitterClient.printDebugInfo();
 }
 
 //--------------------------------------------------------------
 void tweetManager::setupTwitter(){
-	// A simplified interface when using the ofxExampleTwitterClient class.
-    // Twitter-specific configuration details can be taken care of the
-    // ofxOAuth base class.
-	//    client.setup("CONSUMER_KEY","CONSUMER_SECRET");
-    client.setup("pHA27PLNeoFD1R3093jEQ","78025mOujCNB3aAk04TwCd6hRFvtB1gPO42DEWYYs");
-	bParsed=false;
 	
-	if(client.isAuthorized())
-	{
-		
-		std::string hashTag = "BrainNetViz";
-		std::string count = "100";
-		std::string str = client.getHashTag(hashTag, count);
-		// Now parse the JSON
-		bool parsingSuccessful = jsonParser.parse(str);
-		if (parsingSuccessful) {
-			string parsed = jsonParser.getRawString();
-			ofBuffer msg(parsed.c_str(), parsed.length());
-			bool fileWritten = ofBufferToFile("getTweet.json", msg);
-			
-			if(jsonParser.isMember("errors")) {
-				cout << jsonParser.getRawString();
-				ofDrawBitmapString(jsonParser.getRawString(), 10, 14);
-			} else if(jsonParser.isArray()) {
-				int n = 0;
-				ofxJSONElement profile_image_url = jsonParser[n]["search_metadata"];
-				for(int i = 0; i < profile_image_url.size(); i++) {
-					std::string message = profile_image_url[i]["query"].asString();
-					ofDrawBitmapString(message, 500, 40*i+40);
-					cout << message << endl;
-				}
-			}
-			
-		} else {
-			ofLogWarning("ofApp::keyPressed") << "Failed to parse JSON.";
-		}
-		bParsed=true;
-	}
-	else
-	{
-		ofLogWarning("ofApp::keyPressed") << "Not authorized yet.";
-	}
+    twitterClient.setDiskCache(true);
+    twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
+    
+    string const CONSUMER_KEY = "pHA27PLNeoFD1R3093jEQ";
+    string const CONSUMER_SECRET = "78025mOujCNB3aAk04TwCd6hRFvtB1gPO42DEWYYs";
+    
+    twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
+	
+    actualTweet = 0;
 }
 
 //--------------------------------------------------------------
-void tweetManager::postTweet(){
-	client.setup("pHA27PLNeoFD1R3093jEQ","78025mOujCNB3aAk04TwCd6hRFvtB1gPO42DEWYYs");
-	bParsed=false;
-	
-	if(client.isAuthorized())
-	{
-		std::string Tweet = "Hello World.";
-		std::string hashtag = "BrainNetViz";
-		std::string str = client.postTweet(Tweet, hashtag);
-		
-		// Now parse the JSON
-		bool parsingSuccessful = jsonParser.parse(str);
-		if (parsingSuccessful) {
-			string parsed = jsonParser.getRawString();
-			ofBuffer msg(parsed.c_str(), parsed.length());
-			bool fileWritten = ofBufferToFile("postTweet.json", msg);
-			
-			if(jsonParser.isMember("errors")) {
-				cout << jsonParser.getRawString();
-				ofDrawBitmapString(jsonParser.getRawString(), 10, 14);
-			} else if(jsonParser.isArray()) {
-				int n = 0;
-				ofxJSONElement profile_image_url = jsonParser[n]["search_metadata"];
-				for(int i = 0; i < profile_image_url.size(); i++) {
-					std::string message = profile_image_url[i]["query"].asString();
-					ofDrawBitmapString(message, 500, 40*i+40);
-					cout << message << endl;
-				}
-			}
-			
-		} else {
-			ofLogWarning("ofApp::keyPressed") << "Failed to parse JSON.";
-		}
-		bParsed=true;
-	}
-	else
-	{
-		ofLogWarning("ofApp::keyPressed") << "Not authorized yet.";
-	}
+void tweetManager::keyReleased(int key){
+    
+    if(key == 'q') {
+        twitterClient.startQuery("cat");
+    }
+    
+    if(key == 'l') {
+        twitterClient.loadCacheFile();
+    }
+    
+    if(key == OF_KEY_UP) {
+        if(actualTweet < twitterClient.getTotalLoadedTweets()-1) actualTweet += 1;
+    }
+    
+    if(key == OF_KEY_DOWN) {
+        if(actualTweet > 0) actualTweet -= 1;
+    }
+    
 }
-
-
 
