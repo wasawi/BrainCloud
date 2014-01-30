@@ -4,18 +4,19 @@
 void ofApp::setup()
 {	
 	// OF vars
-	ofSetLogLevel(OF_LOG_VERBOSE);
+		ofSetLogLevel(OF_LOG_VERBOSE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	ofEnableSmoothing();
-	ofSetFrameRate(30);
+	ofSetFrameRate(20);
 	
 	// setup Managers
-	//myTwitterManager.setup();
-	setupTwitter();
-	//postTweet();
+//	myTwitterManager.setup();
+//	setupTwitter();
+//	postTweet();
+	
 	myGuiManager.setup();
-//	myVizManager.setup();
+	myVizManager.setup();
 	
 }
 
@@ -30,20 +31,17 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    if(client.isAuthorized())
-    {
-        ofBackground(100);
-    }
-    else
-    {
-        ofBackground(255,0,0);
-    }
+	ofBackground(50);
 	
+	/*
 	myGuiManager.draw();
 	
 	if (bParsed) {
 		ofDrawBitmapString(jsonParser.getRawString(), 10, 14);
 	}
+	*/
+	
+	myVizManager.draw();
 	
 }
 
@@ -144,7 +142,8 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-	
+	myVizManager.keyPressed(key);
+
 	/*
     if(gui->hasKeyboardFocus())
     {

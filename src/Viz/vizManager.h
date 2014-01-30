@@ -8,11 +8,13 @@ class vizManager {
 	
 public:
 
-/*
+
 	void setup();
 	void update();
 	void draw();
 
+	void keyPressed  (int key);	
+	
 	//UI to remove
 	void saveCameraPosition();
 	void loadCameraPosition();
@@ -42,11 +44,11 @@ public:
     bool linearFilter;
 	float lastClipPlaneDepth;
 	float clipPlaneDepth, azimuth, elevation;
+	ofFbo myfboRender;
 
 	//Vars from UI to A-me
 	float FBOq, Zq, thresh, density, dithering;
-*/
-	
+
 	//Twitter objects
 	tweet3d  searchTweetByLocation();
 	

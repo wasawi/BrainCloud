@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
+		08FC63ED189974EC00D6A35E /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FC63E9189974EC00D6A35E /* ofxTexture3d.cpp */; };
+		08FC63EE189974EC00D6A35E /* ofxVolumetrics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FC63EB189974EC00D6A35E /* ofxVolumetrics.cpp */; };
 		1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2813E36CEFD8D1C1B70E600 /* ofxUIRangeSlider.cpp */; };
 		1C6C506E7046E74BC1EFE2DE /* ofxUIIntSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 697883CA4FAF08C1C9B67692 /* ofxUIIntSlider.cpp */; };
 		1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */; };
@@ -130,13 +132,13 @@
 		065EBAA29F0D9C24EAC889F3 /* multi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = multi.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/multi.h; sourceTree = SOURCE_ROOT; };
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
-		08FC63D81899465D00D6A35E /* ofxImageSequencePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxImageSequencePlayer.h; sourceTree = "<group>"; };
-		08FC63D91899465D00D6A35E /* ofxTexture3d.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTexture3d.cpp; sourceTree = "<group>"; };
-		08FC63DA1899465D00D6A35E /* ofxTexture3d.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxTexture3d.h; sourceTree = "<group>"; };
-		08FC63DB1899465D00D6A35E /* ofxVolumetrics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVolumetrics.cpp; sourceTree = "<group>"; };
-		08FC63DC1899465D00D6A35E /* ofxVolumetrics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxVolumetrics.h; sourceTree = "<group>"; };
-		08FC63E01899716D00D6A35E /* ofxVolumetrics.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.frag; sourceTree = "<group>"; };
-		08FC63E11899716E00D6A35E /* ofxVolumetrics.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.vert; sourceTree = "<group>"; };
+		08FC63E8189974EC00D6A35E /* ofxImageSequencePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxImageSequencePlayer.h; sourceTree = "<group>"; };
+		08FC63E9189974EC00D6A35E /* ofxTexture3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTexture3d.cpp; sourceTree = "<group>"; };
+		08FC63EA189974EC00D6A35E /* ofxTexture3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTexture3d.h; sourceTree = "<group>"; };
+		08FC63EB189974EC00D6A35E /* ofxVolumetrics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxVolumetrics.cpp; sourceTree = "<group>"; };
+		08FC63EC189974EC00D6A35E /* ofxVolumetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxVolumetrics.h; sourceTree = "<group>"; };
+		08FC63F01899750500D6A35E /* ofxVolumetrics.frag */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.frag; sourceTree = "<group>"; };
+		08FC63F11899750500D6A35E /* ofxVolumetrics.vert */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = ofxVolumetrics.vert; sourceTree = "<group>"; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0D6768C572B6CA49227C29EA /* ofxUINumberDialer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUINumberDialer.cpp; path = ../../../addons/ofxUI/src/ofxUINumberDialer.cpp; sourceTree = SOURCE_ROOT; };
 		0DD7FDA4984EBEB092D47D02 /* curlrules.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curlrules.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curlrules.h; sourceTree = SOURCE_ROOT; };
@@ -335,33 +337,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		08FC63D21899465D00D6A35E /* ofxVolumetrics */ = {
+		08FC63E2189974EC00D6A35E /* ofxVolumetrics */ = {
 			isa = PBXGroup;
 			children = (
-				08FC63DF1899716D00D6A35E /* shaders */,
-				08FC63D71899465D00D6A35E /* src */,
+				08FC63EF1899750500D6A35E /* shaders */,
+				08FC63E7189974EC00D6A35E /* src */,
 			);
 			name = ofxVolumetrics;
 			path = ../../../addons/ofxVolumetrics;
 			sourceTree = "<group>";
 		};
-		08FC63D71899465D00D6A35E /* src */ = {
+		08FC63E7189974EC00D6A35E /* src */ = {
 			isa = PBXGroup;
 			children = (
-				08FC63D81899465D00D6A35E /* ofxImageSequencePlayer.h */,
-				08FC63D91899465D00D6A35E /* ofxTexture3d.cpp */,
-				08FC63DA1899465D00D6A35E /* ofxTexture3d.h */,
-				08FC63DB1899465D00D6A35E /* ofxVolumetrics.cpp */,
-				08FC63DC1899465D00D6A35E /* ofxVolumetrics.h */,
+				08FC63E8189974EC00D6A35E /* ofxImageSequencePlayer.h */,
+				08FC63E9189974EC00D6A35E /* ofxTexture3d.cpp */,
+				08FC63EA189974EC00D6A35E /* ofxTexture3d.h */,
+				08FC63EB189974EC00D6A35E /* ofxVolumetrics.cpp */,
+				08FC63EC189974EC00D6A35E /* ofxVolumetrics.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
 		};
-		08FC63DF1899716D00D6A35E /* shaders */ = {
+		08FC63EF1899750500D6A35E /* shaders */ = {
 			isa = PBXGroup;
 			children = (
-				08FC63E01899716D00D6A35E /* ofxVolumetrics.frag */,
-				08FC63E11899716E00D6A35E /* ofxVolumetrics.vert */,
+				08FC63F01899750500D6A35E /* ofxVolumetrics.frag */,
+				08FC63F11899750500D6A35E /* ofxVolumetrics.vert */,
 			);
 			name = shaders;
 			path = bin/data/shaders;
@@ -557,7 +559,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				08FC63D21899465D00D6A35E /* ofxVolumetrics */,
+				08FC63E2189974EC00D6A35E /* ofxVolumetrics */,
 				A492CE86424AB8905550BFD8 /* ofxUI */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 				32A2B0EDC109D0EF4192515F /* ofxOAuth */,
@@ -898,6 +900,7 @@
 				2E592F90ED46A225F36431CF /* ofxTwitter3d.cpp in Sources */,
 				A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */,
 				8913F0EFD789AED0AA86CA0D /* tweetManager.cpp in Sources */,
+				08FC63EE189974EC00D6A35E /* ofxVolumetrics.cpp in Sources */,
 				E7EE453774ADEC60378C89FF /* vizManager.cpp in Sources */,
 				9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */,
 				4B3ED367CA852D522E2EE996 /* ofxUI2DPad.cpp in Sources */,
@@ -946,6 +949,7 @@
 				60012C723B05938A3D388335 /* ofxUIValuePlotter.cpp in Sources */,
 				AE281BEBF3A00F1FC37F3DA0 /* ofxUIWaveform.cpp in Sources */,
 				82845E1F8C90E1F5A99D9868 /* ofxUIWidget.cpp in Sources */,
+				08FC63ED189974EC00D6A35E /* ofxTexture3d.cpp in Sources */,
 				CE5D89B9893EAA12F511DCAC /* ofxUIWidgetWithLabel.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
