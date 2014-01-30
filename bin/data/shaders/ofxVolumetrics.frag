@@ -110,7 +110,7 @@ void main()
     if(dl == clamp(dl,0.,vol_l)) {
         float steps = floor(length(vold * dir) * quality);
         vec3 delta_dir = dir/float(steps);
-        float color_sample;
+        vec4 color_sample;
         float aScale =  density/quality;
 		//Random fraction to be added onto the ray starting position
 		float random = 2.0*fract(sin(gl_FragCoord.x*12.9898 + gl_FragCoord.y*78.233)*43758.5453);
@@ -144,15 +144,16 @@ void main()
 		{
 			vec3 vecz = vec + zOffsetVec;
 			if(vecz.z > maxv.z) vecz.z-=maxv.z;
-			color_sample = texture3D(volume_tex, vecz).r;
+			color_sample.a = texture3D(volume_tex, vecz).r;
+			color_sample.rgb = texture3D(volume_tex, vecz).rgb;
 			
-			if(color_sample > threshold) {
+			if(color_sample.a > threshold) {
 				
 				float oneMinusAlpha = 1. - col_acc.a;
-				color_sample *= aScale;
+				color_sample.a *= aScale;
 				vec3 white = vec3(256.0);
-				col_acc.rgb = mix(col_acc.rgb, col_acc.rgb * color_sample, oneMinusAlpha);
-				col_acc.a += color_sample * oneMinusAlpha;
+				col_acc.rgb = mix(col_acc.rgb, color_sample.rgb * color_sample.a, oneMinusAlpha);
+				col_acc.a += color_sample.a * oneMinusAlpha;
 				col_acc.rgb /= col_acc.a;
 				
 						
