@@ -5,6 +5,11 @@
 #include "ofxXmlSettings.h"
 #include "ofxTwitter3d.h"
 
+
+#include "ofxExampleTwitterClient.h"
+#include "ofxJSONElement.h"
+
+
 class tweetManager {
 	
 	public:
@@ -12,8 +17,17 @@ class tweetManager {
 		void setup(string xmlfilename);
 		void update();
 		void draw();
+	void keyReleased(int key);
 		
-		vector<tweet3d> getTweets();
+	void drawQueryTwitters();
+	void setupTwitter();
+		
+	//query eaxmple
+		ofxTwitter twitterClient;
+		ofxTwitterTweet tweet;
+		int actualTweet;
+		bool reloadTweet;		
+		ofImage userImage;
 	
 	private:
 	
