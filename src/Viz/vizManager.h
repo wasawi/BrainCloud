@@ -35,6 +35,7 @@ public:
 	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
+	float rot = .00000001;
 	
 	//Volume Rendering
     ofxVolumetrics myVolume;

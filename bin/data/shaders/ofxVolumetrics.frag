@@ -54,7 +54,7 @@ void main()
     vec3 vec;
     vec3 vold = (maxv-minv)*vol_d;
     float vol_l = length(vold);
-
+	//	color_acc is the accumulated color during each setp
     vec4 col_acc = vec4(0,0,0,0);
     vec3 zOffsetVec = vec3(0.0,0.0,zoffset/vold.z);
     vec3 backPos = gl_TexCoord[0].xyz;//*maxv+minv;
@@ -81,8 +81,11 @@ void main()
 	// Clipping
 	if (clipPlaneDepth > -1.0) 
 	{
-		gl_FragColor.a = 0.0; //render the clipped surface invisible
-        //gl_FragColor.rgb = vec3(0.0,0.0,0.0); //or render the clipped surface black 
+		//render the clipped surface invisible
+		gl_FragColor.a = 0.0;
+		//or render the clipped surface black
+        //gl_FragColor.rgb = vec3(0.0,0.0,0.0);
+		
         //see if clip plane faces viewer
         bool frontface = (dot(dir , clipPlane) > 0.0);
         //next, distance from ray origin to clip plane
@@ -110,7 +113,7 @@ void main()
     if(dl == clamp(dl,0.,vol_l)) {
         float steps = floor(length(vold * dir) * quality);
         vec3 delta_dir = dir/float(steps);
-        float color_sample;
+        vec4 color_sample;
         float aScale =  density/quality;
 		//Random fraction to be added onto the ray starting position
 		float random = 2.0*fract(sin(gl_FragCoord.x*12.9898 + gl_FragCoord.y*78.233)*43758.5453);
@@ -136,23 +139,22 @@ void main()
             vec += delta_dir;
 	}*/
 		
-		//	color_acc is the accumulated color during each setp
-		
 		//Raycast no LUT
 		// repeat while penetrating the volume, and until the opacity gets full
 		for(int i = 0; i < int(steps); i++)
 		{
 			vec3 vecz = vec + zOffsetVec;
 			if(vecz.z > maxv.z) vecz.z-=maxv.z;
-			color_sample = texture3D(volume_tex, vecz).r;
+			color_sample.a = texture3D(volume_tex, vecz).r;
+			color_sample.rgb = texture3D(volume_tex, vecz).rgb;
 			
-			if(color_sample > threshold) {
+			if(color_sample.a > threshold) {
 				
 				float oneMinusAlpha = 1. - col_acc.a;
-				color_sample *= aScale;
+				color_sample.a *= aScale;
 				vec3 white = vec3(256.0);
-				col_acc.rgb = mix(col_acc.rgb, col_acc.rgb * color_sample, oneMinusAlpha);
-				col_acc.a += color_sample * oneMinusAlpha;
+				col_acc.rgb = mix(col_acc.rgb, color_sample.rgb * color_sample.a, oneMinusAlpha);
+				col_acc.a += color_sample.a * oneMinusAlpha;
 				col_acc.rgb /= col_acc.a;
 				
 						
