@@ -35,7 +35,7 @@ void guiManager::draw(){
 	//gui_slider->drawOutlineHighlight();
 	
 	ofPopStyle();
-	ofSetRectMode(OF_RECTMODE_CENTER);
+//	ofSetRectMode(OF_RECTMODE_CENTER);
 	
 	
 

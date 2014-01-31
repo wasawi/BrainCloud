@@ -29,7 +29,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {	
-	myGuiManager.draw();
+//	myGuiManager.draw();
 	myTwitterManager.draw();
 	myVizManager.draw();
 	
