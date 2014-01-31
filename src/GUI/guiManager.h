@@ -7,6 +7,19 @@
 
 class guiManager {
 
+public:	
+	guiManager();
+	~guiManager();
+	
+	// variables & methods for singleton
+private:
+    static bool	instanceFlag;
+    static guiManager *single;	
+public: 
+	static guiManager* getInstance();
+	// end singleton
+	
+	
 	public:
 
 		void setup();
@@ -19,6 +32,10 @@ class guiManager {
 		void guiEvent(ofxUIEventArgs &e);
 		void exit();
 	
+	//add contends methods
+		void adjustContendstoGui(bool bsnap);
+		void addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap);
+	
 	//vector<tweet3d> getTweets(); 
 
 		int id;
@@ -29,7 +46,7 @@ class guiManager {
 	
 	//TEST DATA TO LOAD
 	string myText;
-    ofImage *img;
+    ofImage *_img;
     ofFilePath imgFile;
 
 	private:

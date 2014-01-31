@@ -12,7 +12,8 @@ void ofApp::setup()
 	
 	ofBackground(100);
 
-	myGuiManager.setup();
+	guiManager::getInstance()->setup();
+	
 //	myVizManager.setup();
 	myTwitterManager.setup("hellocat");
 	
@@ -21,7 +22,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-//	myTwitterManager.update();
+	myTwitterManager.update();
 //	myGuiManager.update();
 //	myVizManager.update();
 }
@@ -29,7 +30,9 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {	
-	myGuiManager.draw();
+
+	guiManager::getInstance()->draw();
+	
 	myTwitterManager.draw();
 	
 }
@@ -39,7 +42,8 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	myGuiManager.exit();
+
+	guiManager::getInstance()->exit();
 }
 
 //--------------------------------------------------------------

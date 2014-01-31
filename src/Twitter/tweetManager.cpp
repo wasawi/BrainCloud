@@ -3,20 +3,118 @@
 //--------------------------------------------------------------
 void tweetManager::setup(string xmlfilename){
 
-	//myTwitterManager.setup();
 	setupTwitter();
+	//set all twitter users in one
+	twitterClient.startQuery("@evabelmonte"); // BrainNetViz // cat
+
 	//postTweet();
 }
+
+
 //--------------------------------------------------------------
 void tweetManager::update(){
 	
 }
+
 //--------------------------------------------------------------
 void tweetManager::draw(){
 	
 	drawQueryTwitters();
+	twitterClient.drawdebug();
+}
+
+
+//--------------------------------------------------------------
+void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {    
+ 	cout << "cleanImgUsers size=" << a.size() << endl;
+    a.clear(); 
+	cout << "cleanImgUsers Done size=" << a.size() << endl;
+}
+
+
+//--------------------------------------------------------------
+void tweetManager::setAllQueryTwittersAtGui(){
+	
+	float dim = 50;
+	float xInit		= 4;
+	float CanvasW   = 550;
+	float ScrollW	= 40;
+	float WidgetW = CanvasW -ScrollW - (xInit * 4);
+	bool bsnap = true;
+	
+	cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
+	
+	//Clean imgUsers vector and ask again all images
+	//cleanImgUsers(imgUsers);
+
+	
+	for(int i=0; i< twitterClient.getTotalLoadedTweets()-2; i++){
+		
+		cout << "Start tweet=" << i << endl;
+		
+		tweet = twitterClient.getTweetByIndex(i);
+		
+		cout << " default? " << tweet.user.default_profile << endl;
+		cout << " defaultname? " << tweet.user.default_profile_image << endl;
+		cout << " geo_enabled? " << tweet.user.geo_enabled << endl;
+		
+		if ( /*tweet.user.geo_enabled*/ true ) {
+		
+			//Load Contend	Tweets
+			//img = new ofImage();
+			//img->loadImage("images/bikers.jpg");
+			//string nameuser = tweet.user.screen_name;
+			//string myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
+			
+			bool validinfo1 = false;
+			bool validinfo2 = false;
+			
+			string nameuser;
+			string myText;
+			
+			cout << "user start" << endl;
+			if ( sizeof(tweet.user.screen_name) ){
+				nameuser = tweet.user.screen_name;
+				validinfo1 = true;
+			}
+			cout << "user end= " << nameuser <<  endl;
+			cout << "myText start" << endl;
+			
+			if ( sizeof(tweet.text) ){
+				myText = tweet.text;
+				validinfo2 = true;
+			}
+			cout << "myText end = " << myText << endl;
+			
+			if(tweet.isProfileImageLoaded()) {
+				
+				//TODO That way to destroy Img and create againg could be slower, try to reserve fisrt some locations
+				//cout << "Image uSer pointer[" << i << "]" <<  &tweet.user.profile_image << endl;
+				//cout << "imgUsers[" << i << "]" <<  &(imgUsers[i])<< endl;
+				
+				imgUsers.push_back(ofImage());
+				imgUsers.back().clone(tweet.user.profile_image);
+				
+				if( validinfo1 && validinfo2 ){
+					
+					cout << "Go to Added contend" << endl;
+					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
+					cout << "Added contend" << endl;
+				}
+			}
+	
+			cout << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
+			
+		}
+		
+		
+	}
+	
+	//guiManager::getInstance()->adjustContendstoGui(bsnap);
 	
 }
+
+
 
 //--------------------------------------------------------------
 void tweetManager::drawQueryTwitters(){
@@ -56,6 +154,7 @@ void tweetManager::drawQueryTwitters(){
         ofSetColor(255, 255, 255);
         if(tweet.isProfileImageLoaded()) {
             tweet.user.profile_image.draw(40, 150);
+			//cout << "Image uSer pointer" <<  &tweet.user.profile_image << endl;
         }
         
         ofSetColor(0);
@@ -93,7 +192,11 @@ void tweetManager::setupTwitter(){
 void tweetManager::keyReleased(int key){
     
     if(key == 'q') {
-        twitterClient.startQuery("cat");
+       // twitterClient.startQuery("cat");
+		setAllQueryTwittersAtGui();
+    }
+	if(key == 'w') {
+		twitterClient.getTwitterMessages("gats", "100"); //  old way to ask to twitter
     }
     
     if(key == 'l') {

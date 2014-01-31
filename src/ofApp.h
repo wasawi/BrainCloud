@@ -26,7 +26,6 @@ class ofApp : public ofBaseApp
 	void gotMessage(ofMessage msg);
 	
 	tweetManager	myTwitterManager;
-	guiManager		myGuiManager;
 	vizManager		myVizManager;
 	
 	bool	drawFill;
