@@ -54,7 +54,7 @@ void main()
     vec3 vec;
     vec3 vold = (maxv-minv)*vol_d;
     float vol_l = length(vold);
-
+	//	color_acc is the accumulated color during each setp
     vec4 col_acc = vec4(0,0,0,0);
     vec3 zOffsetVec = vec3(0.0,0.0,zoffset/vold.z);
     vec3 backPos = gl_TexCoord[0].xyz;//*maxv+minv;
@@ -81,8 +81,11 @@ void main()
 	// Clipping
 	if (clipPlaneDepth > -1.0) 
 	{
-		gl_FragColor.a = 0.0; //render the clipped surface invisible
-        //gl_FragColor.rgb = vec3(0.0,0.0,0.0); //or render the clipped surface black 
+		//render the clipped surface invisible
+		gl_FragColor.a = 0.0;
+		//or render the clipped surface black
+        //gl_FragColor.rgb = vec3(0.0,0.0,0.0);
+		
         //see if clip plane faces viewer
         bool frontface = (dot(dir , clipPlane) > 0.0);
         //next, distance from ray origin to clip plane
@@ -135,8 +138,6 @@ void main()
 		}
             vec += delta_dir;
 	}*/
-		
-		//	color_acc is the accumulated color during each setp
 		
 		//Raycast no LUT
 		// repeat while penetrating the volume, and until the opacity gets full

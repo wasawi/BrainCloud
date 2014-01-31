@@ -11,10 +11,13 @@ void vizManager::setup(){
 	setup_GUI1();
 	gui1->loadSettings("GUI/viz_settings.xml");
 	gui1->setDrawBack(true);
+	gui1->setVisible(false);
 
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
+	cam.setDrag(1);
+//	cam.
 	
 	//------------ Volumetrics setup ---------------//
 	//----------------------------------------------//
@@ -68,7 +71,7 @@ void vizManager::setup(){
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
 	
 	//fbo
-	myfboRender = myVolume.getFboReference();
+	//myfboRender = myVolume.getFboReference();
 }
 
 
@@ -82,9 +85,11 @@ void vizManager::update(){
 void vizManager::draw(){
 	
 	ofSetColor(255,255,255,255);
-	myfboRender.draw(-200, 400);
+//	myfboRender.draw(-200, 400);
 	
     cam.begin();
+	ofRotateZ(rot);
+	rot++;
 	
 	ofPushMatrix();										//	save the old coordinate system
 		ofScale(1.0f, -1.0f);							//	flip the y axis vertically, so that it points upwards
@@ -277,6 +282,9 @@ void vizManager::keyPressed(int key ){
 		case 'F':
 			ofSetVerticalSync(true);
 			ofSetFullscreen(true);
+			break;
+		case 'h':
+            gui1->toggleVisible();
 			break;
 		case OF_KEY_UP:
 			if(bcameraMode)cam.getTarget().boom(-5);

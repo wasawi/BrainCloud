@@ -8,7 +8,7 @@ void ofApp::setup()
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	ofEnableSmoothing();
-	ofSetFrameRate(20);
+	ofSetFrameRate(30);
 	
 	// setup Managers
 //	myTwitterManager.setup();
