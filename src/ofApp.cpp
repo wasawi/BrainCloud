@@ -4,7 +4,7 @@
 void ofApp::setup()
 {	
 	// OF vars
-	ofSetLogLevel(OF_LOG_VERBOSE);
+		ofSetLogLevel(OF_LOG_VERBOSE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	ofEnableSmoothing();
@@ -15,6 +15,7 @@ void ofApp::setup()
 	guiManager::getInstance()->setup();
 	
 //	myVizManager.setup();
+
 	myTwitterManager.setup("hellocat");
 	
 }
@@ -22,9 +23,7 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	myTwitterManager.update();
-//	myGuiManager.update();
-//	myVizManager.update();
+	//myTwitterManager.update();
 }
 
 //--------------------------------------------------------------
@@ -34,6 +33,7 @@ void ofApp::draw()
 	guiManager::getInstance()->draw();
 	
 	myTwitterManager.draw();
+	//myVizManager.draw();
 	
 }
 
@@ -49,47 +49,8 @@ void ofApp::exit()
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key)
 {
-	
-	/*
-    if(gui->hasKeyboardFocus())
-    {
-        return;
-    }
-	switch (key)
-	{
-		case '`':
+	//myVizManager.keyPressed(key);
 
-			break;
-			
-		case 'f':
-			ofToggleFullscreen();
-			break;
-            
-		case 'h':
-            gui->toggleVisible();
-			break;
-            
-		case 'p':
-			bdrawPadding = !bdrawPadding;
-			gui->setDrawWidgetPaddingOutline(bdrawPadding);
-			break;
-            
-		case '[':
-			gui->setDrawWidgetPadding(false);
-			break;
-            
-		case ']':
-			gui->setDrawWidgetPadding(true);
-			break;
-            
-		case ' ':
-
-			break;
-
-		default:
-			break;
-	}
-	 */
 }
 
 //--------------------------------------------------------------

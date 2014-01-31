@@ -1,11 +1,10 @@
 #extension GL_ARB_texture_rectangle : enable
 varying vec3 cameraPosition;
 uniform sampler3D volume_tex;
-uniform sampler2DRect lutTexture; // Color lookup texture, as sampler2Drect, using non-normalized coords
 uniform vec3 vol_d;
 uniform float zoffset, quality, threshold, density, dithering;		// Quality vars
-uniform float azimuth, elevation, clipPlaneDepth;		//Clipping plane vars
-
+uniform float azimuth, elevation, clipPlaneDepth;					//Clipping plane vars
+//uniform sampler2DRect lutTexture; // Color lookup texture, as sampler2Drect, using non-normalized coords
 
 struct Ray {
     vec3 Origin;
@@ -55,7 +54,7 @@ void main()
     vec3 vec;
     vec3 vold = (maxv-minv)*vol_d;
     float vol_l = length(vold);
-
+	//	color_acc is the accumulated color during each setp
     vec4 col_acc = vec4(0,0,0,0);
     vec3 zOffsetVec = vec3(0.0,0.0,zoffset/vold.z);
     vec3 backPos = gl_TexCoord[0].xyz;//*maxv+minv;
@@ -82,9 +81,12 @@ void main()
 	// Clipping
 	if (clipPlaneDepth > -1.0) 
 	{
-		gl_FragColor.a = 0.0; //render the clipped surface invisible
-        //gl_FragColor.rgb = vec3(0.0,0.0,0.0); //or render the clipped surface black 
-        //next, see if clip plane faces viewer
+		//render the clipped surface invisible
+		gl_FragColor.a = 0.0;
+		//or render the clipped surface black
+        //gl_FragColor.rgb = vec3(0.0,0.0,0.0);
+		
+        //see if clip plane faces viewer
         bool frontface = (dot(dir , clipPlane) > 0.0);
         //next, distance from ray origin to clip plane
         float dis = dot(dir,clipPlane);
@@ -110,45 +112,63 @@ void main()
 
     if(dl == clamp(dl,0.,vol_l)) {
         float steps = floor(length(vold * dir) * quality);
-        vec3 delta_dir = dir/steps;
-        float color_sample;
+        vec3 delta_dir = dir/float(steps);
+        vec4 color_sample;
         float aScale =  density/quality;
-		float random = 2.0*fract(sin(gl_FragCoord.x*12.9898 + gl_FragCoord.y*78.233)*43758.5453); //Random fraction to be added onto the ray starting position
-		vec = rayStart + (delta_dir*(random*dithering)); // Adding random component to ray starting position, to reduce anti aliasing effects (Dithering)
-        // Raycast
+		//Random fraction to be added onto the ray starting position
+		float random = 2.0*fract(sin(gl_FragCoord.x*12.9898 + gl_FragCoord.y*78.233)*43758.5453);
+		// Adding random component to ray starting position, to reduce anti aliasing effects (Dithering)
+		vec = rayStart + (delta_dir*(random*dithering));
+		
+        /* Raycast for LUT
         for(int i = 0; i < int(steps); i++)
         {
             color_sample = texture3D(volume_tex, vec + zOffsetVec).r;
-			
             if(color_sample > threshold) {
 
-			float oneMinusAlpha = 1. - col_acc.a;
-			
-			//col_acc.rgb = texture2DRect(lutTexture, vec2(256*color_sample,1.0)).rgb; //Color lookup on the texture, finds the RGB values.
-			//col_acc.a = texture2DRect(lutTexture, vec2(256*color_sample,1.0)).a; // Alpha component accumulated for better viewing, and scaled with density/quality
-			//col_acc.rgb /= col_acc.a;
-			color_sample *= aScale;
-			col_acc.rgb = mix(col_acc.rgb,  texture2DRect(lutTexture, vec2(256.0*color_sample,1.0)).rgb * color_sample, oneMinusAlpha);
-			
-			col_acc.a += color_sample * oneMinusAlpha;
-			col_acc.rgb /= col_acc.a;
-
-				/*
 				float oneMinusAlpha = 1. - col_acc.a;
-                color_sample.a *= aScale;
-                col_acc.rgb = mix(col_acc.rgb, color_sample.rgb * color_sample.a, oneMinusAlpha);
-                col_acc.a += color_sample.a * oneMinusAlpha;
-                col_acc.rgb /= col_acc.a;
-				*/
-
-
+				color_sample *= aScale;
+				col_acc.rgb = mix(col_acc.rgb,  texture2DRect(lutTexture, vec2(256.0*color_sample,1.0)).rgb * color_sample, oneMinusAlpha);
+				
+				col_acc.a += color_sample * oneMinusAlpha;
+				col_acc.rgb /= col_acc.a;
 				if(col_acc.a >= 1.0) {
-                    break; // terminate if opacity > 1
-                }
-            }
+						break; // terminate if opacity > 1
+				}
+		}
             vec += delta_dir;
-        }
-    }
+	}*/
+		
+		//Raycast no LUT
+		// repeat while penetrating the volume, and until the opacity gets full
+		for(int i = 0; i < int(steps); i++)
+		{
+			vec3 vecz = vec + zOffsetVec;
+			if(vecz.z > maxv.z) vecz.z-=maxv.z;
+			color_sample.a = texture3D(volume_tex, vecz).r;
+			color_sample.rgb = texture3D(volume_tex, vecz).rgb;
+			
+			if(color_sample.a > threshold) {
+				
+				float oneMinusAlpha = 1. - col_acc.a;
+				color_sample.a *= aScale;
+				vec3 white = vec3(256.0);
+				col_acc.rgb = mix(col_acc.rgb, color_sample.rgb * color_sample.a, oneMinusAlpha);
+				col_acc.a += color_sample.a * oneMinusAlpha;
+				col_acc.rgb /= col_acc.a;
+				
+						
+				// terminate if opacity > 1
+				if(col_acc.a >= 1.0) {
+					break;
+				}
+			}
+			vec += delta_dir;
+//			col_acc.rgb	= vec3(texture3D(volume_tex, vecz).r);
+		}
+
+}
+
     // export the rendered color
-    gl_FragColor = col_acc;//vec4(abs(rayStop-rayStart),1.);
+    gl_FragColor = col_acc;
 }

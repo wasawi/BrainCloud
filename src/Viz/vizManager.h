@@ -4,15 +4,18 @@
 //#include "ofxVolumetrics.h"
 #include "ofxUI.h"
 
+/*
 class vizManager {
 	
 public:
 
-/*
+
 	void setup();
 	void update();
 	void draw();
 
+	void keyPressed  (int key);	
+	
 	//UI to remove
 	void saveCameraPosition();
 	void loadCameraPosition();
@@ -33,6 +36,7 @@ public:
 	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
+	float rot = .00000001;
 	
 	//Volume Rendering
     ofxVolumetrics myVolume;
@@ -42,11 +46,11 @@ public:
     bool linearFilter;
 	float lastClipPlaneDepth;
 	float clipPlaneDepth, azimuth, elevation;
+	ofFbo myfboRender;
 
 	//Vars from UI to A-me
 	float FBOq, Zq, thresh, density, dithering;
-*/
-	
+
 	//Twitter objects
 	tweet3d  searchTweetByLocation();
 	
@@ -55,3 +59,4 @@ private:
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
 };
+*/

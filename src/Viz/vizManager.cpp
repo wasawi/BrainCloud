@@ -1,18 +1,28 @@
 #include "vizManager.h"
-
 /*
+
 //--------------------------------------------------------------
 void vizManager::setup(){
 
 	// TODO: Remove this from here
 	ofEnableSmoothing();
 	
+	//GUI
 	setup_GUI1();
 	gui1->loadSettings("GUI/viz_settings.xml");
 	gui1->setDrawBack(true);
+	gui1->setVisible(false);
+
+	//camera
+	loadCameraPosition();
+	bcameraMode = true;
+	cam.setDrag(1);
+//	cam.
 	
 	//------------ Volumetrics setup ---------------//
 	//----------------------------------------------//
+	
+//	imageSequence.init("volumes/bruce/IM-0001-0",3,".tif", 1);
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
 	
 	volWidth	= imageSequence.getWidth();
@@ -24,6 +34,9 @@ void vizManager::setup(){
 	//maybe is related to th texture which has to be a power of 2..
 	int volWidth_	= 152;
 	int volHeight_	= 189;
+
+//	int volWidth_	= volWidth;
+//	int volHeight_	= volHeight;
 	
     cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth <<"\n";
     volumeData = new unsigned char[volWidth_*volHeight_*volDepth];
@@ -56,6 +69,9 @@ void vizManager::setup(){
 	myVolume.updateVolumeData(volumeData,volWidth_,volHeight_,volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
+	
+	//fbo
+	//myfboRender = myVolume.getFboReference();
 }
 
 
@@ -68,13 +84,32 @@ void vizManager::update(){
 //--------------------------------------------------------------
 void vizManager::draw(){
 	
+	ofSetColor(255,255,255,255);
+//	myfboRender.draw(-200, 400);
+	
+    cam.begin();
+	ofRotateZ(rot);
+	rot++;
+	
+	ofPushMatrix();										//	save the old coordinate system
+		ofScale(1.0f, -1.0f);							//	flip the y axis vertically, so that it points upwards
+		myVolume.drawVolume(0,0,0, ofGetHeight(), 0);	//	draw Volume
+	
+		ofPushView();
+			ofSetOrientation(OF_ORIENTATION_DEFAULT);
+//			ofSetupScreenPerspective(ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,true,50,0,10);
+		ofPopView();
+	ofPopMatrix();										//	restore the previous coordinate system
+	
+	cam.end();
+	
 }
 
 
 //--------------------------------------------------------------
 void vizManager::saveCameraPosition()
 {
-	posMat = cam.getTarget().getGlobalTransformMatrix();
+	posMat = cam.getGlobalTransformMatrix();
 	ofxXmlSettings *XML = new ofxXmlSettings("GUI/camera_settings.xml");
     XML->setValue("posMat_00", posMat(0,0), 0);
 	XML->setValue("posMat_01", posMat(0,1), 0);
@@ -99,17 +134,20 @@ void vizManager::saveCameraPosition()
 	XML->setValue("distance", cam.getDistance(), 0);
 	XML->saveFile("GUI/camera_settings.xml");
     delete XML;
+	message = "saved camera_settings.xml";
+	ofLog(OF_LOG_NOTICE, message);
 }
 
 //--------------------------------------------------------------
 void vizManager::loadCameraPosition()
 {
-	message = "loading camera_settings.xml";
 	if( XML.loadFile("GUI/camera_settings.xml") ){
 		message = "camera_settings.xml loaded!";
 	}else{
 		message = "unable to load camera_settings.xml check data/ folder";
 	}
+	ofLog(OF_LOG_NOTICE, message);
+	
 	posMat(0,0)= XML.getValue("posMat_00",0.0, 0);
 	posMat(0,1)= XML.getValue("posMat_01",0.0, 0);
 	posMat(0,2)= XML.getValue("posMat_02",0.0, 0);
@@ -131,7 +169,7 @@ void vizManager::loadCameraPosition()
 	posMat(3,3)= XML.getValue("posMat_33",0.0, 0);
 	
 	cam.setDistance(XML.getValue("distance",0.0, 0));
-	cam.getTarget().setTransformMatrix(posMat);
+	cam.setTransformMatrix(posMat);
 }
 
 //--------------------------------------------------------------
@@ -139,7 +177,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-	cout << "GUI:: got event from: " << name << endl;
+//	cout << "GUI:: got event from: " << name << endl;
 	
 	if(name == "FBO quality"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
@@ -203,12 +241,13 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 //-----"VOLUMETRICS GFX"----------------------------------------
 void vizManager::setup_GUI1()
 {
-	float dim = 16;
+	float dim = 16+10;
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
     float length = 255-xInit;
 		
 	gui1 = new ofxUICanvas(ofGetWidth()-length - 30, 0, length+xInit, ofGetHeight());
 	gui1->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
+	gui1->addSpacer( length-xInit, 2 );
 	
 	gui1->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, dim);
 	gui1->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, dim);
@@ -223,5 +262,67 @@ void vizManager::setup_GUI1()
 	ofAddListener(gui1->newGUIEvent,this,&vizManager::guiEvent);
 }
 
+//--------------------------------------------------------------
+void vizManager::keyPressed(int key ){
+    switch(key)
+    {
+		case 's':
+			gui1->saveSettings("GUI/viz_settings.xml");
+			saveCameraPosition();
+			break;
+		case 'l':
+			loadCameraPosition();
+			gui1->loadSettings("GUI/viz_settings.xml");
+			break;
+		case 'f':
+			ofSetWindowPosition(0, 0);
+			ofSetVerticalSync(false);
+			//ofSetFullscreen(false);
+			break;
+		case 'F':
+			ofSetVerticalSync(true);
+			ofSetFullscreen(true);
+			break;
+		case 'h':
+            gui1->toggleVisible();
+			break;
+		case OF_KEY_UP:
+			if(bcameraMode)cam.getTarget().boom(-5);
+			else {
+				cam.tilt(1);
+			}
+			break;
+		case OF_KEY_DOWN:
+			if(bcameraMode)cam.getTarget().boom(5);
+			else {
+				cam.tilt(-1);
+			}
+			break;
+		case OF_KEY_LEFT:
+			if(bcameraMode)cam.getTarget().truck(-5);
+			else {
+				cam.pan(1);
+			}
+			break;
+		case OF_KEY_RIGHT:
+			if(bcameraMode)cam.getTarget().truck(5);
+			else {
+				cam.pan(-1);
+			}
+			break;
+		case 'M':
+			bcameraMode = !bcameraMode;
+			break;
+	}
+	
+}
+
+
+
 */
+
+
+
+
+
 
