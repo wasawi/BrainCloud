@@ -10,7 +10,6 @@
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2813E36CEFD8D1C1B70E600 /* ofxUIRangeSlider.cpp */; };
-		1C6C506E7046E74BC1EFE2DE /* ofxUIIntSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 697883CA4FAF08C1C9B67692 /* ofxUIIntSlider.cpp */; };
 		1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */; };
 		22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E592342D8B7FB73A6F64D /* ofxUIFPSSlider.cpp */; };
 		222C3AB10FA3158602718602 /* ofxUIMultiImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17E06821FB98542FDB806E50 /* ofxUIMultiImageButton.cpp */; };
@@ -30,7 +29,6 @@
 		63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50DF87D612C5AAE17AAFA6C0 /* ofxXmlSettings.cpp */; };
 		71D220E16245067F59A3637C /* ofxUIScrollSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF508CDF0BA90E21BAF48849 /* ofxUIScrollSlider.cpp */; };
 		7252706DA14C1BE63950ADDA /* ofxUIFPS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB61645EF9120F5BACB7462 /* ofxUIFPS.cpp */; };
-		732E559ACC49903F31B10544 /* ofxUICustomImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7D33656AB3C74C0D841E67E9 /* ofxUICustomImageButton.cpp */; };
 		740A58CBFDFE578C83A349AF /* ofxUISlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0DE8B77977749C1835A9472B /* ofxUISlider.cpp */; };
 		7BE46522B64E24FAEDE1A25D /* ofxUICanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E71733956CD601886837BE2E /* ofxUICanvas.cpp */; };
 		7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D7D83EF74FC7508D9146FA63 /* ofxUILabel.cpp */; };
@@ -137,7 +135,6 @@
 		0F867B04BF36A560C2493C09 /* json_value.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = json_value.cpp; path = ../../../addons/ofxJSON/libs/jsoncpp/src/json_value.cpp; sourceTree = SOURCE_ROOT; };
 		1553D7111BCBE7834BCC0784 /* ofxUI2DPad.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUI2DPad.cpp; path = ../../../addons/ofxUI/src/ofxUI2DPad.cpp; sourceTree = SOURCE_ROOT; };
 		15C99204FF4D8D72AD034B63 /* ofxUINumberDialer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUINumberDialer.h; path = ../../../addons/ofxUI/src/ofxUINumberDialer.h; sourceTree = SOURCE_ROOT; };
-		15E69017B5DB282EF100EE15 /* ofxUICustomImageButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUICustomImageButton.h; path = ../../../addons/ofxUI/src/ofxUICustomImageButton.h; sourceTree = SOURCE_ROOT; };
 		15FCE46D80D67D3661FD7433 /* guiManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = guiManager.h; path = src/GUI/guiManager.h; sourceTree = SOURCE_ROOT; };
 		17E06821FB98542FDB806E50 /* ofxUIMultiImageButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIMultiImageButton.cpp; path = ../../../addons/ofxUI/src/ofxUIMultiImageButton.cpp; sourceTree = SOURCE_ROOT; };
 		1902452F5E510A2DBC1E5BD6 /* ofxUIMultiImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIMultiImageToggle.h; path = ../../../addons/ofxUI/src/ofxUIMultiImageToggle.h; sourceTree = SOURCE_ROOT; };
@@ -159,7 +156,6 @@
 		32BD050A579633ADBCA5AF6B /* ofxUIWidget.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidget.h; path = ../../../addons/ofxUI/src/ofxUIWidget.h; sourceTree = SOURCE_ROOT; };
 		334840CA6B3402C8C30CAC4E /* ofxUIOFWrapper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIOFWrapper.h; path = ../../../addons/ofxUI/src/ofxUIOFWrapper.h; sourceTree = SOURCE_ROOT; };
 		36DCA30BBD213346B313140F /* typecheck-gcc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = "typecheck-gcc.h"; path = "../../../addons/ofxOAuth/libs/libcurl/include/curl/typecheck-gcc.h"; sourceTree = SOURCE_ROOT; };
-		374505B6865245282826FE21 /* ofxExampleTwitterClient.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; path = ofxExampleTwitterClient.h; sourceTree = "<group>"; };
 		38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUISuperCanvas.cpp; path = ../../../addons/ofxUI/src/ofxUISuperCanvas.cpp; sourceTree = SOURCE_ROOT; };
 		3A34BCED94C473EFF3839A95 /* ofxTwitter3d.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitter3d.h; path = src/Twitter/ofxTwitter3d.h; sourceTree = SOURCE_ROOT; };
 		3B869EDFC4EA231621749621 /* json_batchallocator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = json_batchallocator.h; path = ../../../addons/ofxJSON/libs/jsoncpp/src/json_batchallocator.h; sourceTree = SOURCE_ROOT; };
@@ -171,7 +167,6 @@
 		470B5D2AC2F616D10B2E6025 /* ofxUISlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUISlider.h; path = ../../../addons/ofxUI/src/ofxUISlider.h; sourceTree = SOURCE_ROOT; };
 		48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIToggle.cpp; path = ../../../addons/ofxUI/src/ofxUIToggle.cpp; sourceTree = SOURCE_ROOT; };
 		4AEA0D08C3B0323FEDC8D974 /* ofxUIImageSampler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageSampler.h; path = ../../../addons/ofxUI/src/ofxUIImageSampler.h; sourceTree = SOURCE_ROOT; };
-		4C2EB386FF4DE4A531B5118C /* ofxUIIntSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIIntSlider.h; path = ../../../addons/ofxUI/src/ofxUIIntSlider.h; sourceTree = SOURCE_ROOT; };
 		4C9B919B991B4E45BC5DC0DB /* ofxUIRadio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIRadio.h; path = ../../../addons/ofxUI/src/ofxUIRadio.h; sourceTree = SOURCE_ROOT; };
 		4D902D60E5CCFA9F2554BC7C /* ofxUIValuePlotter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIValuePlotter.cpp; path = ../../../addons/ofxUI/src/ofxUIValuePlotter.cpp; sourceTree = SOURCE_ROOT; };
 		4E49BEFE99E0E9ADA3F82118 /* oauth.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = oauth.h; path = ../../../addons/ofxOAuth/libs/liboauth/include/oauth.h; sourceTree = SOURCE_ROOT; };
@@ -196,14 +191,12 @@
 		65FCAE08D326D7EF1910A329 /* writer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = writer.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/writer.h; sourceTree = SOURCE_ROOT; };
 		664D65407BE633C038FA9498 /* ofxUIFPSSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIFPSSlider.h; path = ../../../addons/ofxUI/src/ofxUIFPSSlider.h; sourceTree = SOURCE_ROOT; };
 		6686D93C5674C6E0E46AE0C2 /* ofxTwitterTweet.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitterTweet.h; path = ../../../addons/ofxTwitter/src/ofxTwitterTweet.h; sourceTree = SOURCE_ROOT; };
-		697883CA4FAF08C1C9B67692 /* ofxUIIntSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIIntSlider.cpp; path = ../../../addons/ofxUI/src/ofxUIIntSlider.cpp; sourceTree = SOURCE_ROOT; };
 		6B3E490B88799F9D96728D04 /* curlver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curlver.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curlver.h; sourceTree = SOURCE_ROOT; };
 		6F94ACA14609A0DE769D3B91 /* features.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = features.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/features.h; sourceTree = SOURCE_ROOT; };
 		702A2528CA64B397E9B91ABE /* ofxUIToggleMatrix.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIToggleMatrix.cpp; path = ../../../addons/ofxUI/src/ofxUIToggleMatrix.cpp; sourceTree = SOURCE_ROOT; };
 		70FE2C9BC0FB311D0994A1B9 /* ofxOAuth.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxOAuth.cpp; path = ../../../addons/ofxOAuth/src/ofxOAuth.cpp; sourceTree = SOURCE_ROOT; };
 		76AF3B44E0E2FA8BFBD5F592 /* ofxUILabelToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUILabelToggle.cpp; path = ../../../addons/ofxUI/src/ofxUILabelToggle.cpp; sourceTree = SOURCE_ROOT; };
 		7965EE214E4C332003852642 /* ofxUIMovingGraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIMovingGraph.cpp; path = ../../../addons/ofxUI/src/ofxUIMovingGraph.cpp; sourceTree = SOURCE_ROOT; };
-		7D33656AB3C74C0D841E67E9 /* ofxUICustomImageButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUICustomImageButton.cpp; path = ../../../addons/ofxUI/src/ofxUICustomImageButton.cpp; sourceTree = SOURCE_ROOT; };
 		7E7E592342D8B7FB73A6F64D /* ofxUIFPSSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIFPSSlider.cpp; path = ../../../addons/ofxUI/src/ofxUIFPSSlider.cpp; sourceTree = SOURCE_ROOT; };
 		8178EB9AA3C0268331AF3AF3 /* ofxUIToggleMatrix.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIToggleMatrix.h; path = ../../../addons/ofxUI/src/ofxUIToggleMatrix.h; sourceTree = SOURCE_ROOT; };
 		828EDF7F6C239EA7B17F32F0 /* ofxUIRectangle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIRectangle.cpp; path = ../../../addons/ofxUI/src/ofxUIRectangle.cpp; sourceTree = SOURCE_ROOT; };
@@ -366,7 +359,6 @@
 		2D0B0316D15C4E2499D6A5F5 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
-				374505B6865245282826FE21 /* ofxExampleTwitterClient.h */,
 				024DDBA5871B37FE4D21881E /* ofxTwitter3d.cpp */,
 				3A34BCED94C473EFF3839A95 /* ofxTwitter3d.h */,
 				3F85DCF19C282DE4049266F1 /* tweet3d.cpp */,
@@ -607,8 +599,6 @@
 				4FF2F2D5A01ADA37A9ADE20F /* ofxUICanvas.h */,
 				2556100026B425E8370BCF75 /* ofxUICircleSlider.cpp */,
 				EDFEB3D8C9183ADE3FACB4B5 /* ofxUICircleSlider.h */,
-				7D33656AB3C74C0D841E67E9 /* ofxUICustomImageButton.cpp */,
-				15E69017B5DB282EF100EE15 /* ofxUICustomImageButton.h */,
 				AEFCF7E549ACA862C022AD40 /* ofxUIDefines.h */,
 				FFD5D3C9D38E29DB72B32254 /* ofxUIDragableLabelButton.cpp */,
 				3C9066FB257B904A547019ED /* ofxUIDragableLabelButton.h */,
@@ -630,8 +620,6 @@
 				D66E735BE796BC0675320DC8 /* ofxUIImageSlider.h */,
 				B848522CCA3A75ABD56752C9 /* ofxUIImageToggle.cpp */,
 				2D394124F88F348AA4142DCF /* ofxUIImageToggle.h */,
-				697883CA4FAF08C1C9B67692 /* ofxUIIntSlider.cpp */,
-				4C2EB386FF4DE4A531B5118C /* ofxUIIntSlider.h */,
 				D7D83EF74FC7508D9146FA63 /* ofxUILabel.cpp */,
 				F26E25F3872C0799D6433B99 /* ofxUILabel.h */,
 				F9A4454B00CCFD7265D3CA85 /* ofxUILabelButton.cpp */,
@@ -795,7 +783,7 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 			};
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "neurotwitter" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "NeuroTwitter" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -866,7 +854,6 @@
 				7D393646FB859A930EF58917 /* ofxUIButton.cpp in Sources */,
 				7BE46522B64E24FAEDE1A25D /* ofxUICanvas.cpp in Sources */,
 				DF0C851B244C4C867CEA8806 /* ofxUICircleSlider.cpp in Sources */,
-				732E559ACC49903F31B10544 /* ofxUICustomImageButton.cpp in Sources */,
 				9BE4AE0AA2B8C436BDFE9D4D /* ofxUIDragableLabelButton.cpp in Sources */,
 				F392A99D83698FC099127880 /* ofxUIDropDownList.cpp in Sources */,
 				084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */,
@@ -877,7 +864,6 @@
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
-				1C6C506E7046E74BC1EFE2DE /* ofxUIIntSlider.cpp in Sources */,
 				7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */,
 				FFD1EBFCA24DFB4E4427B4FE /* ofxUILabelButton.cpp in Sources */,
 				C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */,
@@ -945,6 +931,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -1011,6 +998,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = NO;
 				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = NO;
@@ -1236,7 +1224,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "neurotwitter" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "NeuroTwitter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
