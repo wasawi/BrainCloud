@@ -1,7 +1,7 @@
 #pragma once
 
 #include "tweet3d.h"
-//#include "ofxVolumetrics.h"
+#include "ofxVolumetrics.h"
 #include "ofxUI.h"
 
 class vizManager {

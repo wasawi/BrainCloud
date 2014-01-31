@@ -13,7 +13,7 @@ void ofApp::setup()
 	ofBackground(100);
 
 	myGuiManager.setup();
-//	myVizManager.setup();
+	myVizManager.setup();
 	myTwitterManager.setup("hellocat");
 	
 }
