@@ -146,6 +146,8 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	cout << "Added TEXT text" << endl;
 	
 	gui->addSpacer( WidgetW, 2 );
+	
+	adjustContendstoGui(false);
 }
 
 //--------------------------------------------------------------

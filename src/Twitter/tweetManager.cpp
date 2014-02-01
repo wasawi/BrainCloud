@@ -45,7 +45,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 	cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
 	
 	//Clean imgUsers vector and ask again all images
-	//cleanImgUsers(imgUsers);
+	cleanImgUsers(imgUsers);
 
 	
 	for(int i=0; i< twitterClient.getTotalLoadedTweets()-2; i++){
