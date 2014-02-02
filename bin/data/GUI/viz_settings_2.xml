@@ -1,0 +1,15 @@
+<Widget>
+    <Kind>5</Kind>
+    <Name>axialS</Name>
+    <Value>20.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>5</Kind>
+    <Name>sagittalS</Name>
+    <Value>20.000001907</Value>
+</Widget>
+<Widget>
+    <Kind>5</Kind>
+    <Name>coronalS</Name>
+    <Value>20.000000000</Value>
+</Widget>

@@ -12,9 +12,9 @@ void ofApp::setup()
 	
 	ofBackground(100);
 
-	myGuiManager.setup();
+//	myGuiManager.setup();
 	myVizManager.setup();
-	myTwitterManager.setup("hellocat");
+//	myTwitterManager.setup("hellocat");
 	
 }
 
@@ -30,9 +30,8 @@ void ofApp::update()
 void ofApp::draw()
 {	
 //	myGuiManager.draw();
-	myTwitterManager.draw();
+//	myTwitterManager.draw();
 	myVizManager.draw();
-	
 }
 
 

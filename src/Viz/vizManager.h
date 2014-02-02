@@ -3,39 +3,51 @@
 #include "tweet3d.h"
 #include "ofxVolumetrics.h"
 #include "ofxUI.h"
+#include "volumeSlice.h"
+#include "myCamera.h"
+#include "ofUtils.h"
+
 
 class vizManager {
 	
 public:
-
+	vizManager();
+	~vizManager();
 
 	void setup();
 	void update();
 	void draw();
-
 	void keyPressed  (int key);	
 	
 	//UI to remove
 	void saveCameraPosition();
 	void loadCameraPosition();
-	// void dragEvent(ofDragInfo dragInfo);
- 	// void gotMessage(ofMessage msg);
 	void guiEvent(ofxUIEventArgs &e);
 	void setup_GUI1();
+	void setup_GUI2();
 	ofxUICanvas *gui1;
-	ofColor backgroundColor;
+	ofxUICanvas *gui2;
+	
+	//UI vars
+	float FBOq, Zq, thresh, density, dithering;
+	float lastClipPlaneDepth;
+	float clipPlaneDepth, azimuth, elevation;
+	//Volume Slice
+	volumeSlice	sagittal, axial, coronal;
+	int sagittalS, axialS, coronalS;
 	
 	//XML settings
 	ofxXmlSettings XML;
 	string message;
 	
 	//Camera
-    ofEasyCam cam;
+    myCamera cam;
     ofQuaternion camOrientation;
 	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
 	float rot = .00000001;
+	float latitude;
 	
 	//Volume Rendering
     ofxVolumetrics myVolume;
@@ -43,16 +55,10 @@ public:
     int volWidth, volHeight, volDepth;
     ofxImageSequencePlayer imageSequence;
     bool linearFilter;
-	float lastClipPlaneDepth;
-	float clipPlaneDepth, azimuth, elevation;
 	ofFbo myfboRender;
-
-	//Vars from UI to A-me
-	float FBOq, Zq, thresh, density, dithering;
 
 	//Twitter objects
 	tweet3d  searchTweetByLocation();
-	
 	
 private:
 	vector<tweet3d> alltweets;

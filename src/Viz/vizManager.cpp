@@ -1,6 +1,17 @@
 #include "vizManager.h"
 
 
+//----------------------------------------------
+vizManager::vizManager(){
+	
+}
+
+//----------------------------------------------
+vizManager::~vizManager(){
+	delete gui1;
+	delete gui2;
+}
+
 //--------------------------------------------------------------
 void vizManager::setup(){
 
@@ -13,50 +24,49 @@ void vizManager::setup(){
 	gui1->setDrawBack(true);
 	gui1->setVisible(false);
 
+
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
-	cam.setDrag(1);
-//	cam.
+	cam.disableMouseInput();
+		
 	
 	//------------ Volumetrics setup ---------------//
 	//----------------------------------------------//
-	
-//	imageSequence.init("volumes/bruce/IM-0001-0",3,".tif", 1);
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
     volDepth	= imageSequence.getSequenceLength();
-	
 	//add one morw pixel in width and height..
 	//i dont know why some tifs are not reading well...
 	//maybe is related to th texture which has to be a power of 2..
-	int volWidth_	= 152;
-	int volHeight_	= 189;
+//	int volWidth	= 151;
+//	int volHeight	= 188;
 
-//	int volWidth_	= volWidth;
-//	int volHeight_	= volHeight;
+//	int volWidth	= volWidth;
+//	int volHeight	= volHeight;
 	
     cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth <<"\n";
-    volumeData = new unsigned char[volWidth_*volHeight_*volDepth];
+    volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
 	//fill out the added pixel in 0
-	for (int i=0; i<volWidth_*volHeight_*volDepth; i++ ){
+	for (int i=0; i<volWidth*volHeight*volDepth; i++ ){
 		volumeData[i]= (unsigned char) 0;
 	}
 	
+	// fill my array with pixels
     for(int z=0; z<volDepth; z++)
     {
         imageSequence.loadFrame(z);
 		int gradient = 0;
-		for(int y=0; y<volHeight_; y++)
+		for(int y=0; y<volHeight; y++)
         {
-			for(int x=0; x<volWidth_; x++)
+			for(int x=0; x<volWidth; x++)
 			{
 				if (x<volWidth && y<volHeight)
 				{																	// get values from image
-					int i = ((x + volWidth_*y) + z*volWidth_*volHeight_);			// the pointer position at Array
+					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
 					int sample = imageSequence.getPixels()[x+y*volWidth];			// the pixel on the image
 					volumeData[i] = sample;
 				}
@@ -65,43 +75,91 @@ void vizManager::setup(){
     }
 	
 	// Init Volume
-    myVolume.setup(volWidth_, volHeight_, volDepth, ofVec3f(1,1,1));
-	myVolume.updateVolumeData(volumeData,volWidth_,volHeight_,volDepth, 0, 0, 0);
+    myVolume.setup(volWidth, volHeight, volDepth, ofVec3f(1,1,1));
+	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
 	
+	// Init Slices
+	sagittal.setup(volumeData, volWidth, volHeight, volDepth, SAGITTAL);
+	axial.setup(volumeData, volWidth, volHeight, volDepth, AXIAL);
+	coronal.setup(volumeData, volWidth, volHeight, volDepth, CORONAL);
+	sagittalS = axialS = coronalS = 20;
 	//fbo
-	//myfboRender = myVolume.getFboReference();
+	myfboRender = myVolume.getFboReference();
+	
+	
+	setup_GUI2();
+	gui2->loadSettings("GUI/viz_settings_2.xml");
+	gui2->setDrawBack(false);
+//	gui2->setAutoDraw(true);
+//	gui2->setVisible(false);
 }
 
 
 //--------------------------------------------------------------
 void vizManager::update(){
-	
+
 }
 
 
 //--------------------------------------------------------------
 void vizManager::draw(){
+	ofSetColor(0);
 	
-	ofSetColor(255,255,255,255);
-//	myfboRender.draw(-200, 400);
+	float boxW = 200;
+	float boxH = 200;
+	int dist = 50;
+	int slider = 50;
+	// needed to align the volume at the center of the box
+	int aX = (boxW - volHeight) /2;
+	int aY = (boxH - volDepth) /2;
+	int aZ = (boxH - volWidth) /2;
+
+	// Draw Boxes
+	ofRect(dist, dist, boxW, boxH);
+	ofRect(boxH+ (dist*2), dist, boxW, boxH);
+	ofRect(dist, boxH + (dist*2), boxW, boxH);
+	ofRect(boxH + (dist*2), boxH + (dist*2), boxW, boxH);
+
+	// Draw slices
+	ofSetColor(255);
+	axial.draw		(dist+ aY, dist+aY, axialS);
+	sagittal.draw	(boxH+ (dist*2)+ aX, dist+aY, sagittalS);
+	coronal.draw	(dist+ aZ, boxW+ (dist*2)+aX, coronalS);
+		
+//	cam.xRot = latitude;
+//	cam.updateMouse();
+//	cam.updateRotation();
+//	cam.xRot=0;
+
+//	ofQuaternion curRot = ofQuaternion(latitude, cam.getXAxis(), cam.yRot, cam.getYAxis(), cam.zRot, cam.getZAxis());
+//	cam.setPosition((cam.getGlobalPosition()-cam.target.getGlobalPosition())*curRot +cam.target.getGlobalPosition());
+//	cam.rotate(curRot);
 	
-    cam.begin();
+	// Draw Volume
+	cam.begin();
 	ofRotateZ(rot);
 	rot++;
-	
 	ofPushMatrix();										//	save the old coordinate system
 		ofScale(1.0f, -1.0f);							//	flip the y axis vertically, so that it points upwards
 		myVolume.drawVolume(0,0,0, ofGetHeight(), 0);	//	draw Volume
-	
-		ofPushView();
-			ofSetOrientation(OF_ORIENTATION_DEFAULT);
-//			ofSetupScreenPerspective(ofGetWidth(), ofGetHeight(),OF_ORIENTATION_DEFAULT,true,50,0,10);
-		ofPopView();
 	ofPopMatrix();										//	restore the previous coordinate system
-	
 	cam.end();
+	myVolume.draw(boxH + (dist*2), boxH + (dist*2), boxW, boxH);
+
+	// Draw lines
+	ofSetColor(150,0,0);
+	int	invCoronalS;
+	invCoronalS = ofMap(coronalS, 0, volWidth-1, volWidth-1, 0);
+	ofLine(dist, dist+invCoronalS+ aY, dist+boxW, dist+invCoronalS+ aY);				//axial hor line
+	ofLine(boxW+ (dist*2), dist+invCoronalS+ aY, (boxW*2)+ (dist*2), dist+invCoronalS+ aY);	//sagital hor line
+
+	ofLine(boxW+ (dist*2)+axialS+ aX, dist, boxW+ (dist*2)+axialS+aX, boxH+dist);		//sagital vert line
+	ofLine(dist, boxW+ (dist*2)+axialS+ aX, boxH+dist,  boxW+ (dist*2)+axialS+aX);		//coronal hor line
+	
+	ofLine(dist+sagittalS+ aY, dist, dist+sagittalS+ aY, dist+boxW);					//axial vert line
+	ofLine(dist+sagittalS+ aY, boxW+ (dist*2), dist+sagittalS+ aY, (boxW*2)+ (dist*2));	//coronal vert line
 	
 }
 
@@ -236,6 +294,27 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
             myVolume.setVolumeTextureFilterMode(GL_NEAREST);
         };
 	}
+	else if(name == "sagittalS"){
+		ofxUISlider *slider = (ofxUISlider *) e.widget;
+		sagittalS = floor(slider->getScaledValue());
+		cout <<	"sagittalS " << sagittalS<< endl;
+	}
+	else if(name == "axialS"){
+		ofxUISlider *slider = (ofxUISlider *) e.widget;
+		axialS = floor(slider->getScaledValue());
+		cout <<	"axialS " << axialS<< endl;
+	}
+	else if(name == "coronalS"){
+		ofxUISlider *slider = (ofxUISlider *) e.widget;
+		coronalS = floor(slider->getScaledValue());
+		cout <<	"coronalS " << coronalS<< endl;
+	}
+	else if(name == "latitude"){
+		ofxUISlider *slider = (ofxUISlider *) e.widget;
+		latitude = floor(slider->getScaledValue());
+		cout <<	"latitude " << latitude<< endl;
+
+	}
 }
 
 //-----"VOLUMETRICS GFX"----------------------------------------
@@ -258,8 +337,30 @@ void vizManager::setup_GUI1()
 	gui1->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, dim);
 	gui1->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, dim);
 	gui1->addWidgetDown(new ofxUIToggle( dim, dim, false, "linearFilter"));
-	
+
 	ofAddListener(gui1->newGUIEvent,this,&vizManager::guiEvent);
+}
+
+//-----"VOLUMETRICS GFX"----------------------------------------
+void vizManager::setup_GUI2()
+{
+//#define OFX_UI_GLOBAL_PADDING 0//2 it was
+//#define OFX_UI_GLOBAL_WIDGET_SPACING 0//4 it was
+//#define OFX_UI_GLOBAL_SPACING_HEIGHT 0//1 it was
+	
+	float dim = 20;
+    float length = 200;
+	float boxW = 200;
+	float boxH = 200;
+	int dist = 50;
+	
+	gui2 = new ofxUICanvas(dist-dim, dist-dim, boxW*2+dist+dim*3, boxW*2+dist+dim*2);
+//	gui2->addWidgetDown(new ofxUILabel("Tweet Visualizer", OFX_UI_FONT_MEDIUM));
+	gui2->addWidget(new ofxUISlider(boxW+dim, dim, dim,				length, 0, volHeight-1, axialS, "axialS"));
+	gui2->addWidget(new ofxUISlider((boxW*2)+dist+dim, dim, dim,	length, 0, volWidth-1, sagittalS, "sagittalS"));
+	gui2->addWidget(new ofxUISlider(boxW+dim, boxW+dist+dim, dim,	length, 0, volDepth-1, coronalS, "coronalS"));
+	gui2->addWidget(new ofxUISlider((boxW*2)+dist+dim, boxW+dist+dim, dim,	length, -18.0, 18.0, latitude, "latitude"));
+	ofAddListener(gui2->newGUIEvent,this,&vizManager::guiEvent);
 }
 
 //--------------------------------------------------------------
@@ -268,6 +369,7 @@ void vizManager::keyPressed(int key ){
     {
 		case 's':
 			gui1->saveSettings("GUI/viz_settings.xml");
+			gui2->saveSettings("GUI/viz_settings_2.xml");
 			saveCameraPosition();
 			break;
 		case 'l':
@@ -316,6 +418,33 @@ void vizManager::keyPressed(int key ){
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
