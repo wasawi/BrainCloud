@@ -5,7 +5,7 @@ void tweetManager::setup(string xmlfilename){
 
 	setupTwitter();
 	//set all twitter users in one
-	twitterClient.startQuery("@evabelmonte"); // BrainNetViz // cat
+	twitterClient.startQuery("@evabelmonte"); // // BrainNetViz // cat
 
 	//postTweet();
 }
@@ -20,7 +20,6 @@ void tweetManager::update(){
 void tweetManager::draw(){
 	
 	drawQueryTwitters();
-//	twitterClient.drawdebug();
 }
 
 
@@ -98,7 +97,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 				if( validinfo1 && validinfo2 ){
 					
 					cout << "Go to Added contend" << endl;
-					guiManager::getInstance()->addTwitterContent(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
+					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
 					cout << "Added contend" << endl;
 				}
 			}
@@ -194,9 +193,6 @@ void tweetManager::keyReleased(int key){
     if(key == 'q') {
        // twitterClient.startQuery("cat");
 		setAllQueryTwittersAtGui();
-    }
-	if(key == 'w') {
-//		twitterClient.getTwitterMessages("gats", "100"); //  old way to ask to twitter
     }
     
     if(key == 'l') {
