@@ -16,8 +16,6 @@ void ofApp::setup()
 	guiManager::getInstance()->setup();
 	//	myGuiManager.setup();
 	myVizManager.setup();
-
-	
 }
 
 //--------------------------------------------------------------
@@ -33,7 +31,6 @@ void ofApp::draw()
 {	
 
 	guiManager::getInstance()->draw();
-	
 	myTwitterManager.draw();
 	myVizManager.draw();
 	

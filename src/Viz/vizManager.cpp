@@ -17,20 +17,37 @@ void vizManager::setup(){
 
 	// TODO: Remove this from here
 	ofEnableSmoothing();
+	initX=50;
+	initY=50;
+	sliderW = 20;
+	dist = 20;
+	length = 251;
+	boxW = boxH = 200;
+	
+	//Volume
+	initVolume();
 	
 	//GUI
 	setup_GUI1();
 	gui1->loadSettings("GUI/viz_settings.xml");
 	gui1->setDrawBack(true);
-//	gui1->setVisible(false);
+	//	gui1->setVisible(false);
+	//3d Views
+	bDraw = true;
+	setup_GUI2();
+	gui2->loadSettings("GUI/viz_settings_2.xml");
+	gui2->setDrawBack(false);
+//	gui2->setAutoDraw(true);
+//	gui2->setVisible(false);
+}
 
+//--------------------------------------------------------------
+void vizManager::initVolume(){
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
 	cam.disableMouseInput();
 	
-	//------------ Volumetrics setup ---------------//
-	//----------------------------------------------//
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
 	
 	volWidth	= imageSequence.getWidth();
@@ -39,11 +56,11 @@ void vizManager::setup(){
 	//add one morw pixel in width and height..
 	//i dont know why some tifs are not reading well...
 	//maybe is related to th texture which has to be a power of 2..
-//	int volWidth	= 151;
-//	int volHeight	= 188;
-
-//	int volWidth	= volWidth;
-//	int volHeight	= volHeight;
+	//	int volWidth	= 151;
+	//	int volHeight	= 188;
+	
+	//	int volWidth	= volWidth;
+	//	int volHeight	= volHeight;
 	
     cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth <<"\n";
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
@@ -84,18 +101,9 @@ void vizManager::setup(){
 	coronal.setup(volumeData, volWidth, volHeight, volDepth, CORONAL);
 	sagittalS = axialS = coronalS = 20;
 	//fbo
-	myfboRender = myVolume.getFboReference();
+//	myfboRender = myVolume.getFboReference();
 	
-	
-	//3d Views
-	bDraw = true;
-	setup_GUI2();
-	gui2->loadSettings("GUI/viz_settings_2.xml");
-	gui2->setDrawBack(false);
-//	gui2->setAutoDraw(true);
-//	gui2->setVisible(false);
 }
-
 
 //--------------------------------------------------------------
 void vizManager::update(){
@@ -106,28 +114,34 @@ void vizManager::update(){
 //--------------------------------------------------------------
 void vizManager::draw(){
 if (bDraw){
+
+	ofPushView();
+	ofTranslate(initX, initY);
+	
+	ofSetColor(0,0,0, 100 );
+	//Draw box below
+	ofRect(0, 0, (boxW+dist)*2+dist*3, (boxW+dist)*2+dist);
 	ofSetColor(0);
 	
-	float boxW = 200;
-	float boxH = 200;
-	int dist = 50;
-	int slider = 50;
 	// needed to align the volume at the center of the box
-	int aX = (boxW - volHeight) /2;
-	int aY = (boxH - volDepth) /2;
-	int aZ = (boxH - volWidth) /2;
+	int halfH = (boxW - volHeight) /2;
+	int halfW = (boxW - volWidth) /2;
+	int halfD = (boxW - volDepth) /2;
 
+	ofPushView();
+	ofTranslate(dist, dist);
+	
 	// Draw Boxes
-	ofRect(dist, dist, boxW, boxH);
-	ofRect(boxH+ (dist*2), dist, boxW, boxH);
-	ofRect(dist, boxH + (dist*2), boxW, boxH);
-	ofRect(boxH + (dist*2), boxH + (dist*2), boxW, boxH);
+	ofRect(0, 0, boxW, boxH);
+	ofRect(boxH+ (dist+sliderW), 0, boxW, boxH);
+	ofRect(0, boxH + dist, boxW, boxH);
+	ofRect(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
 
 	// Draw slices
 	ofSetColor(255);
-	axial.draw		(dist+ aY, dist+aY, axialS);
-	sagittal.draw	(boxH+ (dist*2)+ aX, dist+aY, sagittalS);
-	coronal.draw	(dist+ aZ, boxW+ (dist*2)+aX, coronalS);
+	axial.draw		(halfW, halfD, axialS);
+	sagittal.draw	(boxH+ (dist+sliderW)+ halfH, halfD, sagittalS);
+	coronal.draw	(halfD, boxW+ dist+ halfH, coronalS);
 		
 //	cam.xRot = latitude;
 //	cam.updateMouse();
@@ -147,20 +161,27 @@ if (bDraw){
 		myVolume.drawVolume(0,0,0, ofGetHeight(), 0);	//	draw Volume
 	ofPopMatrix();										//	restore the previous coordinate system
 	cam.end();
-	myVolume.draw(boxH + (dist*2), boxH + (dist*2), boxW, boxH);
+	myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
 
 	// Draw lines
 	ofSetColor(150,0,0);
 	int	invCoronalS;
 	invCoronalS = ofMap(coronalS, 0, volWidth-1, volWidth-1, 0);
-	ofLine(dist, dist+invCoronalS+ aY, dist+boxW, dist+invCoronalS+ aY);				//axial hor line
-	ofLine(boxW+ (dist*2), dist+invCoronalS+ aY, (boxW*2)+ (dist*2), dist+invCoronalS+ aY);	//sagital hor line
 
-	ofLine(boxW+ (dist*2)+axialS+ aX, dist, boxW+ (dist*2)+axialS+aX, boxH+dist);		//sagital vert line
-	ofLine(dist, boxW+ (dist*2)+axialS+ aX, boxH+dist,  boxW+ (dist*2)+axialS+aX);		//coronal hor line
+	//Axial X and Y
+	ofLine(0, invCoronalS+ halfD, boxW, invCoronalS+ halfD);							//axial hor line
+	ofLine(sagittalS+ halfW, 0, sagittalS+ halfW, boxW);								//axial vert line
+
+	//Sagittal X and Y
+	ofLine(boxW+ (dist+sliderW), invCoronalS+ halfD, (boxW*2)+ (dist+sliderW), invCoronalS+ halfD);	//sagital hor line
+	ofLine(boxW+ dist+sliderW+axialS+ halfH, 0, boxW+ dist+sliderW+axialS+halfH, boxH);			//sagital vert line
 	
-	ofLine(dist+sagittalS+ aY, dist, dist+sagittalS+ aY, dist+boxW);					//axial vert line
-	ofLine(dist+sagittalS+ aY, boxW+ (dist*2), dist+sagittalS+ aY, (boxW*2)+ (dist*2));	//coronal vert
+	//Coronal X and Y
+	ofLine(0, boxW+ dist+axialS+ halfH, boxH,  boxW+ dist+axialS+halfH);				//coronal hor line
+	ofLine(sagittalS+ halfW, boxW+ dist, sagittalS+ halfW, (boxW*2)+ dist);				//coronal vert
+
+	ofPopView();
+	ofPopView();
 }
 }
 
@@ -318,45 +339,46 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	}
 }
 
-//-----"VOLUMETRICS GFX"----------------------------------------
+//--------------------------------------------------------------
 void vizManager::setup_GUI1()
 {
-	float dim = 16+10;
+	float sliderW = 10;
 	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
     float length = 255-xInit;
-		
-	gui1 = new ofxUICanvas(ofGetWidth()-length - 30, 0, length+xInit, ofGetHeight());
-	gui1->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
-	gui1->addSpacer( length-xInit, 2 );
 	
-	gui1->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, dim);
-	gui1->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, dim);
-	gui1->addSlider("Threshold", 0.0, 1.0, thresh, length-xInit, dim);
-	gui1->addSlider("Density", 0.0, 1.0, density, length-xInit, dim);
-	gui1->addSlider("Dithering", 0.0, 1.0, dithering, length-xInit, dim);
-	gui1->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, dim);
-	gui1->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, dim);
-	gui1->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, dim);
-	gui1->addWidgetDown(new ofxUIToggle( dim, dim, false, "linearFilter"));
-
+	gui1 = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, length+xInit, 240);
+	
+//	gui1->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
+//	gui1->addSpacer( length-xInit, 2 );
+	gui1->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW);
+	gui1->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW);
+	gui1->addSlider("Threshold", 0.0, 1.0, thresh, length-xInit, sliderW);
+	gui1->addSlider("Density", 0.0, 1.0, density, length-xInit, sliderW);
+	gui1->addSlider("Dithering", 0.0, 1.0, dithering, length-xInit, sliderW);
+	gui1->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, sliderW);
+	gui1->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, sliderW);
+	gui1->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, sliderW);
+	gui1->addWidgetDown(new ofxUIToggle( sliderW, sliderW, false, "linearFilter"));
 	ofAddListener(gui1->newGUIEvent,this,&vizManager::guiEvent);
 }
 
-//-----"VOLUMETRICS GFX"----------------------------------------
+//--------------------------------------------------------------
 void vizManager::setup_GUI2()
 {
-	float dim = 20;
-    float length = 200;
-	float boxW = 200;
-	float boxH = 200;
-	int dist = 50;
+	gui2 = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*2+dist*3);
+	gui2->addWidget(new ofxUISlider(boxW+dist, dist, sliderW,						boxH, 0, volHeight-1, axialS, "axialS"));
+	ofxUISlider *slider = (ofxUISlider *) gui2->getWidget("axialS");
+	slider->setLabelVisible(false);
+	gui2->addWidget(new ofxUISlider((boxW*2)+(dist*2)+sliderW, dist, sliderW,			boxH, 0, volWidth-1, sagittalS, "sagittalS"));
+	slider = (ofxUISlider *) gui2->getWidget("sagittalS");
+	slider->setLabelVisible(false);
+	gui2->addWidget(new ofxUISlider(boxW+dist, boxW+dist+sliderW, sliderW,				boxH, 0, volDepth-1, coronalS, "coronalS"));
+	slider = (ofxUISlider *) gui2->getWidget("coronalS");
+	slider->setLabelVisible(false);
+	gui2->addWidget(new ofxUISlider((boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW, sliderW,	boxH, -18.0, 18.0, latitude, "latitude"));
+	slider = (ofxUISlider *) gui2->getWidget("latitude");
+	slider->setLabelVisible(false);
 	
-	gui2 = new ofxUICanvas(dist-dim, dist-dim, boxW*2+dist+dim*3, boxW*2+dist+dim*2);
-//	gui2->addWidgetDown(new ofxUILabel("Tweet Visualizer", OFX_UI_FONT_MEDIUM));
-	gui2->addWidget(new ofxUISlider(boxW+dim, dim, dim,				length, 0, volHeight-1, axialS, "axialS"));
-	gui2->addWidget(new ofxUISlider((boxW*2)+dist+dim, dim, dim,	length, 0, volWidth-1, sagittalS, "sagittalS"));
-	gui2->addWidget(new ofxUISlider(boxW+dim, boxW+dist+dim, dim,	length, 0, volDepth-1, coronalS, "coronalS"));
-	gui2->addWidget(new ofxUISlider((boxW*2)+dist+dim, boxW+dist+dim, dim,	length, -18.0, 18.0, latitude, "latitude"));
 	ofAddListener(gui2->newGUIEvent,this,&vizManager::guiEvent);
 }
 

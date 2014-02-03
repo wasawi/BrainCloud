@@ -13,3 +13,8 @@
     <Name>coronalS</Name>
     <Value>20.000000000</Value>
 </Widget>
+<Widget>
+    <Kind>5</Kind>
+    <Name>latitude</Name>
+    <Value>0.000000000</Value>
+</Widget>

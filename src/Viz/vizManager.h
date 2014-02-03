@@ -18,7 +18,8 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void keyPressed  (int key);	
+	void initVolume();
+	void keyPressed  (int key);
 	
 	//UI to remove
 	void saveCameraPosition();
@@ -33,10 +34,12 @@ public:
 	float FBOq, Zq, thresh, density, dithering;
 	float lastClipPlaneDepth;
 	float clipPlaneDepth, azimuth, elevation;
+	
 	//Volume Slice
 	volumeSlice	sagittal, axial, coronal;
 	int sagittalS, axialS, coronalS;
 	
+
 	//XML settings
 	ofxXmlSettings XML;
 	string message;
@@ -65,6 +68,13 @@ private:
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
 	
-	bool bDraw;
+	bool	bDraw;
+	float	initX, initY;
+	float	sliderW;
+    float	length;
+	float	boxW;
+	float	boxH;
+	int		dist;
+//	int		slider;
 };
 

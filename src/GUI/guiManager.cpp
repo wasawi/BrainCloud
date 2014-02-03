@@ -33,17 +33,23 @@ guiManager::~guiManager()
 //--------------------------------------------------------------
 
 void guiManager::setup(){
-	float dim		= 50;
-	float xInit		= OFX_UI_GLOBAL_WIDGET_SPACING;
-	float yInit		= 0;
-    float CanvasW   = 550;
-    float CanvasH   = 400;
-	float ScrollW	= 40;
-	float WidgetW	= CanvasW -ScrollW - (xInit * 4);
+	bDraw	=true;
+	initX	=600;
+	initY	=50;
+	dim		= 20;
+	dist	= 20;
+	length	= 251;
+	boxW = boxH = 200;
+	slider	= 50;
+	
+	CanvasW = 550;
+    CanvasH = 400;
+	ScrollW	= 40;
+	
+	WidgetW	= CanvasW -ScrollW - (initX * 4);
 	string scrollBarname = "S";
 	
-	setGuiScrollingBar(scrollBarname, dim, xInit, yInit, CanvasW, CanvasH, ScrollW, WidgetW, false);
-	
+	setGuiScrollingBar(scrollBarname, dim, initX, initX, CanvasW, CanvasH, ScrollW, WidgetW, false);
 }
 //--------------------------------------------------------------
 void guiManager::update(){
@@ -55,8 +61,8 @@ void guiManager::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	
 	//gui->autoSizeToFitWidgets();
-	//	gui->getRect()->setWidth(ofGetWidth());
-	gui->setDrawBack(true);
+	//gui->getRect()->setWidth(ofGetWidth());
+	gui->setDrawBack(false);
 	gui->setDrawPadding(true);
 	gui->drawPaddedOutline();
 	gui->drawOutlineHighlight();
@@ -67,8 +73,6 @@ void guiManager::draw(){
 	
 	ofPopStyle();
 //	ofSetRectMode(OF_RECTMODE_CENTER);
-	
-	
 
 }
 //--------------------------------------------------------------
@@ -76,8 +80,8 @@ void guiManager::draw(){
 void guiManager::setGuiScrollingBar(string scrollBarname, float dim, float xInit, float yInit, float CanvasW, float CanvasH, float ScrollW, float WidgetW, bool bsnap){
 	
 	// Canvas for Tweets
-	gui = new ofxUIScrollableSliderCanvas(0, 0, CanvasW, CanvasH);
-	gui->setupScrollBar(scrollBarname, 0, CanvasH, CanvasH-20, CanvasH, 25, CanvasH, xInit+CanvasW, 0, OFX_UI_FONT_SMALL);
+	gui = new ofxUIScrollableSliderCanvas(600, 50, CanvasW, CanvasH);
+	gui->setupScrollBar(scrollBarname, 0, 0, 0, 0, dim+5, CanvasH, xInit+CanvasW, 0, OFX_UI_FONT_SMALL);
 	
 	gui->setScrollAreaHeight(CanvasH);
 	gui->setScrollableDirections(false, true);
@@ -164,7 +168,6 @@ void guiManager::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-	
 	
 	/*
 	 if(name == "TEXT INPUT")
