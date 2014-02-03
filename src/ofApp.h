@@ -5,7 +5,7 @@
 
 #include "tweetManager.h"
 #include "guiManager.h"
-#include "vizManager.h"
+//#include "vizManager.h"
 
 class ofApp : public ofBaseApp
 {
@@ -26,8 +26,7 @@ class ofApp : public ofBaseApp
 	void gotMessage(ofMessage msg);
 	
 	tweetManager	myTwitterManager;
-	guiManager		myGuiManager;
-	vizManager		myVizManager;
+	//vizManager		myVizManager;
 	
 	bool	drawFill;
 	float	red, green, blue, alpha;

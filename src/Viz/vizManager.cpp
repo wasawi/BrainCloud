@@ -1,5 +1,5 @@
 #include "vizManager.h"
-
+/*
 
 //----------------------------------------------
 vizManager::vizManager(){
@@ -421,7 +421,7 @@ void vizManager::keyPressed(int key ){
 
 
 
-
+*/
 
 
 

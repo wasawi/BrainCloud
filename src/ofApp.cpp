@@ -29,9 +29,12 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {	
-//	myGuiManager.draw();
-//	myTwitterManager.draw();
-	myVizManager.draw();
+
+	guiManager::getInstance()->draw();
+	
+	myTwitterManager.draw();
+	//myVizManager.draw();
+	
 }
 
 
@@ -39,7 +42,8 @@ void ofApp::draw()
 //--------------------------------------------------------------
 void ofApp::exit()
 {
-	myGuiManager.exit();
+
+	guiManager::getInstance()->exit();
 }
 
 //--------------------------------------------------------------
@@ -47,46 +51,6 @@ void ofApp::keyPressed(int key)
 {
 	myVizManager.keyPressed(key);
 
-	/*
-    if(gui->hasKeyboardFocus())
-    {
-        return;
-    }
-	switch (key)
-	{
-		case '`':
-
-			break;
-			
-		case 'f':
-			ofToggleFullscreen();
-			break;
-            
-		case 'h':
-            gui->toggleVisible();
-			break;
-            
-		case 'p':
-			bdrawPadding = !bdrawPadding;
-			gui->setDrawWidgetPaddingOutline(bdrawPadding);
-			break;
-            
-		case '[':
-			gui->setDrawWidgetPadding(false);
-			break;
-            
-		case ']':
-			gui->setDrawWidgetPadding(true);
-			break;
-            
-		case ' ':
-
-			break;
-
-		default:
-			break;
-	}
-	 */
 }
 
 //--------------------------------------------------------------
