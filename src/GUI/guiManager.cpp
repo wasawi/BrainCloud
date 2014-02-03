@@ -116,6 +116,7 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0 
 	
 	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, WidgetW - (WidgetW/2), 0, 0, -100, OFX_UI_FONT_MEDIUM ), OFX_UI_ALIGN_FREE, false);
+	cout << "Added USER text" << endl;
 	gui->addTextArea("USER", nameuser, OFX_UI_FONT_SMALL);
 	cout << "Added USER text" << endl;
 	
@@ -142,6 +143,7 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	gui->addWidgetDown( new ofxUITextArea("TEXT", myText, textsizeH, textsizeW, 0, 0, OFX_UI_FONT_SMALL ),OFX_UI_ALIGN_RIGHT, false);
 	 */
 	
+	cout << "Go to Add TEXT text" << endl;
 	gui->addTextArea("TEXT", myText, OFX_UI_FONT_SMALL);
 	cout << "Added TEXT text" << endl;
 	
