@@ -32,9 +32,9 @@ public:
 		void guiEvent(ofxUIEventArgs &e);
 		void exit();
 	
-	//add contends methods
-		void adjustContendstoGui(bool bsnap);
-		void addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap);
+	//add Contents methods
+		void adjustContentstoGui(bool bsnap);
+		void addTwitterContent(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap);
 	
 	//vector<tweet3d> getTweets(); 
 

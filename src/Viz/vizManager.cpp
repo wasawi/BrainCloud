@@ -1,5 +1,5 @@
 #include "vizManager.h"
-/*
+
 
 //----------------------------------------------
 vizManager::vizManager(){
@@ -22,14 +22,12 @@ void vizManager::setup(){
 	setup_GUI1();
 	gui1->loadSettings("GUI/viz_settings.xml");
 	gui1->setDrawBack(true);
-	gui1->setVisible(false);
-
+//	gui1->setVisible(false);
 
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
 	cam.disableMouseInput();
-		
 	
 	//------------ Volumetrics setup ---------------//
 	//----------------------------------------------//
@@ -65,9 +63,9 @@ void vizManager::setup(){
 			for(int x=0; x<volWidth; x++)
 			{
 				if (x<volWidth && y<volHeight)
-				{																	// get values from image
+				{																// get values from image
 					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
-					int sample = imageSequence.getPixels()[x+y*volWidth];			// the pixel on the image
+					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
 					volumeData[i] = sample;
 				}
             }
@@ -89,6 +87,8 @@ void vizManager::setup(){
 	myfboRender = myVolume.getFboReference();
 	
 	
+	//3d Views
+	bDraw = true;
 	setup_GUI2();
 	gui2->loadSettings("GUI/viz_settings_2.xml");
 	gui2->setDrawBack(false);
@@ -105,6 +105,7 @@ void vizManager::update(){
 
 //--------------------------------------------------------------
 void vizManager::draw(){
+if (bDraw){
 	ofSetColor(0);
 	
 	float boxW = 200;
@@ -159,8 +160,8 @@ void vizManager::draw(){
 	ofLine(dist, boxW+ (dist*2)+axialS+ aX, boxH+dist,  boxW+ (dist*2)+axialS+aX);		//coronal hor line
 	
 	ofLine(dist+sagittalS+ aY, dist, dist+sagittalS+ aY, dist+boxW);					//axial vert line
-	ofLine(dist+sagittalS+ aY, boxW+ (dist*2), dist+sagittalS+ aY, (boxW*2)+ (dist*2));	//coronal vert line
-	
+	ofLine(dist+sagittalS+ aY, boxW+ (dist*2), dist+sagittalS+ aY, (boxW*2)+ (dist*2));	//coronal vert
+}
 }
 
 
@@ -344,10 +345,6 @@ void vizManager::setup_GUI1()
 //-----"VOLUMETRICS GFX"----------------------------------------
 void vizManager::setup_GUI2()
 {
-//#define OFX_UI_GLOBAL_PADDING 0//2 it was
-//#define OFX_UI_GLOBAL_WIDGET_SPACING 0//4 it was
-//#define OFX_UI_GLOBAL_SPACING_HEIGHT 0//1 it was
-	
 	float dim = 20;
     float length = 200;
 	float boxW = 200;
@@ -387,6 +384,12 @@ void vizManager::keyPressed(int key ){
 			break;
 		case 'h':
             gui1->toggleVisible();
+			gui2->toggleVisible();
+			if (bDraw){
+				bDraw=false;
+			}else{
+				bDraw=true;
+			}
 			break;
 		case OF_KEY_UP:
 			if(bcameraMode)cam.getTarget().boom(-5);
@@ -421,7 +424,6 @@ void vizManager::keyPressed(int key ){
 
 
 
-*/
 
 
 

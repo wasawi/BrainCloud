@@ -9,6 +9,7 @@
 #XCode 4
 xcuserdata
 *.xcworkspace
+*.xcscheme
 
 #Code::Blocks
 *.depend
@@ -106,8 +107,6 @@ Release*/
 *.app/
 *.pyc
 .svn/
-
-
 
 *~.xml
 

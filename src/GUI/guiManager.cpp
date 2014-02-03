@@ -82,7 +82,7 @@ void guiManager::setGuiScrollingBar(string scrollBarname, float dim, float xInit
 	gui->setScrollAreaHeight(CanvasH);
 	gui->setScrollableDirections(false, true);
 	
-	//reserve space for contends
+	//reserve space for Contents
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
 	gui->addSpacer( WidgetW, 2 );
 	
@@ -90,30 +90,30 @@ void guiManager::setGuiScrollingBar(string scrollBarname, float dim, float xInit
 	
 	ofAddListener(gui->newGUIEvent,this,&guiManager::guiEvent);
 	
-	adjustContendstoGui(bsnap);
+	adjustContentstoGui(bsnap);
 	
 }
 
-void guiManager::adjustContendstoGui(bool _bsnap){
+void guiManager::adjustContentstoGui(bool _bsnap){
 	
 	if(_bsnap){
 		gui->autoSizeToFitWidgets();//works*: only setting full window heigth
 	}
 	else {
 		gui->setSnapping(_bsnap); //Auto damping levels only works for full size window
-		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending contend inside // max , min
+		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending Content inside // max , min
 	}
 }
 
-void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
+void guiManager::addTwitterContent(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
 	
-	//Load Contend	Tweets
+	//Load Content	Tweets
 	//ofImage _img;
 	//_img = new ofImage();
     //_img.loadImage("images/bikers.jpg");
     //myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
 	
-	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0 
+//	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0
 	
 	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, WidgetW - (WidgetW/2), 0, 0, -100, OFX_UI_FONT_MEDIUM ), OFX_UI_ALIGN_FREE, false);
 	gui->addTextArea("USER", nameuser, OFX_UI_FONT_SMALL);
@@ -147,7 +147,7 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	
 	gui->addSpacer( WidgetW, 2 );
 	
-	adjustContendstoGui(false);
+	adjustContentstoGui(false);
 }
 
 //--------------------------------------------------------------

@@ -1,14 +1,14 @@
 #pragma once
 
 #include "tweet3d.h"
-//#include "ofxVolumetrics.h"
+#include "ofxVolumetrics.h"
 #include "ofxUI.h"
 #include "volumeSlice.h"
 #include "myCamera.h"
 #include "ofUtils.h"
 
 
-/*
+
 class vizManager {
 	
 public:
@@ -64,5 +64,7 @@ public:
 private:
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
+	
+	bool bDraw;
 };
-*/
+

@@ -12,18 +12,20 @@ void ofApp::setup()
 	
 	ofBackground(100);
 
-//	myGuiManager.setup();
+	myTwitterManager.setup("hellocat");
+	guiManager::getInstance()->setup();
+	//	myGuiManager.setup();
 	myVizManager.setup();
-//	myTwitterManager.setup("hellocat");
+
 	
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-//	myTwitterManager.update();
+	myTwitterManager.update();
 //	myGuiManager.update();
-//	myVizManager.update();
+	myVizManager.update();
 }
 
 //--------------------------------------------------------------
@@ -33,7 +35,7 @@ void ofApp::draw()
 	guiManager::getInstance()->draw();
 	
 	myTwitterManager.draw();
-	//myVizManager.draw();
+	myVizManager.draw();
 	
 }
 
