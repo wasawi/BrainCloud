@@ -27,7 +27,7 @@ public:
 		void draw();
 		
 		void updateSlider();
-		void setGuiScrollingBar(string scrollBarname, float dim, float xInit, float yInit, float CanvasW, float CanvasH, float ScrollW, float WidgetW, bool bsnap);
+		void setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap);
 
 		void guiEvent(ofxUIEventArgs &e);
 		void exit();

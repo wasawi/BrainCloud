@@ -33,16 +33,13 @@ guiManager::~guiManager()
 //--------------------------------------------------------------
 
 void guiManager::setup(){
-	float dim		= 50;
+
 	float xInit		= OFX_UI_GLOBAL_WIDGET_SPACING;
 	float yInit		= 0;
-    float CanvasW   = 550;
-    float CanvasH   = 400;
-	float ScrollW	= 40;
-	float WidgetW	= CanvasW -ScrollW - (xInit * 4);
-	string scrollBarname = "S";
+    float CanvasW   = 300; // 550
+    float CanvasH   = 200; // 400
 	
-	setGuiScrollingBar(scrollBarname, dim, xInit, yInit, CanvasW, CanvasH, ScrollW, WidgetW, false);
+	setGuiScrollingBar(xInit, yInit, CanvasW, CanvasH, false);
 	
 }
 //--------------------------------------------------------------
@@ -73,18 +70,18 @@ void guiManager::draw(){
 }
 //--------------------------------------------------------------
 
-void guiManager::setGuiScrollingBar(string scrollBarname, float dim, float xInit, float yInit, float CanvasW, float CanvasH, float ScrollW, float WidgetW, bool bsnap){
+void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap){
 	
 	// Canvas for Tweets
 	gui = new ofxUIScrollableSliderCanvas(0, 0, CanvasW, CanvasH);
-	gui->setupScrollBar(scrollBarname, 0, CanvasH, CanvasH-20, CanvasH, 25, CanvasH, xInit+CanvasW, 0, OFX_UI_FONT_SMALL);
+
 	
 	gui->setScrollAreaHeight(CanvasH);
 	gui->setScrollableDirections(false, true);
 	
 	//reserve space for contends
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
-	gui->addSpacer( WidgetW, 2 );
+	gui->addSpacer( CanvasW*0.5, 2 );
 	
 	//....
 	
