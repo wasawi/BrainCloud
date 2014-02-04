@@ -97,7 +97,8 @@ void volumeSlice::drawAxial(float x, float y, int zTexOffset){
 	
 	//draw pixels
 	myImage.setFromPixels(myPixels.getPixels(), volWidth, volDepth, OF_IMAGE_GRAYSCALE);
-	myImage.rotate90(2);
+//	myImage.rotate90(2);
+	myImage.mirror(true, false);
 	myImage.draw(x, y);
 }
 

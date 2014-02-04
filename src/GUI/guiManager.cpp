@@ -36,10 +36,12 @@ void guiManager::setup(){
 
 	float xInit		= OFX_UI_GLOBAL_WIDGET_SPACING;
 	float yInit		= 0;
+	initX			=	600;
+	initY			=	50;
     float CanvasW   = 300; // 550
     float CanvasH   = 200; // 400
 	
-	setGuiScrollingBar(xInit, yInit, CanvasW, CanvasH, false);
+	setGuiScrollingBar(initX, initY, CanvasW, CanvasH, false);
 	
 }
 //--------------------------------------------------------------
@@ -70,16 +72,16 @@ void guiManager::draw(){
 }
 //--------------------------------------------------------------
 
-void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap){
+void guiManager::setGuiScrollingBar(float initX, float initY, float CanvasW, float CanvasH, bool bsnap){
 	
 	// Canvas for Tweets
-	gui = new ofxUIScrollableSliderCanvas(0, 0, CanvasW, CanvasH);
+	gui = new ofxUIScrollableSliderCanvas(initX, initY, CanvasW, CanvasH);
 
 	
 	gui->setScrollAreaHeight(CanvasH);
 	gui->setScrollableDirections(false, true);
 	
-	//reserve space for contends
+	//reserve space for contents
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
 	gui->addSpacer( CanvasW*0.5, 2 );
 	
@@ -87,30 +89,31 @@ void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, flo
 	
 	ofAddListener(gui->newGUIEvent,this,&guiManager::guiEvent);
 	
-	adjustContendstoGui(bsnap);
+	adjustContentstoGui(bsnap);
 	
 }
 
-void guiManager::adjustContendstoGui(bool _bsnap){
+void guiManager::adjustContentstoGui(bool _bsnap){
 	
 	if(_bsnap){
 		gui->autoSizeToFitWidgets();//works*: only setting full window heigth
 	}
 	else {
 		gui->setSnapping(_bsnap); //Auto damping levels only works for full size window
-		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending contend inside // max , min
+		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending content inside // max , min
 	}
 }
 
-void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
+void guiManager::addTwitterContent(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
 	
-	//Load Contend	Tweets
+	//Load Content	Tweets
 	//ofImage _img;
 	//_img = new ofImage();
     //_img.loadImage("images/bikers.jpg");
     //myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
 	
-	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0 
+	//(float x, float y, float w, float h, ofImage *_image, string _name, bool _showLabel)
+	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0
 	
 	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, WidgetW - (WidgetW/2), 0, 0, -100, OFX_UI_FONT_MEDIUM ), OFX_UI_ALIGN_FREE, false);
 	cout << "Added USER text" << endl;
@@ -146,7 +149,7 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	
 	gui->addSpacer( WidgetW, 2 );
 	
-	adjustContendstoGui(false);
+	adjustContentstoGui(false);
 }
 
 //--------------------------------------------------------------

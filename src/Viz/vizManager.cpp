@@ -46,7 +46,7 @@ void vizManager::initVolume(){
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
-	cam.disableMouseInput();
+//	cam.disableMouseInput();
 	
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
 	
@@ -358,27 +358,30 @@ void vizManager::setup_GUI1()
 	gui1->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, sliderW);
 	gui1->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, sliderW);
 	gui1->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, sliderW);
-	gui1->addWidgetDown(new ofxUIToggle( sliderW, sliderW, false, "linearFilter"));
+//	gui1->addWidgetDown(new ofxUIToggle( sliderW, sliderW, false, "linearFilter"));
 	ofAddListener(gui1->newGUIEvent,this,&vizManager::guiEvent);
 }
 
 //--------------------------------------------------------------
 void vizManager::setup_GUI2()
 {
+	
 	gui2 = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*2+dist*3);
-	gui2->addWidget(new ofxUISlider(boxW+dist, dist, sliderW,						boxH, 0, volHeight-1, axialS, "axialS"));
+	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
+
+	gui2->addWidget(new ofxUISlider("axialS", 0, volHeight-1, axialS , sliderW,		boxH, boxW+dist, dist));
 	ofxUISlider *slider = (ofxUISlider *) gui2->getWidget("axialS");
 	slider->setLabelVisible(false);
-	gui2->addWidget(new ofxUISlider((boxW*2)+(dist*2)+sliderW, dist, sliderW,			boxH, 0, volWidth-1, sagittalS, "sagittalS"));
+	gui2->addWidget(new ofxUISlider("sagittalS", 0, volWidth-1, sagittalS, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, dist));
 	slider = (ofxUISlider *) gui2->getWidget("sagittalS");
 	slider->setLabelVisible(false);
-	gui2->addWidget(new ofxUISlider(boxW+dist, boxW+dist+sliderW, sliderW,				boxH, 0, volDepth-1, coronalS, "coronalS"));
+	gui2->addWidget(new ofxUISlider("coronalS", 0, volDepth-1, coronalS, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
 	slider = (ofxUISlider *) gui2->getWidget("coronalS");
 	slider->setLabelVisible(false);
-	gui2->addWidget(new ofxUISlider((boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW, sliderW,	boxH, -18.0, 18.0, latitude, "latitude"));
+	gui2->addWidget(new ofxUISlider( "latitude", -18.0, 18.0, latitude, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW));
 	slider = (ofxUISlider *) gui2->getWidget("latitude");
 	slider->setLabelVisible(false);
-	
+
 	ofAddListener(gui2->newGUIEvent,this,&vizManager::guiEvent);
 }
 

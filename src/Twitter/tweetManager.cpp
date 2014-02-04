@@ -59,7 +59,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 		
 		if ( /*tweet.user.geo_enabled*/ true ) {
 		
-			//Load Contend	Tweets
+			//Load Content	Tweets
 			//img = new ofImage();
 			//img->loadImage("images/bikers.jpg");
 			//string nameuser = tweet.user.screen_name;
@@ -96,9 +96,9 @@ void tweetManager::setAllQueryTwittersAtGui(){
 				
 				if( validinfo1 && validinfo2 ){
 					
-					cout << "Go to Added contend" << endl;
-					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
-					cout << "Added contend" << endl;
+					cout << "Go to Added Content" << endl;
+					guiManager::getInstance()->addTwitterContent(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
+					cout << "Added Content" << endl;
 				}
 			}
 	
@@ -109,7 +109,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 		
 	}
 	
-	//guiManager::getInstance()->adjustContendstoGui(bsnap);
+	//guiManager::getInstance()->adjustContentstoGui(bsnap);
 	
 }
 
@@ -179,8 +179,8 @@ void tweetManager::setupTwitter(){
     twitterClient.setDiskCache(true);
     twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
     
-    string const CONSUMER_KEY = "pHA27PLNeoFD1R3093jEQ";
-    string const CONSUMER_SECRET = "78025mOujCNB3aAk04TwCd6hRFvtB1gPO42DEWYYs";
+    string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
+    string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
     
     twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
 	
