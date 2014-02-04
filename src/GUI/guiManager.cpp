@@ -82,6 +82,7 @@ void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, flo
 	
 	//reserve space for contends
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
+	
 	gui->addSpacer( CanvasW*0.5, 2 );
 	
 	//....
@@ -103,21 +104,32 @@ void guiManager::adjustContendstoGui(bool _bsnap){
 	}
 }
 
-void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
+void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, std::string myText, bool _bsnap){
 	
 	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0 
 	
 	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, WidgetW - (WidgetW/2), 0, 0, -100, OFX_UI_FONT_MEDIUM ), OFX_UI_ALIGN_FREE, false);
 	
 	cout << "Added USER text" << endl;
-	gui->addTextArea("USER", nameuser, OFX_UI_FONT_SMALL);
+	gui->addTextArea("USER", nameuser, OFX_UI_FONT_MEDIUM);
+	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, OFX_UI_FONT_MEDIUM), OFX_UI_ALIGN_FREE, false);
 	cout << "Added USER text" << endl;
 	
-	float textsizeH = myText.size()*0.4;
+
 	float textsizeW = WidgetW - dim -10;
+
+	float textsizeH = myText.size()*0.4;
+	cout << "textsizeW " << textsizeW << endl;
+	cout << "textsizeH " << textsizeH << endl;
 	
 	cout << "Go to Add TEXT text" << endl;
+	
+	//TODO this give error, creating a branch to solve it
+	//myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
+	//gui->addWidgetRight( new ofxUITextArea("TEXT", myText, OFX_UI_FONT_SMALL), OFX_UI_ALIGN_RIGHT, false);
+	
 	gui->addTextArea("TEXT", myText, OFX_UI_FONT_SMALL);
+	
 	cout << "Added TEXT text" << endl;
 	
 	gui->addSpacer( WidgetW, 2 );

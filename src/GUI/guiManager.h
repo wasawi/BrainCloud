@@ -34,7 +34,7 @@ public:
 	
 	//add contends methods
 		void adjustContendstoGui(bool bsnap);
-		void addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap);
+		void addTwitterContend(ofImage img, int dim, int WidgetW, std::string nameuser, string myText, bool _bsnap);
 	
 	//vector<tweet3d> getTweets(); 
 
