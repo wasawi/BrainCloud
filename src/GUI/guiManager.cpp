@@ -82,7 +82,6 @@ void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, flo
 	
 	//reserve space for contends
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
-	
 	gui->addSpacer( CanvasW*0.5, 2 );
 	
 	//....
@@ -124,7 +123,7 @@ void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nam
 	
 	cout << "Go to Add TEXT text" << endl;
 	
-	//TODO this give error, creating a branch to solve it
+	//TODO this give error
 	//myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
 	//gui->addWidgetRight( new ofxUITextArea("TEXT", myText, OFX_UI_FONT_SMALL), OFX_UI_ALIGN_RIGHT, false);
 	
