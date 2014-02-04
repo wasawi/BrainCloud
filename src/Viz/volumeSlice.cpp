@@ -54,7 +54,7 @@ void volumeSlice::drawSagital(float x, float y, int zTexOffset){
 					int page = z*volWidth*volHeight;
 					
 					int i = x + line + page;					// the pointer position at Array
-					myPixels[z+(y*volDepth)] = myData[i];				// the pixel on the image
+					myPixels[z+(y*volDepth)] = myData[i];		// the pixel on the image
 				}
 			}
 		}
@@ -67,8 +67,6 @@ void volumeSlice::drawSagital(float x, float y, int zTexOffset){
 }
 
 void volumeSlice::drawAxial(float x, float y, int zTexOffset){
-	
-//	int volHeight = volDepth;
 	
 	//allocate my pixls size of the resulting image
 	myPixels.allocate(volWidth, volDepth, OF_IMAGE_GRAYSCALE);
@@ -89,7 +87,7 @@ void volumeSlice::drawAxial(float x, float y, int zTexOffset){
 					int page = z*volWidth*volHeight;
 					
 					int i = x + line + page;					// the pointer position at Array
-					myPixels[x+(z*volWidth)] = myData[i];				// the pixel on the image
+					myPixels[x+(z*volWidth)] = myData[i];		// the pixel on the image
 				}
 			}
 		}

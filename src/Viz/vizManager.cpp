@@ -164,7 +164,7 @@ if (bDraw){
 	myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
 
 	// Draw lines
-	ofSetColor(150,0,0);
+	ofSetColor(150,150,150);
 	int	invCoronalS;
 	invCoronalS = ofMap(coronalS, 0, volWidth-1, volWidth-1, 0);
 
@@ -348,7 +348,9 @@ void vizManager::setup_GUI1()
 	
 	gui1 = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, length+xInit, 240);
 	
-//	gui1->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
+	
+	
+	gui1->addWidgetDown(new ofxUILabel("Volume Settings だめ", OFX_UI_FONT_MEDIUM));
 //	gui1->addSpacer( length-xInit, 2 );
 	gui1->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW);
 	gui1->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW);
