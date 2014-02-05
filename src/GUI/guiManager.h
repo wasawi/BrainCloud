@@ -32,9 +32,9 @@ public:
 		void guiEvent(ofxUIEventArgs &e);
 		void exit();
 	
-	//add Contents methods
-		void adjustContentstoGui(bool bsnap);
-		void addTwitterContent(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap);
+	//add contends methods
+		void adjustContendstoGui(bool bsnap);
+		void addTwitterContend(ofImage img, int dim, int WidgetW, std::string nameuser, string myText, bool _bsnap);
 	
 	//vector<tweet3d> getTweets(); 
 
@@ -45,28 +45,14 @@ public:
 		ofVec3f location3d;
 	
 	//TEST DATA TO LOAD
-		string myText;
-		ofImage *_img;
-		ofFilePath imgFile;
+	string myText;
+    ofImage *_img;
+    ofFilePath imgFile;
 
 	private:
 		ofxUIScrollableSliderCanvas *gui; //mine
 		bool bdrawPadding, bdrawGrid;
 		int gui_sizeHContent;
 		//vector<tweet3d> selectedTweets;
-	
-	bool	bDraw;
-	float	initX, initY;
-	float	dim;
-    float	length;
-	float	boxW;
-	float	boxH;
-	int		dist;
-	int		slider;
-	
-	float	CanvasW;
-	float	CanvasH;
-	float 	ScrollW;
-	float	WidgetW;
 };
 

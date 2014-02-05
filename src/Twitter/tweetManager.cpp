@@ -25,9 +25,7 @@ void tweetManager::draw(){
 
 //--------------------------------------------------------------
 void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {    
- 	cout << "cleanImgUsers size=" << a.size() << endl;
     a.clear(); 
-	cout << "cleanImgUsers Done size=" << a.size() << endl;
 }
 
 
@@ -41,7 +39,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 	float WidgetW = CanvasW -ScrollW - (xInit * 4);
 	bool bsnap = true;
 	
-	cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
+	if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
 	
 	//Clean imgUsers vector and ask again all images
 	cleanImgUsers(imgUsers);
@@ -49,17 +47,17 @@ void tweetManager::setAllQueryTwittersAtGui(){
 	
 	for(int i=0; i< twitterClient.getTotalLoadedTweets()-2; i++){
 		
-		cout << "Start tweet=" << i << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "Start tweet=" << i << endl;
 		
 		tweet = twitterClient.getTweetByIndex(i);
 		
-		cout << " default? " << tweet.user.default_profile << endl;
-		cout << " defaultname? " << tweet.user.default_profile_image << endl;
-		cout << " geo_enabled? " << tweet.user.geo_enabled << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " default? " << tweet.user.default_profile << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " defaultname? " << tweet.user.default_profile_image << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " geo_enabled? " << tweet.user.geo_enabled << endl;
 		
 		if ( /*tweet.user.geo_enabled*/ true ) {
 		
-			//Load Content	Tweets
+			//Load Contend	Tweets
 			//img = new ofImage();
 			//img->loadImage("images/bikers.jpg");
 			//string nameuser = tweet.user.screen_name;
@@ -71,45 +69,40 @@ void tweetManager::setAllQueryTwittersAtGui(){
 			string nameuser;
 			string myText;
 			
-			cout << "user start" << endl;
 			if ( sizeof(tweet.user.screen_name) ){
 				nameuser = tweet.user.screen_name;
 				validinfo1 = true;
 			}
-			cout << "user end= " << nameuser <<  endl;
-			cout << "myText start" << endl;
+
+			//TODO Japaneses chars origins string conflics somewhere
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText start" << endl;
 			
 			if ( sizeof(tweet.text) ){
 				myText = tweet.text;
 				validinfo2 = true;
 			}
-			cout << "myText end = " << myText << endl;
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText end = " << myText << endl;
 			
 			if(tweet.isProfileImageLoaded()) {
-				
-				//TODO That way to destroy Img and create againg could be slower, try to reserve fisrt some locations
-				//cout << "Image uSer pointer[" << i << "]" <<  &tweet.user.profile_image << endl;
-				//cout << "imgUsers[" << i << "]" <<  &(imgUsers[i])<< endl;
+
 				
 				imgUsers.push_back(ofImage());
 				imgUsers.back().clone(tweet.user.profile_image);
 				
 				if( validinfo1 && validinfo2 ){
-					
-					cout << "Go to Added Content" << endl;
-					guiManager::getInstance()->addTwitterContent(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
-					cout << "Added Content" << endl;
+					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
+
 				}
 			}
 	
-			cout << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
 			
 		}
 		
 		
 	}
 	
-	//guiManager::getInstance()->adjustContentstoGui(bsnap);
+	//guiManager::getInstance()->adjustContendstoGui(bsnap);
 	
 }
 

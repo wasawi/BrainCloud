@@ -34,14 +34,12 @@ guiManager::~guiManager()
 
 void guiManager::setup(){
 
-	float xInit		= OFX_UI_GLOBAL_WIDGET_SPACING;
-	float yInit		= 0;
-	initX			=	600;
-	initY			=	50;
+	float xInit		= 400;
+	float yInit		= 100;
     float CanvasW   = 300; // 550
     float CanvasH   = 200; // 400
 	
-	setGuiScrollingBar(initX, initY, CanvasW, CanvasH, false);
+	setGuiScrollingBar(xInit, yInit, CanvasW, CanvasH, false);
 	
 }
 //--------------------------------------------------------------
@@ -72,16 +70,17 @@ void guiManager::draw(){
 }
 //--------------------------------------------------------------
 
-void guiManager::setGuiScrollingBar(float initX, float initY, float CanvasW, float CanvasH, bool bsnap){
+void guiManager::setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap){
 	
 	// Canvas for Tweets
-	gui = new ofxUIScrollableSliderCanvas(initX, initY, CanvasW, CanvasH);
+	gui = new ofxUIScrollableSliderCanvas(xInit, yInit, CanvasW, CanvasH);
 
+	gui->setScrollArea(xInit, yInit, CanvasW, CanvasH);
+	//gui->setScrollAreaHeight(CanvasH);
 	
-	gui->setScrollAreaHeight(CanvasH);
 	gui->setScrollableDirections(false, true);
 	
-	//reserve space for contents
+	//reserve space for contends
 	gui->addWidgetLeft(new ofxUILabel("TITLE", "Tweets", OFX_UI_FONT_LARGE));	// Title
 	gui->addSpacer( CanvasW*0.5, 2 );
 	
@@ -89,67 +88,52 @@ void guiManager::setGuiScrollingBar(float initX, float initY, float CanvasW, flo
 	
 	ofAddListener(gui->newGUIEvent,this,&guiManager::guiEvent);
 	
-	adjustContentstoGui(bsnap);
+	adjustContendstoGui(bsnap);
 	
 }
 
-void guiManager::adjustContentstoGui(bool _bsnap){
+void guiManager::adjustContendstoGui(bool _bsnap){
 	
 	if(_bsnap){
-		gui->autoSizeToFitWidgets();//works*: only setting full window heigth
+		gui->autoSizeToFitWidgets(); 
 	}
 	else {
 		gui->setSnapping(_bsnap); //Auto damping levels only works for full size window
-		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending content inside // max , min
+		gui->updateScrollBarSize(gui->getScroll()->getWidgets(), 3000 , 500); // set new default size depending contend inside // max , min
 	}
 }
 
-void guiManager::addTwitterContent(ofImage img, int dim, int WidgetW, string nameuser, string myText, bool _bsnap){
+void guiManager::addTwitterContend(ofImage img, int dim, int WidgetW, string nameuser, std::string myText, bool _bsnap){
 	
-	//Load Content	Tweets
-	//ofImage _img;
-	//_img = new ofImage();
-    //_img.loadImage("images/bikers.jpg");
-    //myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
-	
-	//(float x, float y, float w, float h, ofImage *_image, string _name, bool _showLabel)
-	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0
+	gui->addWidgetDown( new ofxUIImage( 0, 10, dim, dim, img, "", false)); // ofxUIImage , 0 
 	
 	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, WidgetW - (WidgetW/2), 0, 0, -100, OFX_UI_FONT_MEDIUM ), OFX_UI_ALIGN_FREE, false);
+	
 	cout << "Added USER text" << endl;
-	gui->addTextArea("USER", nameuser, OFX_UI_FONT_SMALL);
+	gui->addTextArea("USER", nameuser, OFX_UI_FONT_MEDIUM);
+	//gui->addWidgetRight( new ofxUITextArea("USER", nameuser, OFX_UI_FONT_MEDIUM), OFX_UI_ALIGN_FREE, false);
 	cout << "Added USER text" << endl;
 	
-	/*
-	vector<string> lines = ofSplitString(myText, "\n");
-	for (int i=0; i<lines.size(); i++) {
-	 float textsizeH = lines[i].size()*0.4;
-	 float textsizeW = WidgetW - dim -10;
-		
-		cout << "textsizeH=" << textsizeH << endl;
-		cout << "textsizeW=" << textsizeW << endl;
-		gui->addWidgetDown( new ofxUITextArea("TEXT", lines[i], textsizeW, textsizeH , 0, 0, OFX_UI_FONT_SMALL ),OFX_UI_ALIGN_RIGHT, false);
-		
-		cout << "Added text line=" << i << endl;
-	}
-	*/
-	
-	float textsizeH = myText.size()*0.4;
+
 	float textsizeW = WidgetW - dim -10;
-	
-	/*
-	 myText = myText +"BLABLA"; 
-	 cout << "TEXT to add=" << myText << endl;
-	gui->addWidgetDown( new ofxUITextArea("TEXT", myText, textsizeH, textsizeW, 0, 0, OFX_UI_FONT_SMALL ),OFX_UI_ALIGN_RIGHT, false);
-	 */
+
+	float textsizeH = myText.size()*0.4;
+	cout << "textsizeW " << textsizeW << endl;
+	cout << "textsizeH " << textsizeH << endl;
 	
 	cout << "Go to Add TEXT text" << endl;
+	
+	//TODO this give error
+	//myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
+	//gui->addWidgetRight( new ofxUITextArea("TEXT", myText, OFX_UI_FONT_SMALL), OFX_UI_ALIGN_RIGHT, false);
+	
 	gui->addTextArea("TEXT", myText, OFX_UI_FONT_SMALL);
+	
 	cout << "Added TEXT text" << endl;
 	
 	gui->addSpacer( WidgetW, 2 );
 	
-	adjustContentstoGui(false);
+	adjustContendstoGui(false);
 }
 
 //--------------------------------------------------------------
