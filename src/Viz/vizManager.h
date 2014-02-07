@@ -8,6 +8,7 @@
 #include "ofUtils.h"
 
 
+
 class vizManager {
 	
 public:
@@ -17,24 +18,43 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void keyPressed  (int key);	
+	void initVolume();
+	void keyPressed  (int key);
 	
 	//UI to remove
 	void saveCameraPosition();
 	void loadCameraPosition();
 	void guiEvent(ofxUIEventArgs &e);
-	void setup_GUI1();
-	void setup_GUI2();
-	ofxUICanvas *gui1;
-	ofxUICanvas *gui2;
+	void setup_guiVolume();
+	void setup_guiSliders();
+	ofxUICanvas *guiVolume;
+	ofxUICanvas *guiSliders;
 	
 	//UI vars
 	float FBOq, Zq, thresh, density, dithering;
 	float lastClipPlaneDepth;
 	float clipPlaneDepth, azimuth, elevation;
+	
 	//Volume Slice
-	volumeSlice	sagittal, axial, coronal;
-	int sagittalS, axialS, coronalS;
+	volumeSlice	volume2D;
+	
+	//All Coordinates
+	int volWidth, volHeight, volDepth;		//volume dimensions in indices
+	int isliceX, isliceY, isliceZ;		//current slices in vol indices
+	float fsliceX, fsliceY, fsliceZ;		//current slices in floats (norm)
+	//	int coronal, sagittal, axial;			//int in 2dVolume
+	float coronalS, sagittalS, axialS;		//floats in slider
+	
+	/*
+	 Defined originally on the MNI 305 Template
+	 MNI Coordinates (0,0,0) is AC (maybe) 
+	 and simply x,y,z offsets from this.
+	 
+	 X (Right+ve,Left–ve)
+	 Y (Anterior+ve,Posterior–ve) 
+	 Z (Superior+ve,Inferior–ve)
+	*/
+	
 	
 	//XML settings
 	ofxXmlSettings XML;
@@ -52,7 +72,6 @@ public:
 	//Volume Rendering
     ofxVolumetrics myVolume;
     unsigned char * volumeData;
-    int volWidth, volHeight, volDepth;
     ofxImageSequencePlayer imageSequence;
     bool linearFilter;
 	ofFbo myfboRender;
@@ -63,4 +82,17 @@ public:
 private:
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
+	void updateCoordinates();
+	void updatePads();
+	void updateSliders();
+	
+	bool	bDraw;
+	float	initX, initY;
+	float	sliderW;
+    float	length;
+	float	boxW;
+	float	boxH;
+	int		dist;
+//	int		slider;
 };
+

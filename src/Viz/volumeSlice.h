@@ -17,11 +17,12 @@ public:
 	
 	volumeSlice();
     virtual ~volumeSlice();
-	void setup(unsigned char * data, int w, int h, int d, enum viewPoint);
-	void draw(float x, float y, int zTexOffset);
-	void drawSagital(float x, float y, int zTexOffset);
+	void setup(unsigned char * data, int w, int h, int d, float bW, float bH);
+	void draw(int zTexOffset, enum viewPoint vP);
+	void drawSagittal(float x, float y, int zTexOffset);
 	void drawAxial(float x, float y, int zTexOffset);
 	void drawCoronal(float x, float y, int zTexOffset);
+	
 	
 protected:
 private:
@@ -33,4 +34,17 @@ private:
 	int volWidth, volHeight, volDepth;
 	int renderWidth, renderHeight;
 	
+	int halfH;
+	int halfW;
+	int halfD;
+	
+	float boxW;
+	float boxH;
+
+	int axialS;
+	int sagittalS;
+	int coronalS;
+	
+	ofColor lineColor;
+
 };

@@ -7,6 +7,19 @@
 
 class guiManager {
 
+public:	
+	guiManager();
+	~guiManager();
+	
+	// variables & methods for singleton
+private:
+    static bool	instanceFlag;
+    static guiManager *single;	
+public: 
+	static guiManager* getInstance();
+	// end singleton
+	
+	
 	public:
 
 		void setup();
@@ -14,10 +27,14 @@ class guiManager {
 		void draw();
 		
 		void updateSlider();
-		void setGuiScrollingBar(string scrollBarname, float dim, float xInit, float yInit, float CanvasW, float CanvasH, float ScrollW, float WidgetW, bool bsnap);
+		void setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap);
 
 		void guiEvent(ofxUIEventArgs &e);
 		void exit();
+	
+	//add contends methods
+		void adjustContendstoGui(bool bsnap);
+		void addTwitterContend(ofImage img, int dim, int WidgetW, std::string nameuser, string myText, bool _bsnap);
 	
 	//vector<tweet3d> getTweets(); 
 
@@ -29,7 +46,7 @@ class guiManager {
 	
 	//TEST DATA TO LOAD
 	string myText;
-    ofImage *img;
+    ofImage *_img;
     ofFilePath imgFile;
 
 	private:

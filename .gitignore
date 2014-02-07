@@ -9,6 +9,7 @@
 #XCode 4
 xcuserdata
 *.xcworkspace
+*.xcscheme
 
 #Code::Blocks
 *.depend
@@ -60,6 +61,7 @@ Desktop.ini
 *.tar
 *.zip
 
+
 ################
 
 libs/
@@ -107,11 +109,12 @@ Release*/
 *.pyc
 .svn/
 
-
-
 *~.xml
 
 #These are my own commands
 bin/data/logs
 bin/data/postTweet.json
 bin/data/getTweet.json
+bin/data/cache.json
+.xcodeproj
+/NeuroTwitter.xcodeproj/project.pbxproj

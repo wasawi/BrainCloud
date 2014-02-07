@@ -4,11 +4,7 @@
 #include "ofxTwitter.h"
 #include "ofxXmlSettings.h"
 #include "ofxTwitter3d.h"
-
-
-#include "ofxExampleTwitterClient.h"
-#include "ofxJSONElement.h"
-
+#include "guiManager.h"
 
 class tweetManager {
 	
@@ -17,10 +13,17 @@ class tweetManager {
 		void setup(string xmlfilename);
 		void update();
 		void draw();
+	
 	void keyReleased(int key);
 		
-	void drawQueryTwitters();
 	void setupTwitter();
+
+	void drawQueryTwitters();
+	
+	void setAllQueryTwittersAtGui();
+	
+	void cleanImgUsers( std::vector <ofImage> & a );
+
 		
 	//query eaxmple
 		ofxTwitter twitterClient;
@@ -28,6 +31,7 @@ class tweetManager {
 		int actualTweet;
 		bool reloadTweet;		
 		ofImage userImage;
+		vector<ofImage> imgUsers;
 	
 	private:
 	
@@ -36,7 +40,5 @@ class tweetManager {
 		vector<tweet3d> selectedTweets;
 		
 		ofxXmlSettings xmltwitter;
-		
-
 
 };

@@ -3,20 +3,110 @@
 //--------------------------------------------------------------
 void tweetManager::setup(string xmlfilename){
 
-	//myTwitterManager.setup();
 	setupTwitter();
+	//set all twitter users in one
+	twitterClient.startQuery("@evabelmonte"); // // BrainNetViz // cat
+
 	//postTweet();
 }
+
+
 //--------------------------------------------------------------
 void tweetManager::update(){
 	
 }
+
 //--------------------------------------------------------------
 void tweetManager::draw(){
 	
 	drawQueryTwitters();
+}
+
+
+//--------------------------------------------------------------
+void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {    
+    a.clear(); 
+}
+
+
+//--------------------------------------------------------------
+void tweetManager::setAllQueryTwittersAtGui(){
+	
+	float dim = 50;
+	float xInit		= 4;
+	float CanvasW   = 550;
+	float ScrollW	= 40;
+	float WidgetW = CanvasW -ScrollW - (xInit * 4);
+	bool bsnap = true;
+	
+	if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
+	
+	//Clean imgUsers vector and ask again all images
+	cleanImgUsers(imgUsers);
+
+	
+	for(int i=0; i< twitterClient.getTotalLoadedTweets()-2; i++){
+		
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "Start tweet=" << i << endl;
+		
+		tweet = twitterClient.getTweetByIndex(i);
+		
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " default? " << tweet.user.default_profile << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " defaultname? " << tweet.user.default_profile_image << endl;
+		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " geo_enabled? " << tweet.user.geo_enabled << endl;
+		
+		if ( /*tweet.user.geo_enabled*/ true ) {
+		
+			//Load Contend	Tweets
+			//img = new ofImage();
+			//img->loadImage("images/bikers.jpg");
+			//string nameuser = tweet.user.screen_name;
+			//string myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
+			
+			bool validinfo1 = false;
+			bool validinfo2 = false;
+			
+			string nameuser;
+			string myText;
+			
+			if ( sizeof(tweet.user.screen_name) ){
+				nameuser = tweet.user.screen_name;
+				validinfo1 = true;
+			}
+
+			//TODO Japaneses chars origins string conflics somewhere
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText start" << endl;
+			
+			if ( sizeof(tweet.text) ){
+				myText = tweet.text;
+				validinfo2 = true;
+			}
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText end = " << myText << endl;
+			
+			if(tweet.isProfileImageLoaded()) {
+
+				
+				imgUsers.push_back(ofImage());
+				imgUsers.back().clone(tweet.user.profile_image);
+				
+				if( validinfo1 && validinfo2 ){
+					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
+
+				}
+			}
+	
+			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
+			
+		}
+		
+		
+	}
+	
+	//guiManager::getInstance()->adjustContendstoGui(bsnap);
 	
 }
+
+
 
 //--------------------------------------------------------------
 void tweetManager::drawQueryTwitters(){
@@ -56,6 +146,7 @@ void tweetManager::drawQueryTwitters(){
         ofSetColor(255, 255, 255);
         if(tweet.isProfileImageLoaded()) {
             tweet.user.profile_image.draw(40, 150);
+			//cout << "Image uSer pointer" <<  &tweet.user.profile_image << endl;
         }
         
         ofSetColor(0);
@@ -81,8 +172,8 @@ void tweetManager::setupTwitter(){
     twitterClient.setDiskCache(true);
     twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
     
-    string const CONSUMER_KEY = "pHA27PLNeoFD1R3093jEQ";
-    string const CONSUMER_SECRET = "78025mOujCNB3aAk04TwCd6hRFvtB1gPO42DEWYYs";
+    string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
+    string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
     
     twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
 	
@@ -93,7 +184,8 @@ void tweetManager::setupTwitter(){
 void tweetManager::keyReleased(int key){
     
     if(key == 'q') {
-        twitterClient.startQuery("cat");
+       // twitterClient.startQuery("cat");
+		setAllQueryTwittersAtGui();
     }
     
     if(key == 'l') {
