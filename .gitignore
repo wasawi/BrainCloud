@@ -61,6 +61,7 @@ Desktop.ini
 *.tar
 *.zip
 
+
 ################
 
 libs/
@@ -114,3 +115,6 @@ Release*/
 bin/data/logs
 bin/data/postTweet.json
 bin/data/getTweet.json
+bin/data/cache.json
+.xcodeproj
+/NeuroTwitter.xcodeproj/project.pbxproj

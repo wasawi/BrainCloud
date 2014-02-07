@@ -1,20 +1,38 @@
 <Widget>
     <Kind>5</Kind>
-    <Name>axialS</Name>
-    <Value>20.000000000</Value>
+    <Name>fsliceY</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>11</Kind>
+    <Name>coronalPad</Name>
+    <XValue>-23.000001907</XValue>
+    <YValue>23.000001907</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
-    <Name>sagittalS</Name>
-    <Value>20.000001907</Value>
+    <Name>fsliceX</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>11</Kind>
+    <Name>sagittalPad</Name>
+    <XValue>-23.000001907</XValue>
+    <YValue>31.000000000</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
-    <Name>coronalS</Name>
-    <Value>20.000000000</Value>
+    <Name>fsliceZ</Name>
+    <Value>0.000000000</Value>
+</Widget>
+<Widget>
+    <Kind>11</Kind>
+    <Name>axialPad</Name>
+    <XValue>17.999994278</XValue>
+    <YValue>2.999997139</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
     <Name>latitude</Name>
-    <Value>-6.659999847</Value>
+    <Value>0.000000000</Value>
 </Widget>
