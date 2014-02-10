@@ -11,8 +11,11 @@ void ofApp::setup()
 	ofSetFrameRate(30);
 	
 	ofBackground(100);
-
-	myTwitterManager.setup("hellocat");
+	
+	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
+	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
+	tweetManager::getInstance()->setup(CONSUMER_KEY, CONSUMER_SECRET);
+//	myTwitterManager.setup("hellocat");
 	guiManager::getInstance()->setup();
 	//	myGuiManager.setup();
 	myVizManager.setup();

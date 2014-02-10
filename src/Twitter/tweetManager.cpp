@@ -1,15 +1,29 @@
 #include "tweetManager.h"
 
-//--------------------------------------------------------------
-void tweetManager::setup(string xmlfilename){
 
-	setupTwitter();
-	//set all twitter users in one
-//	twitterClient.startQuery("Premios Goya"); // // BrainNetViz // cat //"だめ"
+// SINGLETON initalizations
+bool tweetManager::instanceFlag = false;
+tweetManager* tweetManager::single = NULL;
 
-	//postTweet();
+//----------------------------------------------
+
+tweetManager* tweetManager::getInstance(){
+    if(! instanceFlag){
+        single = new tweetManager();
+        instanceFlag = true;
+        return single;
+    }else{
+        return single;
+    }
 }
 
+//----------------------------------------------
+tweetManager::tweetManager()
+{
+}
+//----------------------------------------------
+tweetManager::~tweetManager(){
+}
 
 //--------------------------------------------------------------
 void tweetManager::update(){
@@ -163,13 +177,13 @@ void tweetManager::drawQueryTwitters(){
 }
 
 //--------------------------------------------------------------
-void tweetManager::setupTwitter(){
+void tweetManager::setup(string CONSUMER_KEY, string CONSUMER_SECRET){
 	
     twitterClient.setDiskCache(true);
     twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
     
-    string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
-    string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
+//    string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
+//    string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
     
     twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
 	

@@ -18,19 +18,17 @@ public:
 	volumeSlice();
     virtual ~volumeSlice();
 	void setup(unsigned char * data, int w, int h, int d, float bW, float bH);
-	void draw(int zTexOffset, enum viewPoint vP);
+	void draw(int zTexOffset, viewPoint vP);
 	void drawSagittal(float x, float y, int zTexOffset);
 	void drawAxial(float x, float y, int zTexOffset);
 	void drawCoronal(float x, float y, int zTexOffset);
-	
-	
 protected:
 private:
 	
 	unsigned char * myData;
 	ofImage myImage;
 	ofPixels myPixels;
-	viewPoint viewPoint;
+	viewPoint myViewPoint;
 	int volWidth, volHeight, volDepth;
 	int renderWidth, renderHeight;
 	
