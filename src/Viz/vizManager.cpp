@@ -28,29 +28,37 @@ void vizManager::setup(){
 	fsliceX = volWidth /2;
 	fsliceZ = volDepth /2;
 	
+	//camera
+	loadCameraPosition();
+	bcameraMode = true;
+	cam.disableMouseInput();
+//	cam.setFov(90.);
+	//	cam.disableMouseInput();
+
 	//Volume
 	initVolume();
 	
 	//GUI
+/*	guiVolume->setFont("Arial Unicode.ttf");
+    guiVolume->setFontSize(OFX_UI_FONT_LARGE, 14);
+    guiVolume->setFontSize(OFX_UI_FONT_MEDIUM, 10);
+    guiVolume->setFontSize(OFX_UI_FONT_SMALL, 8);
+*/
 	setup_guiVolume();
 	guiVolume->loadSettings("GUI/viz_settings.xml");
 	guiVolume->setDrawBack(true);
-	//	guiVolume->setVisible(false);
+	guiVolume->setVisible(false);
+	
 	//3d Views
 	bDraw = true;
 	setup_guiSliders();
 	guiSliders->loadSettings("GUI/viz_settings_2.xml");
 	guiSliders->setDrawBack(false);
 	//	guiSliders->setAutoDraw(true);
-//	guiSliders->setVisible(false);
 }
 
 //--------------------------------------------------------------
 void vizManager::initVolume(){
-	//camera
-	loadCameraPosition();
-	bcameraMode = true;
-	cam.disableMouseInput();
 	
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
 	
@@ -158,28 +166,28 @@ if (bDraw){
 void vizManager::setup_guiVolume()
 {
 	float sliderW = 10;
-	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING;
-    float length = 255-xInit;
+	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING + OFX_UI_GLOBAL_PADDING;
+    float length = boxW*2+dist*3;
 	
-	guiVolume = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, length+xInit, 240);
-	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings だめ", OFX_UI_FONT_MEDIUM));
+	guiVolume = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, boxW*2+(dist*3)+(sliderW*2), 200);
+//	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
 	//	guiVolume->addSpacer( length-xInit, 2 );
-	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW);
-	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW);
-	guiVolume->addSlider("Threshold", 0.0, 1.0, thresh, length-xInit, sliderW);
-	guiVolume->addSlider("Density", 0.0, 1.0, density, length-xInit, sliderW);
-	guiVolume->addSlider("Dithering", 0.0, 1.0, dithering, length-xInit, sliderW);
-	guiVolume->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, sliderW);
-	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, sliderW);
-	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, sliderW);
+	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Threshold", 0.0, 1.0, thresh, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Density", 0.0, 1.0, density, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Dithering", 0.0, 1.0, dithering, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, sliderW)->setDrawBack(true);
+	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, sliderW)->setDrawBack(true);
 	//	guiVolume->addWidgetDown(new ofxUIToggle( sliderW, sliderW, false, "linearFilter"));
+	guiVolume -> autoSizeToFitWidgets();
 	ofAddListener(guiVolume->newGUIEvent,this,&vizManager::guiEvent);
 }
 
 //--------------------------------------------------------------
 void vizManager::setup_guiSliders()
 {
-	
 	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*2+dist*3);
 	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
 
@@ -395,12 +403,7 @@ void vizManager::keyPressed(int key ){
 			break;
 		case 'h':
             guiVolume->toggleVisible();
-			guiSliders->toggleVisible();
-			if (bDraw){
-				bDraw=false;
-			}else{
-				bDraw=true;
-			}
+//			guiSliders->toggleVisible();
 			break;
 		case OF_KEY_UP:
 			if(bcameraMode)cam.getTarget().boom(-5);

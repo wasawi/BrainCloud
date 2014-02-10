@@ -7,21 +7,17 @@
 #include "guiManager.h"
 
 class tweetManager {
-	
-	public:
+public:
 
-		void setup(string xmlfilename);
-		void update();
-		void draw();
-	
+	void setup(string xmlfilename);
+	void update();
+	void draw();
 	void keyReleased(int key);
-		
+	
+	void searchQuery(string s);
 	void setupTwitter();
-
 	void drawQueryTwitters();
-	
 	void setAllQueryTwittersAtGui();
-	
 	void cleanImgUsers( std::vector <ofImage> & a );
 
 		
@@ -41,4 +37,8 @@ class tweetManager {
 		
 		ofxXmlSettings xmltwitter;
 
+	string screen_name;
+	string myText;
+	string name;
+	
 };

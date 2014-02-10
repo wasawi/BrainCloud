@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-
+#include "tweetManager.h"
 #include "ofxTwitter.h"
 #include "ofxUI.h"
 
@@ -15,10 +15,10 @@ public:
 private:
     static bool	instanceFlag;
     static guiManager *single;	
-public: 
+
+public:
 	static guiManager* getInstance();
 	// end singleton
-	
 	
 	public:
 
@@ -27,14 +27,16 @@ public:
 		void draw();
 		
 		void updateSlider();
-		void setGuiScrollingBar(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap);
+		void setupScrollCanvas(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap);
+		void setupTextInput(float canvasX, float textInputY, float CanvasW, float CanvasH);
+		void scrollCanvasEvent(ofxUIEventArgs &e);
+		void textInputEvent(ofxUIEventArgs &e);
 
-		void guiEvent(ofxUIEventArgs &e);
 		void exit();
 	
-	//add contends methods
-		void adjustContendstoGui(bool bsnap);
-		void addTwitterContend(ofImage img, int dim, int WidgetW, std::string nameuser, string myText, bool _bsnap);
+	//add contents methods
+		void adjustContentstoGui(bool bsnap);
+		void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
 	
 	//vector<tweet3d> getTweets(); 
 
@@ -50,9 +52,16 @@ public:
     ofFilePath imgFile;
 
 	private:
-		ofxUIScrollableSliderCanvas *gui; //mine
-		bool bdrawPadding, bdrawGrid;
-		int gui_sizeHContent;
-		//vector<tweet3d> selectedTweets;
+	
+	ofxUICanvas *textInputCanvas;
+	ofxUIScrollableSliderCanvas *scrollCanvas;
+	bool bdrawPadding, bdrawGrid;
+	int gui_sizeHContent;
+	//vector<tweet3d> selectedTweets;
+	
+	float dim;
+	float WidgetW;
+	float sliderW;
+	
 };
 
