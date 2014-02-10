@@ -5,7 +5,7 @@ volumeSlice::volumeSlice()
     volWidth = 0;
     volHeight = 0;
     volDepth = 0;
-	viewPoint = SAGITTAL;
+	myViewPoint = SAGITTAL;
 	
 	lineColor.set(150,150,150);
 }
@@ -25,9 +25,9 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	
 }
 //--------------------------------------------------------------
-void volumeSlice::draw(int zTexOffset, enum viewPoint vP){
+void volumeSlice::draw(int zTexOffset, viewPoint vP){
 
-	viewPoint	= vP;
+	myViewPoint	= vP;
 
 	// needed to align the volume at the center of the box
 	// Attention! this is not correct..
@@ -44,15 +44,15 @@ void volumeSlice::draw(int zTexOffset, enum viewPoint vP){
 	
 	// Draw Volume2D
 	ofSetColor(255);
-	if(viewPoint==CORONAL){
+	if(myViewPoint==CORONAL){
 		coronalS = zTexOffset;
 		drawCoronal(halfW, halfD, zTexOffset);
 		
-	}else if(viewPoint==SAGITTAL){
+	}else if(myViewPoint==SAGITTAL){
 		sagittalS = zTexOffset;
 		drawSagittal(halfH, halfD, zTexOffset);
 
-	}else if (viewPoint==AXIAL){
+	}else if (myViewPoint==AXIAL){
 		axialS = zTexOffset;
 		drawAxial(halfD, halfH, zTexOffset);
 	}

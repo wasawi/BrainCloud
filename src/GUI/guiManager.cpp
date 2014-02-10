@@ -74,7 +74,7 @@ void guiManager::setupTextInput(float canvasX, float textInputY, float CanvasW, 
 	
 	textInputCanvas = new ofxUICanvas(canvasX, textInputY, CanvasW, CanvasH);
 	//	string _name, string _textstring, float w, float h, float x, float y, int _size) :
-	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT","Search here", CanvasW, CanvasH, 0, 0, OFX_UI_FONT_LARGE));
+	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT","", CanvasW, CanvasH, 0, 0, OFX_UI_FONT_LARGE));
 	
 	ofAddListener(textInputCanvas->newGUIEvent,this,&guiManager::textInputEvent);
 }
@@ -175,11 +175,11 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
 			cout << "ON ENTER: ";
 //			ofUnregisterKeyEvents((ofApp*)this);
-//			tweetManager::searchQuery(textinput->getTextString());
+			tweetManager::getInstance()->searchQuery(textinput->getTextString());
 		}
 		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
 			cout << "ON FOCUS: ";
-			textinput->setTextString("_");
+			textinput->setTextString("");
 		}
 		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){
 			cout << "ON BLUR: ";
@@ -187,7 +187,6 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 		}
 		 if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD){
 			cout << "ON LOAD: ";
-			
 		}
 		string output = textinput->getTextString();
 		cout << output << endl;

@@ -75,7 +75,7 @@ void vizManager::initVolume(){
 	//	int volWidth	= volWidth;
 	//	int volHeight	= volHeight;
 	
-    cout << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth <<"\n";
+	ofLogNotice("Volume") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
 	//fill out the added pixel in 0
@@ -252,49 +252,49 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	
 	if(name == "FBO quality"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "FBO quality " << slider->getScaledValue() << endl;
+		ofLogNotice() << "FBO quality " << slider->getScaledValue();
 		FBOq = slider->getScaledValue();
 		myVolume.setXyQuality(FBOq);
 	}
 	else if(name == "Z quality"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Z quality " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Z quality " << slider->getScaledValue();
 		Zq = slider->getScaledValue();
 		myVolume.setZQuality(Zq);
 	}
 	else if(name == "Threshold"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Threshold " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Threshold " << slider->getScaledValue();
 		thresh = slider->getScaledValue();
 		myVolume.setThreshold(thresh);
 	}
 	else if(name == "Density"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Density " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Density " << slider->getScaledValue();
 		density = slider->getScaledValue();
 		myVolume.setDensity(density);
 	}
 	else if(name == "Dithering"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Dithering " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Dithering " << slider->getScaledValue();
 		dithering = slider->getScaledValue();
 		myVolume.setDithering(dithering);
 	}
 	else if(name == "Clip depth"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Cut Plane Depth " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Cut Plane Depth " << slider->getScaledValue();
 		clipPlaneDepth = slider->getScaledValue();
 		myVolume.setClipDepth(clipPlaneDepth);
 	}
 	else if(name == "Elevation clip angle"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Elevation " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Elevation " << slider->getScaledValue();
 		elevation = slider->getValue();
 		myVolume.setElevation(elevation);
 	}
 	else if(name == "Azimuth clip angle"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		cout << "Azimuth " << slider->getScaledValue() << endl;
+		ofLogNotice() << "Azimuth " << slider->getScaledValue();
 		azimuth = slider->getValue();
 		myVolume.setAzimuth(azimuth);
 	}
@@ -310,7 +310,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	else if(name == "fsliceY"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		fsliceY = floor(slider->getScaledValue());
-		cout <<	"fsliceY " << fsliceY<< endl;
+		ofLogNotice() <<	"fsliceY " << fsliceY;
 		updateCoordinates();
 		updateSliders();
 		updatePads();
@@ -319,7 +319,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	else if(name == "fsliceX"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		fsliceX = floor(slider->getScaledValue());
-		cout <<	"fsliceX " << fsliceX<< endl;
+		ofLogNotice() <<	"fsliceX " << fsliceX;
 		updateCoordinates();
 		updateSliders();
 		updatePads();
@@ -327,7 +327,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	else if(name == "fsliceZ"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		fsliceZ = floor(slider->getScaledValue());
-		cout <<	"fsliceZ " << fsliceZ<< endl;
+		ofLogNotice() <<	"fsliceZ " << fsliceZ;
 		updateCoordinates();
 		updateSliders();
 		updatePads();
@@ -339,8 +339,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		// get values
 		fsliceX = pad->getScaledValue().x;
 		fsliceZ = pad->getScaledValue().y;
-		cout <<	"coronalPad.x =  " << fsliceX<< endl;
-		cout <<	"coronalPad.y =  " << fsliceZ<< endl;
+		ofLogNotice() <<	"coronalPad.x =  " << fsliceX;
+		ofLogNotice() <<	"coronalPad.y =  " << fsliceZ;
 		updateCoordinates();
 		updateSliders();
 		updatePads();

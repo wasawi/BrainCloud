@@ -7,9 +7,18 @@
 #include "guiManager.h"
 
 class tweetManager {
+	
+private:
+    static bool	instanceFlag;
+    static tweetManager *single;
+	
 public:
+	tweetManager();
+	~tweetManager();
+	
+	static tweetManager* getInstance();
 
-	void setup(string xmlfilename);
+	void setup(	string CONSUMER_KEY, string CONSUMER_SECRET);
 	void update();
 	void draw();
 	void keyReleased(int key);
@@ -29,7 +38,7 @@ public:
 		ofImage userImage;
 		vector<ofImage> imgUsers;
 	
-	private:
+private:
 	
 		ofxTwitter3d mytwitter3d;
 		vector<tweet3d> alltweets;
