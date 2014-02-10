@@ -47,21 +47,21 @@ public:
 		ofVec3f location3d;
 	
 	//TEST DATA TO LOAD
-	string myText;
-    ofImage *_img;
-    ofFilePath imgFile;
+		string myText;
+		ofImage *_img;
+		ofFilePath imgFile;
 
 	private:
 	
-	ofxUICanvas *textInputCanvas;
-	ofxUIScrollableSliderCanvas *scrollCanvas;
-	bool bdrawPadding, bdrawGrid;
-	int gui_sizeHContent;
-	//vector<tweet3d> selectedTweets;
-	
-	float dim;
-	float WidgetW;
-	float sliderW;
+		ofxUICanvas *textInputCanvas;
+		ofxUIScrollableSliderCanvas *scrollCanvas;
+		bool bdrawPadding, bdrawGrid;
+		int gui_sizeHContent;
+		//vector<tweet3d> selectedTweets;
+		
+		float dim;
+		float WidgetW;
+		float sliderW;
 	
 };
 

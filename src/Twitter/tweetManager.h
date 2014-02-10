@@ -8,15 +8,18 @@
 
 class tweetManager {
 	
+	// variables & methods for singleton
 private:
     static bool	instanceFlag;
-    static tweetManager *single;
+    static tweetManager *single;	
+	
+public:
+	static tweetManager* getInstance();
+	// end singleton
 	
 public:
 	tweetManager();
 	~tweetManager();
-	
-	static tweetManager* getInstance();
 
 	void setup(	string CONSUMER_KEY, string CONSUMER_SECRET);
 	void update();

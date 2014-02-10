@@ -25,8 +25,8 @@ class ofApp : public ofBaseApp
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 	
-	tweetManager	myTwitterManager;
-	guiManager		myGUIManager;
+	//tweetManager	myTwitterManager;
+	//guiManager		myGUIManager;
 	vizManager		myVizManager;
 	
 	bool	drawFill;

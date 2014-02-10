@@ -15,7 +15,8 @@ void ofApp::setup()
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
 	tweetManager::getInstance()->setup(CONSUMER_KEY, CONSUMER_SECRET);
-//	myTwitterManager.setup("hellocat");
+	
+	//myTwitterManager.setup();
 	guiManager::getInstance()->setup();
 	//	myGuiManager.setup();
 	myVizManager.setup();
@@ -24,8 +25,6 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	myTwitterManager.update();
-//	myGuiManager.update();
 	myVizManager.update();
 }
 
@@ -34,7 +33,7 @@ void ofApp::draw()
 {	
 
 	guiManager::getInstance()->draw();
-	myTwitterManager.draw();
+	//tweetManager::getInstance()->myTwitterManager.draw();
 	myVizManager.draw();
 	
 }
@@ -58,7 +57,7 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-    myTwitterManager.keyReleased(key);
+    tweetManager::getInstance()->keyReleased(key);
 }
 
 //--------------------------------------------------------------
