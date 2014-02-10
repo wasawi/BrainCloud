@@ -1,12 +1,12 @@
 <Widget>
     <Kind>4</Kind>
     <Name>FBO quality</Name>
-    <Value>0.639676094</Value>
+    <Value>0.648230076</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
     <Name>Z quality</Name>
-    <Value>1.036437273</Value>
+    <Value>2.000000000</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -16,7 +16,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Density</Name>
-    <Value>0.647773266</Value>
+    <Value>0.887168169</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>
@@ -26,7 +26,7 @@
 <Widget>
     <Kind>4</Kind>
     <Name>Clip depth</Name>
-    <Value>0.587044477</Value>
+    <Value>0.092920303</Value>
 </Widget>
 <Widget>
     <Kind>4</Kind>

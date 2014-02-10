@@ -5,7 +5,7 @@ void tweetManager::setup(string xmlfilename){
 
 	setupTwitter();
 	//set all twitter users in one
-	twitterClient.startQuery("@evabelmonte"); // // BrainNetViz // cat
+//	twitterClient.startQuery("Premios Goya"); // // BrainNetViz // cat //"だめ"
 
 	//postTweet();
 }
@@ -22,12 +22,15 @@ void tweetManager::draw(){
 	drawQueryTwitters();
 }
 
+//--------------------------------------------------------------
+void tweetManager::searchQuery(string s) {
+	twitterClient.startQuery(s);
+}
 
 //--------------------------------------------------------------
 void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {    
     a.clear(); 
 }
-
 
 //--------------------------------------------------------------
 void tweetManager::setAllQueryTwittersAtGui(){
@@ -47,17 +50,16 @@ void tweetManager::setAllQueryTwittersAtGui(){
 	
 	for(int i=0; i< twitterClient.getTotalLoadedTweets()-2; i++){
 		
-		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "Start tweet=" << i << endl;
-		
+		ofLogVerbose("tweetManager ") << "Start tweet ************************************************";
 		tweet = twitterClient.getTweetByIndex(i);
 		
-		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " default? " << tweet.user.default_profile << endl;
-		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " defaultname? " << tweet.user.default_profile_image << endl;
-		if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << " geo_enabled? " << tweet.user.geo_enabled << endl;
+//		ofLogVerbose("tweetManager ") << "default? " << tweet.user.default_profile << endl;
+//		ofLogVerbose("tweetManager ") << "defaultname? " << tweet.user.default_profile_image << endl;
+//		ofLogVerbose("tweetManager ") << "geo_enabled? " << tweet.user.geo_enabled << endl;
 		
 		if ( /*tweet.user.geo_enabled*/ true ) {
 		
-			//Load Contend	Tweets
+			//Load Content	Tweets
 			//img = new ofImage();
 			//img->loadImage("images/bikers.jpg");
 			//string nameuser = tweet.user.screen_name;
@@ -66,44 +68,36 @@ void tweetManager::setAllQueryTwittersAtGui(){
 			bool validinfo1 = false;
 			bool validinfo2 = false;
 			
-			string nameuser;
-			string myText;
+			string screen_name;
+			string tweetText;
 			
 			if ( sizeof(tweet.user.screen_name) ){
-				nameuser = tweet.user.screen_name;
+				screen_name = tweet.user.screen_name;
 				validinfo1 = true;
 			}
 
-			//TODO Japaneses chars origins string conflics somewhere
-			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText start" << endl;
-			
 			if ( sizeof(tweet.text) ){
-				myText = tweet.text;
+				tweetText = tweet.text;
 				validinfo2 = true;
 			}
-			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "add myText end = " << myText << endl;
+			ofLogVerbose("tweetManager ") << "tweetText = " << tweetText;
 			
 			if(tweet.isProfileImageLoaded()) {
-
 				
 				imgUsers.push_back(ofImage());
 				imgUsers.back().clone(tweet.user.profile_image);
-				
 				if( validinfo1 && validinfo2 ){
-					guiManager::getInstance()->addTwitterContend(imgUsers.back(), dim, WidgetW, nameuser, myText, bsnap);
-
+					guiManager::getInstance()->addTwitterContent(imgUsers.back(),
+																 tweet.user.name,
+																 tweet.user.screen_name,
+																 tweet.text);
 				}
 			}
 	
-			if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
+			ofLogVerbose("tweetManager ") << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
 			
 		}
-		
-		
 	}
-	
-	//guiManager::getInstance()->adjustContendstoGui(bsnap);
-	
 }
 
 
@@ -111,7 +105,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 //--------------------------------------------------------------
 void tweetManager::drawQueryTwitters(){
 	// Print tweets:
-    
+    /*
     int maxLineSize = 90;
     
     if(twitterClient.getTotalLoadedTweets() > 0) {
@@ -163,6 +157,8 @@ void tweetManager::drawQueryTwitters(){
     info += "\nPress UP/DOWN to navigate tweets";
     ofDrawBitmapString(info, ofVec2f(20,20));
     
+	*/
+	
     twitterClient.printDebugInfo();
 }
 
@@ -184,10 +180,9 @@ void tweetManager::setupTwitter(){
 void tweetManager::keyReleased(int key){
     
     if(key == 'q') {
-       // twitterClient.startQuery("cat");
 		setAllQueryTwittersAtGui();
     }
-    
+/*
     if(key == 'l') {
         twitterClient.loadCacheFile();
     }
@@ -199,6 +194,6 @@ void tweetManager::keyReleased(int key){
     if(key == OF_KEY_DOWN) {
         if(actualTweet > 0) actualTweet -= 1;
     }
-    
+  */  
 }
 

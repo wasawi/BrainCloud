@@ -40,9 +40,9 @@ public:
 	
 	//All Coordinates
 	int volWidth, volHeight, volDepth;		//volume dimensions in indices
-	int isliceX, isliceY, isliceZ;		//current slices in vol indices
+	int isliceX, isliceY, isliceZ;			//current slices in vol indices
 	float fsliceX, fsliceY, fsliceZ;		//current slices in floats (norm)
-	//	int coronal, sagittal, axial;			//int in 2dVolume
+	//	int coronal, sagittal, axial;		//int in 2dVolume
 	float coronalS, sagittalS, axialS;		//floats in slider
 	
 	/*

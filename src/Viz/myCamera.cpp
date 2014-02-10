@@ -17,7 +17,7 @@ myCamera::myCamera(){
 	sensitivityRot = 1.0f;//when 1 moving the mouse from one side to the other of the arcball (min(viewport.width, viewport.height)) will rotate 180degrees. when .5, 90 degrees.
 	sensitivityXY = .5;
 	sensitivityZ= .7;
-	
+	fov= 110;
 	bDistanceSet = false;
 	bMouseInputEnabled = false;
 	bDoRotate = false;
