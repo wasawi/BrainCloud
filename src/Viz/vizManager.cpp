@@ -352,8 +352,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		// get values
 		fsliceY = pad->getScaledValue().x;
 		fsliceZ = pad->getScaledValue().y;
-		cout <<	"SagittalPad.x = " << fsliceY<< endl;
-		cout <<	"SagittalPad.y = " << fsliceZ<< endl;
+		ofLogNotice() <<	"SagittalPad.x = " << fsliceY;
+		ofLogNotice() <<	"SagittalPad.y = " << fsliceZ;
 		updateCoordinates();
 		updateSliders();
 		updatePads();
@@ -365,8 +365,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		// get values
 		fsliceX = pad->getScaledValue().x;
 		fsliceY = pad->getScaledValue().y;
-		cout <<	"axialPad.x = " << fsliceX<< endl;
-		cout <<	"axialPad.y = " << fsliceY<< endl;
+		ofLogNotice() <<	"axialPad.x = " << fsliceX;
+		ofLogNotice() <<	"axialPad.y = " << fsliceY;
 		updateCoordinates();
 		updateSliders();
 		updatePads();
@@ -375,7 +375,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	else if(name == "latitude"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		latitude = floor(slider->getScaledValue());
-		cout <<	"latitude " << latitude<< endl;
+		ofLogNotice() <<	"latitude " << latitude;
 	}
 }
 
@@ -451,9 +451,9 @@ void vizManager::updateCoordinates(){
 	isliceZ		= floor (ofMap(fsliceZ,		-boxW/2, boxW/2, -halfD, volDepth-1 + halfD));
 	isliceZ		= ofClamp(isliceZ,0, volDepth-1);
 	
-	cout <<	"isliceX " << isliceX<< endl;
-	cout <<	"isliceY " << isliceY<< endl;
-	cout <<	"isliceZ " << isliceZ<< endl;
+//	cout <<	"isliceX " << isliceX<< endl;
+//	cout <<	"isliceY " << isliceY<< endl;
+//	cout <<	"isliceZ " << isliceZ<< endl;
 }
 
 //--------------------------------------------------------------
