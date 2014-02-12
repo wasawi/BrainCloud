@@ -39,7 +39,6 @@ public:
 		vector<ofImage> imgUsers;
 	
 private:
-	
 		ofxTwitter3d mytwitter3d;
 		vector<tweet3d> alltweets;
 		vector<tweet3d> selectedTweets;

@@ -1,6 +1,5 @@
 #include "tweetManager.h"
 
-
 // SINGLETON initalizations
 bool tweetManager::instanceFlag = false;
 tweetManager* tweetManager::single = NULL;
@@ -27,12 +26,10 @@ tweetManager::~tweetManager(){
 
 //--------------------------------------------------------------
 void tweetManager::update(){
-	
 }
 
 //--------------------------------------------------------------
 void tweetManager::draw(){
-	
 	drawQueryTwitters();
 }
 
@@ -42,7 +39,7 @@ void tweetManager::searchQuery(string s) {
 }
 
 //--------------------------------------------------------------
-void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {    
+void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {
     a.clear(); 
 }
 
@@ -56,7 +53,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 	float WidgetW = CanvasW -ScrollW - (xInit * 4);
 	bool bsnap = true;
 	
-	if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "GetTotalLoadedTweets=" << twitterClient.getTotalLoadedTweets() << endl;
+	if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "GetTotalLoadedTweets =" << twitterClient.getTotalLoadedTweets() << endl;
 	
 	//Clean imgUsers vector and ask again all images
 	cleanImgUsers(imgUsers);
@@ -107,19 +104,16 @@ void tweetManager::setAllQueryTwittersAtGui(){
 																 tweet.text);
 				}
 			}
-	
 			ofLogVerbose("tweetManager ") << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
 			
 		}
 	}
 }
 
-
-
 //--------------------------------------------------------------
 void tweetManager::drawQueryTwitters(){
 	// Print tweets:
-    /*
+   /*
     int maxLineSize = 90;
     
     if(twitterClient.getTotalLoadedTweets() > 0) {
@@ -171,8 +165,8 @@ void tweetManager::drawQueryTwitters(){
     info += "\nPress UP/DOWN to navigate tweets";
     ofDrawBitmapString(info, ofVec2f(20,20));
     
-	*/
 	
+	*/
     twitterClient.printDebugInfo();
 }
 
@@ -181,13 +175,10 @@ void tweetManager::setup(string CONSUMER_KEY, string CONSUMER_SECRET){
 	
     twitterClient.setDiskCache(true);
     twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
-    
-//    string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
-//    string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
-    
-    twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
 	
-    actualTweet = 0;
+	twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
+	actualTweet = 0;
+	
 }
 
 //--------------------------------------------------------------
@@ -208,6 +199,6 @@ void tweetManager::keyReleased(int key){
     if(key == OF_KEY_DOWN) {
         if(actualTweet > 0) actualTweet -= 1;
     }
-  */  
+*/
 }
 

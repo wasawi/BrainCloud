@@ -383,6 +383,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 void vizManager::keyPressed(int key ){
     switch(key)
     {
+			/*
 		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
@@ -432,7 +433,9 @@ void vizManager::keyPressed(int key ){
 		case 'M':
 			bcameraMode = !bcameraMode;
 			break;
+			  */
 	}
+			
 }
 
 //--------------------------------------------------------------

@@ -24,7 +24,8 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	myTwitterManager.update();
+	tweetManager::getInstance()->update();
+//	myTwitterManager.update();
 //	myGuiManager.update();
 	myVizManager.update();
 }
@@ -34,7 +35,8 @@ void ofApp::draw()
 {	
 
 	guiManager::getInstance()->draw();
-	myTwitterManager.draw();
+	tweetManager::getInstance()->draw();
+//	myTwitterManager.draw();
 	myVizManager.draw();
 	
 }
@@ -58,7 +60,7 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-    myTwitterManager.keyReleased(key);
+	tweetManager::getInstance()->keyReleased(key);
 }
 
 //--------------------------------------------------------------

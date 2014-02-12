@@ -171,7 +171,7 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 	
 	if(name == "TEXT INPUT")
 	 {
-		auto textinput = (ofxUITextInput *) e.widget;
+		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
 		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
 			cout << "ON ENTER: ";
 //			ofUnregisterKeyEvents((ofApp*)this);
