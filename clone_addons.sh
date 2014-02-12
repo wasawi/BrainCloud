@@ -15,3 +15,7 @@ ${PREFIX}wasawi/ofxTwitter.git
 ${PREFIX}jefftimesten/ofxJSON.git
 
 ${PREFIX}carlesgutierrez/ofxUI.git
+
+${PREFIX}wasawi/ofxTwitter.git
+
+${PREFIX}wasawi/ofxVolumetrics
