@@ -4,64 +4,85 @@
 #include "tweetManager.h"
 #include "ofxTwitter.h"
 #include "ofxUI.h"
+#include "guiEvent.h"
 
 class guiManager {
 
+// variables & methods for singleton
+private:
+    static bool	instanceFlag;
+    static guiManager *single;
+	
+public:
+	static guiManager* getInstance();
+// end singleton
+
+	
 public:	
 	guiManager();
 	~guiManager();
 	
-	// variables & methods for singleton
-private:
-    static bool	instanceFlag;
-    static guiManager *single;	
-
 public:
-	static guiManager* getInstance();
-	// end singleton
-	
-	public:
-
-		void setup();
-		void update();
-		void draw();
-		
-		void updateSlider();
-		void setupScrollCanvas(float xInit, float yInit, float CanvasW, float CanvasH, bool bsnap);
-		void setupTextInput(float canvasX, float textInputY, float CanvasW, float CanvasH);
-		void scrollCanvasEvent(ofxUIEventArgs &e);
-		void textInputEvent(ofxUIEventArgs &e);
-
-		void exit();
+	void setup();
+	void update();
+	void draw();
+	void exit();
+	void updateSlider();
+	void setupScrollCanvas();
+	void setupSearchInput();
+	void scrollCanvasEvent(ofxUIEventArgs &e);
+	void textInputEvent(ofxUIEventArgs &e);
 	
 	//add contents methods
-		void adjustContentstoGui(bool bsnap);
-		void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
-	
-	//vector<tweet3d> getTweets(); 
+	void adjustContentstoGui(bool bsnap);
+	void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
 
-		int id;
-		string queryused;
-		string userid;
-		string message;
-		ofVec3f location3d;
+	//vector<tweet3d> getTweets();
+	
+	// Events
+//	ofEvent <string> newSearch;
+
+	int id;
+	string queryused;
+	string userid;
+	string message;
+	ofVec3f location3d;
 	
 	//TEST DATA TO LOAD
 	string myText;
     ofImage *_img;
     ofFilePath imgFile;
 
-	private:
-	
+private:
 	ofxUICanvas *textInputCanvas;
 	ofxUIScrollableSliderCanvas *scrollCanvas;
 	bool bdrawPadding, bdrawGrid;
 	int gui_sizeHContent;
 	//vector<tweet3d> selectedTweets;
 	
+	float tweetsCanvasX;
+	float tweetsCanvasY;
+	float tweetsCanvasW;
+	float tweetsCanvasH;
+	bool bsnap;
+	float space;
+	
+	
+	float searchCanvasX;
+	float searchCanvasY;
+	float searchCanvasW;
+	float searchCanvasH;
+	float textInputY;
+	float searchFieldW;
+	float searchFieldH;
+	
 	float dim;
 	float WidgetW;
 	float sliderW;
 	
+	int	nResponses;
+	float nResponsesX;
+	float nResponsesY;
+	float nResponsesW;
 };
 

@@ -24,6 +24,25 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	boxH = bH;
 	
 }
+
+
+int volumeSlice::getPixelValue(){
+	for(int z=0; z<volDepth; z++){
+		for(int y=0; y<volHeight; y++){
+			for(int x=0; x<volWidth; x++){
+				if (x==sagittalS && y==coronalS && z==axialS){
+					int line = y*volWidth;
+					int page = z*volWidth*volHeight;
+					int i = x + line + page;					// the pointer position at Array
+					return myData[i];							// the pixel on the image
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 //--------------------------------------------------------------
 void volumeSlice::draw(int zTexOffset, viewPoint vP){
 
@@ -54,7 +73,7 @@ void volumeSlice::draw(int zTexOffset, viewPoint vP){
 
 	}else if (myViewPoint==AXIAL){
 		axialS = zTexOffset;
-		drawAxial(halfD, halfH, zTexOffset);
+		drawAxial(halfW, halfH, zTexOffset);
 	}
 
 	
