@@ -1,35 +1,35 @@
 <Widget>
     <Kind>5</Kind>
     <Name>fsliceY</Name>
-    <Value>2.999997139</Value>
+    <Value>47.000003815</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>coronalPad</Name>
-    <XValue>17.999994278</XValue>
-    <YValue>0.000000000</YValue>
+    <XValue>-38.000000000</XValue>
+    <YValue>22.000003815</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
     <Name>fsliceX</Name>
-    <Value>17.999994278</Value>
+    <Value>-38.000000000</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>sagittalPad</Name>
-    <XValue>2.999997139</XValue>
-    <YValue>0.000000000</YValue>
+    <XValue>47.000003815</XValue>
+    <YValue>22.000003815</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
     <Name>fsliceZ</Name>
-    <Value>0.000000000</Value>
+    <Value>22.000003815</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>axialPad</Name>
-    <XValue>17.999994278</XValue>
-    <YValue>2.999997139</YValue>
+    <XValue>-38.000000000</XValue>
+    <YValue>47.000003815</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>

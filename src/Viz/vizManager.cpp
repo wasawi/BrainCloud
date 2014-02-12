@@ -14,9 +14,11 @@ vizManager::~vizManager(){
 
 //--------------------------------------------------------------
 void vizManager::setup(){
-
+	// Talairach Atlas
+	talairachAtlas.setup("brainData/TalairachAtlas.txt");
+	
 	// TODO: Remove this from here
-//	ofEnableSmoothing();
+	//	ofEnableSmoothing();
 	initX=50;
 	initY=50;
 	sliderW = 20;
@@ -28,39 +30,27 @@ void vizManager::setup(){
 	fsliceX = volWidth /2;
 	fsliceZ = volDepth /2;
 	
+
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
 	cam.disableMouseInput();
 //	cam.setFov(90.);
-	//	cam.disableMouseInput();
+//	cam.disableMouseInput();
 
 	//Volume
 	initVolume();
+
+	//All GUIs here
+	setup_guis();
 	
-	//GUI
-/*	guiVolume->setFont("Arial Unicode.ttf");
-    guiVolume->setFontSize(OFX_UI_FONT_LARGE, 14);
-    guiVolume->setFontSize(OFX_UI_FONT_MEDIUM, 10);
-    guiVolume->setFontSize(OFX_UI_FONT_SMALL, 8);
-*/
-	setup_guiVolume();
-	guiVolume->loadSettings("GUI/viz_settings.xml");
-	guiVolume->setDrawBack(true);
-	guiVolume->setVisible(false);
-	
-	//3d Views
-	bDraw = true;
-	setup_guiSliders();
-	guiSliders->loadSettings("GUI/viz_settings_2.xml");
-	guiSliders->setDrawBack(false);
-	//	guiSliders->setAutoDraw(true);
 }
 
 //--------------------------------------------------------------
 void vizManager::initVolume(){
 	
-	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
+//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
+	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 1);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
@@ -97,6 +87,7 @@ void vizManager::initVolume(){
 					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
 					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
 					volumeData[i] = sample;
+//					cout << sample << endl;
 				}
             }
         }
@@ -114,7 +105,20 @@ void vizManager::initVolume(){
 
 //--------------------------------------------------------------
 void vizManager::update(){
+}
+	
+//--------------------------------------------------------------
+void vizManager::updateLabel(){
 
+	int pixelValue = volume2D.getPixelValue();
+	//mapping from pixel value to index value on the Talairach Atlas
+	int currentValue= ofMap(pixelValue, 0, 255, 0, 1105);
+	string hem = talairachAtlas.getHemisphere(currentValue);
+	string lobe = talairachAtlas.getLobe(currentValue);
+	string gyrus = talairachAtlas.getGyrus(currentValue);
+	string tissue = talairachAtlas.getTissueType(currentValue);
+	string cell = talairachAtlas.getCellType(currentValue);
+	
 }
 
 
@@ -160,6 +164,30 @@ if (bDraw){
 	ofPopView();
 	ofPopView();
 }
+}
+
+//--------------------------------------------------------------
+void vizManager::setup_guis()
+{
+
+	//GUI
+	/*	guiVolume->setFont("Arial Unicode.ttf");
+	 guiVolume->setFontSize(OFX_UI_FONT_LARGE, 14);
+	 guiVolume->setFontSize(OFX_UI_FONT_MEDIUM, 10);
+	 guiVolume->setFontSize(OFX_UI_FONT_SMALL, 8);
+	 */
+	setup_guiVolume();
+	guiVolume->loadSettings("GUI/viz_settings.xml");
+	guiVolume->setDrawBack(true);
+	guiVolume->setVisible(false);
+	
+	//3d Views
+	bDraw = true;
+	setup_guiSliders();
+	guiSliders->loadSettings("GUI/viz_settings_2.xml");
+	guiSliders->setDrawBack(false);
+	//	guiSliders->setAutoDraw(true);
+	
 }
 
 //--------------------------------------------------------------
@@ -383,7 +411,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 void vizManager::keyPressed(int key ){
     switch(key)
     {
-			/*
+			
 		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
@@ -406,6 +434,15 @@ void vizManager::keyPressed(int key ){
             guiVolume->toggleVisible();
 //			guiSliders->toggleVisible();
 			break;
+		case 't':
+			int pixelValue = volume2D.getPixelValue();
+			//mapping from pixel value to index value on the Talairach Atlas
+			int currentValue= ofMap(pixelValue, 0, 255, 0, 1105);
+
+			string lobe = talairachAtlas.getLobe(currentValue);
+			ofLogNotice("Talairach")<< lobe;
+			break;
+		/*
 		case OF_KEY_UP:
 			if(bcameraMode)cam.getTarget().boom(-5);
 			else {
@@ -483,6 +520,7 @@ void vizManager::updatePads(){
 	pad -> setValue(ofVec3f(fsliceY,fsliceZ,0));
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad -> setValue(ofVec3f(fsliceX,fsliceY,0));
+	updateLabel();
 }
 
 //--------------------------------------------------------------

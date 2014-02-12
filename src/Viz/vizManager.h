@@ -6,7 +6,7 @@
 #include "volumeSlice.h"
 #include "myCamera.h"
 #include "ofUtils.h"
-
+#include "talairachLabels.h"
 
 
 class vizManager {
@@ -21,10 +21,12 @@ public:
 	void initVolume();
 	void keyPressed  (int key);
 	
-	//UI to remove
+	//
+	void updateLabel();
 	void saveCameraPosition();
 	void loadCameraPosition();
 	void guiEvent(ofxUIEventArgs &e);
+	void setup_guis();
 	void setup_guiVolume();
 	void setup_guiSliders();
 	ofxUICanvas *guiVolume;
@@ -78,6 +80,9 @@ public:
 
 	//Twitter objects
 	tweet3d  searchTweetByLocation();
+	
+	//Talairach Atlas
+	talairachLabels	talairachAtlas;
 	
 private:
 	vector<tweet3d> alltweets;
