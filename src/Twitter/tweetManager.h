@@ -5,18 +5,12 @@
 #include "ofxXmlSettings.h"
 #include "ofxTwitter3d.h"
 #include "guiManager.h"
+#include "guiEvent.h"
 
 class tweetManager {
-	
-private:
-    static bool	instanceFlag;
-    static tweetManager *single;
-	
 public:
 	tweetManager();
 	~tweetManager();
-	
-	static tweetManager* getInstance();
 
 	void setup(	string CONSUMER_KEY, string CONSUMER_SECRET);
 	void update();
@@ -24,11 +18,11 @@ public:
 	void keyReleased(int key);
 	
 	void searchQuery(string s);
+	void searchQuery(guiEvent &e);
 	void setupTwitter();
 	void drawQueryTwitters();
 	void setAllQueryTwittersAtGui();
 	void cleanImgUsers( std::vector <ofImage> & a );
-
 		
 	//query eaxmple
 		ofxTwitter twitterClient;

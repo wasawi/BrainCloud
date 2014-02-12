@@ -33,18 +33,29 @@ guiManager::~guiManager()
 
 void guiManager::setup(){
 
-	float canvasX	= 570;
-	float canvasY	= 110;
-    float CanvasW   = 600; // 550
-    float CanvasH   = 400; // 400
+	// Tweets Canvas
+	canvasX			= 570;
+	canvasY			= 110;
+	canvasW			= 600;
+	canvasH			= 400;
+	bsnap			= false;
 	
-	dim					= 50;
-	sliderW				= 20;
-	WidgetW				= CanvasW-sliderW;
-	float textInputY	= dim;
+	dim				= 50;
+	sliderW			= 20;
+	WidgetW			= canvasW-sliderW;
+	space = OFX_UI_GLOBAL_WIDGET_SPACING;
 	
-	setupTextInput(canvasX, textInputY, CanvasW, 40);
-	setupScrollCanvas(canvasX, canvasY, CanvasW, CanvasH, false);
+	
+	// Search field
+	textInputY		= dim;
+	searchFieldH	= 40;
+	searchFieldW	= 450;
+	nResponses		= 15;
+	nResponsesX		= searchFieldW+50;
+	nResponsesW		= 50;
+
+	setupSearchInput();
+	setupScrollCanvas();
 }
 //--------------------------------------------------------------
 void guiManager::update(){
@@ -55,39 +66,49 @@ void guiManager::draw(){
 	ofPushStyle();
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	
-//	gui->autoSizeToFitWidgets();
-//	gui->getRect()->setWidth(ofGetWidth());
-//	gui->setDrawPadding(true);
-//	gui->drawPaddedOutline();
-//	gui->drawOutlineHighlight();
-	
-//	gui_slider->setDrawBack(true);
-//	gui_slider->setDrawPadding(true);
-//	gui_slider->drawOutlineHighlight();
-	
 	ofPopStyle();
-//	ofSetRectMode(OF_RECTMODE_CENTER);
 }
 
 //--------------------------------------------------------------
-void guiManager::setupTextInput(float canvasX, float textInputY, float CanvasW, float CanvasH){
+void guiManager::setupSearchInput(){
 	
-	textInputCanvas = new ofxUICanvas(canvasX, textInputY, CanvasW, CanvasH);
-	//	string _name, string _textstring, float w, float h, float x, float y, int _size) :
-	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT","", CanvasW, CanvasH, 0, 0, OFX_UI_FONT_LARGE));
+	textInputCanvas = new ofxUICanvas(canvasX, textInputY, canvasW, searchFieldH);
+//	textInputCanvas->setDrawBack(true);
+	//	ofxUITextInput(string _name, string _textstring, float w, float h, float x, float y, int _size) :
+	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT",
+													   "",
+													   searchFieldW,
+													   searchFieldH,
+													   10,
+													   0,
+													   OFX_UI_FONT_LARGE));
+	
+	ofxUIWidget * e = textInputCanvas->getWidget("TEXT INPUT");
+	e->setDrawBack(true);
+
+	// ofxUINumberDialer(float x, float y, float _min, float _max, float _value, int _precision, string _name, int _size)
+
+	textInputCanvas->addWidget( new ofxUINumberDialer(nResponsesX,
+														   10,
+														   0,
+														   200,
+														   nResponses,
+														   0,
+														   "responses",
+														   OFX_UI_FONT_MEDIUM));
 	
 	ofAddListener(textInputCanvas->newGUIEvent,this,&guiManager::textInputEvent);
 }
 
 
 //--------------------------------------------------------------
-void guiManager::setupScrollCanvas(float canvasX, float canvasY, float CanvasW, float CanvasH, bool bsnap){
+void guiManager::setupScrollCanvas(){
 
 	// Canvas for Tweets
-	scrollCanvas = new ofxUIScrollableSliderCanvas(canvasX, canvasY, CanvasW, CanvasH, sliderW);
+	scrollCanvas = new ofxUIScrollableSliderCanvas(canvasX, canvasY, canvasW, canvasH, sliderW);
 	scrollCanvas->setPadding(0);
-	scrollCanvas->setScrollArea(canvasX, canvasY, CanvasW, CanvasH);
-	//gui->setScrollAreaHeight(CanvasH);
+	scrollCanvas->setScrollArea(canvasX, canvasY, canvasW, canvasH);
+	//gui->setScrollAreaHeight(canvasH);
 	scrollCanvas->setScrollableDirections(false, true);
 	
 	ofAddListener(scrollCanvas->newGUIEvent,this,&guiManager::scrollCanvasEvent);
@@ -107,7 +128,6 @@ void guiManager::adjustContentstoGui(bool _bsnap){
 
 void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText){
 	
-	float space = OFX_UI_GLOBAL_WIDGET_SPACING;
 	float lineHeight = scrollCanvas->getFont()->getLineHeight();
 	scrollCanvas->addWidgetDown( new ofxUIImage( 0, space, dim, dim, img, "IMAGE", false));
 //    ofxUITextArea(string _name, string _textstring, float w, float h = 0, float x = 0, float y = 0, int _size = OFX_UI_FONT_MEDIUM);
@@ -129,15 +149,6 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 										   0,
 										   OFX_UI_FONT_SMALL ),
 						OFX_UI_ALIGN_FREE, false)->setDrawBack(false);
-/*
-	gui->addWidget( new ofxUITextArea("TEXT",
-										  tweetText,
-										  WidgetW,
-										  0,
-										  space,
-										  40,
-									  OFX_UI_FONT_MEDIUM ));
-*/
 
 	scrollCanvas->addWidgetDown( new ofxUITextArea("TEXT",
 										  tweetText,
@@ -173,23 +184,31 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 	 {
 		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
 		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
-			cout << "ON ENTER: ";
-//			ofUnregisterKeyEvents((ofApp*)this);
-			tweetManager::getInstance()->searchQuery(textinput->getTextString());
-		}
-		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
-			cout << "ON FOCUS: ";
-			textinput->setTextString("");
-		}
-		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){
-			cout << "ON BLUR: ";
-//			ofRegisterKeyEvents(this);
-		}
-		 if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD){
-			cout << "ON LOAD: ";
+			ofLogVerbose("searchField") << "ON ENTER: ";
+			//			ofUnregisterKeyEvents((guiManager*)this);
+			static guiEvent newEvent;
+			newEvent.message =  textinput->getTextString();
+			newEvent.value	= nResponses;
+			ofNotifyEvent(guiEvent::newSearch, newEvent);
+		
+		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
+			ofLogVerbose("searchField") << "ON FOCUS: ";
+			//			ofRegisterKeyEvents((guiManager*)this);
+			//			textinput->setTextString("");
+		
+		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){
+			ofLogVerbose("searchField") << "ON BLUR: ";
+		
+		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD){
+			ofLogVerbose("searchField") << "ON LOAD: ";
 		}
 		string output = textinput->getTextString();
 		cout << output << endl;
+	 
+	 }else if (name == "responses"){
+		ofxUINumberDialer *numDialer = (ofxUINumberDialer *) e.widget;
+		nResponses = numDialer->getValue();
+		ofLogVerbose("searchField") << "nResponses: " << nResponses;
 	 }
 }
 
