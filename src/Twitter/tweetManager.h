@@ -21,7 +21,8 @@ public:
 	void searchQuery(guiEvent &e);
 	void setupTwitter();
 	void drawQueryTwitters();
-	void setAllQueryTwittersAtGui();
+	void setOneTweetToGui(int tweetIndex);
+	void setAllTweetsToGui();
 	void cleanImgUsers( std::vector <ofImage> & a );
 		
 	//query eaxmple
@@ -42,5 +43,14 @@ private:
 	string screen_name;
 	string myText;
 	string name;
+
+	
+	float dim;
+	float xInit;
+	float CanvasW;
+	float ScrollW;
+	float WidgetW;
+	bool  bsnap;
+	
 	
 };

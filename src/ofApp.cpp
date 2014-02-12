@@ -4,7 +4,8 @@
 void ofApp::setup()
 {	
 	// OF vars
-		ofSetLogLevel(OF_LOG_VERBOSE);
+	//	ofSetLogLevel(OF_LOG_VERBOSE);
+		ofSetLogLevel(OF_LOG_NOTICE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	ofEnableSmoothing();
