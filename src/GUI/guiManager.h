@@ -60,13 +60,18 @@ private:
 	int gui_sizeHContent;
 	//vector<tweet3d> selectedTweets;
 	
-	float canvasX;
-	float canvasY;
-	float canvasW;
-	float canvasH;
+	float tweetsCanvasX;
+	float tweetsCanvasY;
+	float tweetsCanvasW;
+	float tweetsCanvasH;
 	bool bsnap;
 	float space;
 	
+	
+	float searchCanvasX;
+	float searchCanvasY;
+	float searchCanvasW;
+	float searchCanvasH;
 	float textInputY;
 	float searchFieldW;
 	float searchFieldH;
@@ -77,6 +82,7 @@ private:
 	
 	int	nResponses;
 	float nResponsesX;
+	float nResponsesY;
 	float nResponsesW;
 };
 
