@@ -25,8 +25,6 @@ struct TaliarchData{
 	string	cellType;
 };
 
-
-
 class talairachLabels{
 public:
 	

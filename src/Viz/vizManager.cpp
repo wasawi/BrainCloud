@@ -49,28 +49,19 @@ void vizManager::setup(){
 //--------------------------------------------------------------
 void vizManager::initVolume(){
 	
-//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 1);
-	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 1);
+	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
+//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
     volDepth	= imageSequence.getSequenceLength();
 	
-	//add one morw pixel in width and height..
-	//i dont know why some tifs are not reading well...
-	//maybe is related to th texture which has to be a power of 2..
-	//	int volWidth	= 151;
-	//	int volHeight	= 188;
-	
-	//	int volWidth	= volWidth;
-	//	int volHeight	= volHeight;
-	
 	ofLogNotice("Volume") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
-	//fill out the added pixel in 0
+	//fill out the array pixel in white
 	for (int i=0; i<volWidth*volHeight*volDepth; i++ ){
-		volumeData[i]= (unsigned char) 0;
+		volumeData[i]= (unsigned char) 255;
 	}
 	
 	// fill my array with pixels
@@ -110,7 +101,7 @@ void vizManager::update(){
 //--------------------------------------------------------------
 void vizManager::updateLabel(){
 
-	int pixelValue = volume2D.getPixelValue();
+	pixelValue = volume2D.getPixelValue();
 	//mapping from pixel value to index value on the Talairach Atlas
 	int currentValue= ofMap(pixelValue, 0, 255, 0, 1105);
 	string hem = talairachAtlas.getHemisphere(currentValue);
@@ -163,6 +154,13 @@ if (bDraw){
 	
 	ofPopView();
 	ofPopView();
+	
+	
+	ofPushStyle();
+	ofSetColor(pixelValue, 255);
+	ofRect(initX,initY+boxH*2+dist*3,boxH*2+dist*5,initY);
+	ofPopStyle();
+	
 }
 }
 

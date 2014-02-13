@@ -99,5 +99,7 @@ private:
 	float	boxH;
 	int		dist;
 //	int		slider;
+	
+	int pixelValue;
 };
 
