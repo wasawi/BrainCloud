@@ -3,7 +3,6 @@
 
 //----------------------------------------------
 vizManager::vizManager(){
-	rot = .00000001;
 }
 
 //----------------------------------------------
@@ -17,6 +16,7 @@ void vizManager::setup(){
 	// Talairach Atlas
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
 	talClient.setup("../../../data/brainData/talairach.jar");
+	outputLabels.resize(10);
 	
 	// TODO: Remove this from here
 	//	ofEnableSmoothing();
@@ -26,7 +26,6 @@ void vizManager::setup(){
 	dist = 20;
 	length = 251;
 	boxW = boxH = 200;
-	
 	
 	visCoord.y = volHeight /2;
 	visCoord.x = volWidth /2;
@@ -38,6 +37,7 @@ void vizManager::setup(){
 	loadCameraPosition();
 	bcameraMode = true;
 	cam.disableMouseInput();
+	rot = .00000001;
 //	cam.setFov(90.);
 //	cam.disableMouseInput();
 
@@ -105,7 +105,7 @@ void vizManager::update(){
 	updatePads();
 	updateTalCoords();
 	updateTalAtlasLabel();
-	updateTalLabel();
+//	updateTalLabel();
 }
 
 //--------------------------------------------------------------
@@ -114,11 +114,11 @@ void vizManager::updateTalAtlasLabel(){
 	voxelValue = volume2D.getVoxelValue();
 	//mapping from pixel value to index value on the Talairach Atlas
 	int mapValue= ofMap(voxelValue, 0, 255, 0, 1105);
-	string hem = talairachAtlas.getHemisphere(mapValue);
-	string lobe = talairachAtlas.getLobe(mapValue);
-	string gyrus = talairachAtlas.getGyrus(mapValue);
-	string tissue = talairachAtlas.getTissueType(mapValue);
-	string cell = talairachAtlas.getCellType(mapValue);
+	outputLabels [2] = talairachAtlas.getHemisphere(mapValue);
+	outputLabels [3] = talairachAtlas.getLobe(mapValue);
+	outputLabels [4] = talairachAtlas.getGyrus(mapValue);
+	outputLabels [5] = talairachAtlas.getTissueType(mapValue);
+	outputLabels [6] = talairachAtlas.getCellType(mapValue);
 }
 
 //--------------------------------------------------------------
@@ -154,7 +154,7 @@ void vizManager::updateCoordinates(){
 	ofLogVerbose("vizManager") <<	"visCoord.y " << ofToString(visCoord.y,2);
 	ofLogVerbose("vizManager") <<	"visCoord.z " << ofToString(visCoord.z,2);
 
-	// this mus be debugged!!! probably is not exactly correct !!
+	// this must be debugged!!! probably is not exactly correct !!
 	// we need to clamp the output of the map because there are no boxels between the volume and the box.
 	// therefore clamp from 0 to volW/H/D -1! because the number of
 	volCoord.x		= floor (ofMap(visCoord.x,		-boxW/2, boxW/2, -halfW, volWidth-1 + halfW));
@@ -231,8 +231,8 @@ void vizManager::draw(){
 		ofRotateZ(rot);
 		rot++;
 		ofPushMatrix();										//	save the old coordinate system
-		ofScale(1.0f, -1.0f);							//	flip the y axis vertically, so that it points upwards
-		myVolume.update(0,0,0, ofGetHeight(), 0);	//	draw Volume
+		ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
+		myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
 		ofPopMatrix();										//	restore the previous coordinate system
 		cam.end();
 		myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
