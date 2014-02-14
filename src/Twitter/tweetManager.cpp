@@ -4,6 +4,7 @@
 tweetManager::tweetManager()
 {
 }
+
 //----------------------------------------------
 tweetManager::~tweetManager(){
 }
