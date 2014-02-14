@@ -15,7 +15,6 @@ void ofApp::setup()
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
-//	tweetManager::getInstance()->setup(CONSUMER_KEY, CONSUMER_SECRET);
 	myTwitterManager.setup(CONSUMER_KEY, CONSUMER_SECRET);
 	guiManager::getInstance()->setup();
 	//	myGuiManager.setup();
@@ -25,23 +24,17 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-//	tweetManager::getInstance()->update();
 	myTwitterManager.update();
 //	myGuiManager.update();
-	myVizManager.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {	
 	guiManager::getInstance()->draw();
-//	tweetManager::getInstance()->draw();
 	myTwitterManager.draw();
 	myVizManager.draw();
-	
 }
-
-
 
 //--------------------------------------------------------------
 void ofApp::exit()
@@ -60,7 +53,6 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-//	tweetManager::getInstance()->keyReleased(key);
 	myTwitterManager.keyReleased(key);
 }
 

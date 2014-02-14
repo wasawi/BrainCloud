@@ -25,7 +25,7 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	
 }
 
-int volumeSlice::getPixelValue(){
+int volumeSlice::getVoxelValue(){
 	
 	int value	=0;
 	for(int z=0; z<volDepth; z++){

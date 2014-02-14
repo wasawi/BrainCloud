@@ -10,12 +10,14 @@ vizManager::vizManager(){
 vizManager::~vizManager(){
 	delete guiVolume;
 	delete guiSliders;
+	talClient.close();
 }
 
 //--------------------------------------------------------------
 void vizManager::setup(){
 	// Talairach Atlas
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
+	talClient.setup("../../../data/brainData/talairach.jar");
 	
 	// TODO: Remove this from here
 	//	ofEnableSmoothing();
@@ -26,10 +28,12 @@ void vizManager::setup(){
 	length = 251;
 	boxW = boxH = 200;
 	
-	fsliceY = volHeight /2;
-	fsliceX = volWidth /2;
-	fsliceZ = volDepth /2;
 	
+	visCoord.y = volHeight /2;
+	visCoord.x = volWidth /2;
+	visCoord.z = volDepth /2;
+	
+	talOffset= ofVec3f(-70,-102,-42);
 
 	//camera
 	loadCameraPosition();
@@ -49,14 +53,14 @@ void vizManager::setup(){
 //--------------------------------------------------------------
 void vizManager::initVolume(){
 	
-	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
-//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
+//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
+	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
     volDepth	= imageSequence.getSequenceLength();
 	
-	ofLogNotice("Volume") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
+	ofLogNotice("vizManager") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
 	//fill out the array pixel in white
@@ -78,7 +82,7 @@ void vizManager::initVolume(){
 					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
 					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
 					volumeData[i] = sample;
-//					cout << sample << endl;
+//					ofLogVerbose("vizManager") << sample << " ";
 				}
             }
         }
@@ -96,78 +100,161 @@ void vizManager::initVolume(){
 
 //--------------------------------------------------------------
 void vizManager::update(){
+	
+	updateCoordinates();
+	updateSliders();
+	updatePads();
+	updateTalCoords();
+//	updateTalAtlasLabel();
+	updateTalLabel();
 }
-	
-//--------------------------------------------------------------
-void vizManager::updateLabel(){
 
-	pixelValue = volume2D.getPixelValue();
+//--------------------------------------------------------------
+void vizManager::updateTalAtlasLabel(){
+
+	voxelValue = volume2D.getVoxelValue();
 	//mapping from pixel value to index value on the Talairach Atlas
-	int currentValue= ofMap(pixelValue, 0, 255, 0, 1105);
-	string hem = talairachAtlas.getHemisphere(currentValue);
-	string lobe = talairachAtlas.getLobe(currentValue);
-	string gyrus = talairachAtlas.getGyrus(currentValue);
-	string tissue = talairachAtlas.getTissueType(currentValue);
-	string cell = talairachAtlas.getCellType(currentValue);
+	int mapValue= ofMap(voxelValue, 0, 255, 0, 1105);
+	string hem = talairachAtlas.getHemisphere(mapValue);
+	string lobe = talairachAtlas.getLobe(mapValue);
+	string gyrus = talairachAtlas.getGyrus(mapValue);
+	string tissue = talairachAtlas.getTissueType(mapValue);
+	string cell = talairachAtlas.getCellType(mapValue);
+}
+
+//--------------------------------------------------------------
+void vizManager::updateTalCoords(){
+
+	talCoord.x = (volCoord.x + talOffset.x)*-1;
+	talCoord.y = volCoord.y + talOffset.y;
+	talCoord.z = volCoord.z + talOffset.z;
 	
+	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
+	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
+	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
+
+}
+
+//--------------------------------------------------------------
+void vizManager::updateTalLabel(){
+	vector <string> response;
+	response = talClient.get(talCoord);
+	for (int i=2; i<response.size(); i++) {
+		ofLogNotice("vizManager") << response[i];
+	}
+}
+
+//--------------------------------------------------------------
+void vizManager::updateCoordinates(){
+
+	// get the distance between the box and the volume
+	float halfW = (boxW - volWidth) /2;
+	float halfH = (boxW - volHeight) /2;
+	float halfD = (boxW - volDepth) /2;
+
+	ofLogVerbose("vizManager") <<	"visCoord.x " << ofToString(visCoord.x,2);
+	ofLogVerbose("vizManager") <<	"visCoord.y " << ofToString(visCoord.y,2);
+	ofLogVerbose("vizManager") <<	"visCoord.z " << ofToString(visCoord.z,2);
+
+	// this mus be debugged!!! probably is not exactly correct !!
+	// we need to clamp the output of the map because there are no boxels between the volume and the box.
+	// therefore clamp from 0 to volW/H/D -1! because the number of
+	volCoord.x		= floor (ofMap(visCoord.x,		-boxW/2, boxW/2, -halfW, volWidth-1 + halfW));
+	volCoord.x		= ofClamp(volCoord.x,0, volWidth-1);
+	
+	volCoord.y		= floor (ofMap(visCoord.y,		-boxW/2, boxW/2, -halfH, volHeight-1 + halfH));
+	volCoord.y		= ofClamp(volCoord.y,0, volHeight-1);
+
+	volCoord.z		= floor (ofMap(visCoord.z,		-boxW/2, boxW/2, -halfD, volDepth-1 + halfD));
+	volCoord.z		= ofClamp(volCoord.z,0, volDepth-1);
+	
+	ofLogVerbose("vizManager") <<	"volCoord.x " << volCoord.x;
+	ofLogVerbose("vizManager") <<	"volCoord.y " << volCoord.y;
+	ofLogVerbose("vizManager") <<	"volCoord.z " << volCoord.z;
+}
+
+//--------------------------------------------------------------
+void vizManager::updateSliders(){
+
+	//update sliders
+	ofxUISlider *slider;
+	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.x");
+	slider -> setValue(visCoord.x);
+	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.y");
+	slider -> setValue(visCoord.y);
+	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.z");
+	slider -> setValue(visCoord.z);
+}
+
+//--------------------------------------------------------------
+void vizManager::updatePads(){
+
+	//update pads
+	ofxUI2DPad *pad;
+	pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
+	pad -> setValue(ofVec3f(visCoord.x, visCoord.z, 0));
+	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
+	pad -> setValue(ofVec3f(visCoord.y,visCoord.z,0));
+	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
+	pad -> setValue(ofVec3f(visCoord.x,visCoord.y,0));
 }
 
 
 //--------------------------------------------------------------
 void vizManager::draw(){
-if (bDraw){
-
-	//Draw box below
-	ofPushView();
-	ofTranslate(initX, initY);
-	ofSetColor(0,0,0, 100 );
-	ofRect(0, 0, (boxW+dist)*2+dist*3, (boxW+dist)*2+dist);
-	
-	//Draw Slices
-	ofPushView();
-		ofTranslate(dist, dist);
-		volume2D.draw							(isliceY, CORONAL);
-	
+	if (bDraw){
+		
+		//Draw box below
 		ofPushView();
-			ofTranslate( boxH+ (dist+sliderW), 0);
-			volume2D.draw						(isliceX, SAGITTAL);
+		ofTranslate(initX, initY);
+		ofSetColor(0,0,0, 100 );
+		ofRect(0, 0, (boxW+dist)*2+dist*3, (boxW+dist)*2+dist);
+		
+		//Draw Slices
+		ofPushView();
+		ofTranslate(dist, dist);
+		volume2D.draw							(volCoord.y, CORONAL);
+		
+		ofPushView();
+		ofTranslate( boxH+ (dist+sliderW), 0);
+		volume2D.draw							(volCoord.x, SAGITTAL);
 		ofPopView();
 		
 		ofPushView();
-			ofTranslate( 0, boxH+ dist);
-			volume2D.draw						(isliceZ, AXIAL);
+		ofTranslate( 0, boxH+ dist);
+		volume2D.draw							(volCoord.z, AXIAL);
 		ofPopView();
-	
-	// Draw Volume
-	ofSetColor(0);
-	ofRect(boxH+ (dist+sliderW), boxH+ dist, boxW, boxH);
-	ofSetColor(255);
-	cam.begin();
-	ofRotateZ(rot);
-	rot++;
-	ofPushMatrix();										//	save the old coordinate system
+		
+		// Draw Volume
+		ofSetColor(0);
+		ofRect(boxH+ (dist+sliderW), boxH+ dist, boxW, boxH);
+		ofSetColor(255);
+		cam.begin();
+		ofRotateZ(rot);
+		rot++;
+		ofPushMatrix();										//	save the old coordinate system
 		ofScale(1.0f, -1.0f);							//	flip the y axis vertically, so that it points upwards
 		myVolume.update(0,0,0, ofGetHeight(), 0);	//	draw Volume
-	ofPopMatrix();										//	restore the previous coordinate system
-	cam.end();
-	myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
-	
-	ofPopView();
-	ofPopView();
-	
-	
-	ofPushStyle();
-	ofSetColor(pixelValue, 255);
-	ofRect(initX,initY+boxH*2+dist*3,boxH*2+dist*5,initY);
-	ofPopStyle();
-	
-}
+		ofPopMatrix();										//	restore the previous coordinate system
+		cam.end();
+		myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
+		
+		ofPopView();
+		ofPopView();
+		
+		
+		ofPushStyle();
+		ofSetColor(voxelValue, 255);
+		ofRect(initX,initY+boxH*2+dist*3,boxH*2+dist*5,initY);
+		ofPopStyle();
+		
+	}
 }
 
 //--------------------------------------------------------------
 void vizManager::setup_guis()
 {
-
+	
 	//GUI
 	/*	guiVolume->setFont("Arial Unicode.ttf");
 	 guiVolume->setFontSize(OFX_UI_FONT_LARGE, 14);
@@ -196,7 +283,7 @@ void vizManager::setup_guiVolume()
     float length = boxW*2+dist*3;
 	
 	guiVolume = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, boxW*2+(dist*3)+(sliderW*2), 200);
-//	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
+	//	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
 	//	guiVolume->addSpacer( length-xInit, 2 );
 	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW)->setDrawBack(true);
 	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW)->setDrawBack(true);
@@ -216,56 +303,56 @@ void vizManager::setup_guiSliders()
 {
 	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*2+dist*3);
 	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
-
+	
 	//--------------------------- Coronal ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("fsliceY", -boxH/2, boxH/2, fsliceY , sliderW,	boxH, boxW+dist, dist));
-	ofxUISlider *slider = (ofxUISlider *) guiSliders->getWidget("fsliceY");
+	guiSliders->addWidget(new ofxUISlider("visCoord.y", -boxH/2, boxH/2, visCoord.y , sliderW,	boxH, boxW+dist, dist));
+	ofxUISlider *slider = (ofxUISlider *) guiSliders->getWidget("visCoord.y");
 	slider->setLabelVisible(false);
-
+	
 	guiSliders->addWidget(new ofxUI2DPad("coronalPad",
 										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
 										 ofVec3f(boxH/2, -boxH/2, 0),		//_rangeY
-										 ofVec3f(fsliceX,fsliceZ, 0),		//_value
+										 ofVec3f(visCoord.x,visCoord.z, 0),		//_value
 										 boxW, boxH, dist, dist));			// float w, float h, float x = 0, float y = 0);
 	ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
 	pad->setLabelVisible(false);
 	ofColor transparent;
 	transparent.set(0,0,0,0);
 	pad->setColorBack(transparent);
-
+	
 	//--------------------------- Sagittal ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("fsliceX",-boxH/2, boxH/2, fsliceX, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, dist));
-	slider = (ofxUISlider *) guiSliders->getWidget("fsliceX");
+	guiSliders->addWidget(new ofxUISlider("visCoord.x",-boxH/2, boxH/2, visCoord.x, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, dist));
+	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.x");
 	slider->setLabelVisible(false);
 	
 	guiSliders->addWidget(new ofxUI2DPad("sagittalPad",
 										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
 										 ofVec3f(boxH/2, -boxH/2, 0),		//_rangeY
-										 ofVec3f(fsliceY,fsliceZ, 0),		//_value
+										 ofVec3f(visCoord.y,visCoord.z, 0),		//_value
 										 boxW, boxH, boxW+(dist*2)+sliderW, dist));			// float w, float h, float x = 0, float y = 0);
 	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
-		
+	
 	//--------------------------- Axial ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("fsliceZ", -boxH/2, boxH/2, fsliceZ, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
-	slider = (ofxUISlider *) guiSliders->getWidget("fsliceZ");
+	guiSliders->addWidget(new ofxUISlider("visCoord.z", -boxH/2, boxH/2, visCoord.z, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
+	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.z");
 	slider->setLabelVisible(false);
 	
 	guiSliders->addWidget(new ofxUI2DPad("axialPad",
 										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
 										 ofVec3f(-boxH/2, boxH/2, 0),		//_rangeY
-										 ofVec3f(fsliceX,fsliceY, 0),		//_value
+										 ofVec3f(visCoord.x,visCoord.y, 0),		//_value
 										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
-
+	
 	//--------------------------- Volume ---------------------------//
 	guiSliders->addWidget(new ofxUISlider( "latitude", -18.0, 18.0, latitude, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW));
 	slider = (ofxUISlider *) guiSliders->getWidget("latitude");
 	slider->setLabelVisible(false);
-
+	
 	ofAddListener(guiSliders->newGUIEvent,this,&vizManager::guiEvent);
 }
 
@@ -274,7 +361,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
-//	cout << "GUI:: got event from: " << name << endl;
+	//	ofLogVerbose("vizManager") << "GUI:: got event from: " << name;
 	
 	if(name == "FBO quality"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
@@ -333,69 +420,55 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
             myVolume.setVolumeTextureFilterMode(GL_NEAREST);
         };
 	}
-	else if(name == "fsliceY"){
+	else if(name == "visCoord.y"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		fsliceY = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"fsliceY " << fsliceY;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
-		
+		visCoord.y = floor(slider->getScaledValue());
+		ofLogVerbose() <<	"visCoord.y " << visCoord.y;
+		update();
 	}
-	else if(name == "fsliceX"){
+	else if(name == "visCoord.x"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		fsliceX = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"fsliceX " << fsliceX;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
-	}
-	else if(name == "fsliceZ"){
+		visCoord.x = floor(slider->getScaledValue());
+		ofLogVerbose() <<	"visCoord.x " << visCoord.x;
+		update();	}
+	else if(name == "visCoord.z"){
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		fsliceZ = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"fsliceZ " << fsliceZ;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
+		visCoord.z = floor(slider->getScaledValue());
+		ofLogVerbose() <<	"visCoord.z " << visCoord.z;
+		update();
 	}
 	
 	else if (name== "coronalPad"){
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
-
+		
 		// get values
-		fsliceX = pad->getScaledValue().x;
-		fsliceZ = pad->getScaledValue().y;
-		ofLogVerbose() <<	"coronalPad.x =  " << fsliceX;
-		ofLogVerbose() <<	"coronalPad.y =  " << fsliceZ;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
-		}
-
+		visCoord.x = pad->getScaledValue().x;
+		visCoord.z = pad->getScaledValue().y;
+		ofLogVerbose() <<	"coronalPad.x =  " << visCoord.x;
+		ofLogVerbose() <<	"coronalPad.y =  " << visCoord.z;
+		update();
+	}
+	
 	else if (name== "sagittalPad"){
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
-
+		
 		// get values
-		fsliceY = pad->getScaledValue().x;
-		fsliceZ = pad->getScaledValue().y;
-		ofLogVerbose() <<	"SagittalPad.x = " << fsliceY;
-		ofLogVerbose() <<	"SagittalPad.y = " << fsliceZ;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
+		visCoord.y = pad->getScaledValue().x;
+		visCoord.z = pad->getScaledValue().y;
+		ofLogVerbose() <<	"SagittalPad.x = " << visCoord.y;
+		ofLogVerbose() <<	"SagittalPad.y = " << visCoord.z;
+		update();
 	}
-
+	
 	else if (name== "axialPad"){
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 		
 		// get values
-		fsliceX = pad->getScaledValue().x;
-		fsliceY = pad->getScaledValue().y;
-		ofLogVerbose() <<	"axialPad.x = " << fsliceX;
-		ofLogVerbose() <<	"axialPad.y = " << fsliceY;
-		updateCoordinates();
-		updateSliders();
-		updatePads();
+		visCoord.x = pad->getScaledValue().x;
+		visCoord.y = pad->getScaledValue().y;
+		ofLogVerbose() <<	"axialPad.x = " << visCoord.x;
+		ofLogVerbose() <<	"axialPad.y = " << visCoord.y;
+		update();
 	}
 	
 	else if(name == "latitude"){
@@ -430,95 +503,47 @@ void vizManager::keyPressed(int key ){
 			break;
 		case 'h':
             guiVolume->toggleVisible();
-//			guiSliders->toggleVisible();
+			//			guiSliders->toggleVisible();
 			break;
 		case 't':
-			int pixelValue = volume2D.getPixelValue();
+			int voxelValue = volume2D.getVoxelValue();
 			//mapping from pixel value to index value on the Talairach Atlas
-			int currentValue= ofMap(pixelValue, 0, 255, 0, 1105);
-
+			int currentValue= ofMap(voxelValue, 0, 255, 0, 1105);
+			
 			string lobe = talairachAtlas.getLobe(currentValue);
 			ofLogNotice("Talairach")<< lobe;
 			break;
-		/*
-		case OF_KEY_UP:
-			if(bcameraMode)cam.getTarget().boom(-5);
-			else {
-				cam.tilt(1);
-			}
-			break;
-		case OF_KEY_DOWN:
-			if(bcameraMode)cam.getTarget().boom(5);
-			else {
-				cam.tilt(-1);
-			}
-			break;
-		case OF_KEY_LEFT:
-			if(bcameraMode)cam.getTarget().truck(-5);
-			else {
-				cam.pan(1);
-			}
-			break;
-		case OF_KEY_RIGHT:
-			if(bcameraMode)cam.getTarget().truck(5);
-			else {
-				cam.pan(-1);
-			}
-			break;
-		case 'M':
-			bcameraMode = !bcameraMode;
-			break;
-			  */
+			/*
+			 case OF_KEY_UP:
+			 if(bcameraMode)cam.getTarget().boom(-5);
+			 else {
+			 cam.tilt(1);
+			 }
+			 break;
+			 case OF_KEY_DOWN:
+			 if(bcameraMode)cam.getTarget().boom(5);
+			 else {
+			 cam.tilt(-1);
+			 }
+			 break;
+			 case OF_KEY_LEFT:
+			 if(bcameraMode)cam.getTarget().truck(-5);
+			 else {
+			 cam.pan(1);
+			 }
+			 break;
+			 case OF_KEY_RIGHT:
+			 if(bcameraMode)cam.getTarget().truck(5);
+			 else {
+			 cam.pan(-1);
+			 }
+			 break;
+			 case 'M':
+			 bcameraMode = !bcameraMode;
+			 break;
+			 */
 	}
-			
-}
-
-//--------------------------------------------------------------
-void vizManager::updateCoordinates(){
-
-	int halfW = (boxW - volWidth) /2;
-	int	halfH = (boxW - volHeight) /2;
-	int halfD = (boxW - volDepth) /2;
 	
-	isliceX		= floor (ofMap(fsliceX,		-boxW/2, boxW/2, -halfW, volWidth-1 + halfW));
-	isliceX		= ofClamp(isliceX,0, volWidth-1);
-	
-	isliceY		= floor (ofMap(fsliceY,		-boxW/2, boxW/2, -halfH, volHeight-1 + halfH));
-	isliceY		= ofClamp(isliceY,0, volHeight-1);
-
-	isliceZ		= floor (ofMap(fsliceZ,		-boxW/2, boxW/2, -halfD, volDepth-1 + halfD));
-	isliceZ		= ofClamp(isliceZ,0, volDepth-1);
-	
-//	cout <<	"isliceX " << isliceX<< endl;
-//	cout <<	"isliceY " << isliceY<< endl;
-//	cout <<	"isliceZ " << isliceZ<< endl;
-}
-
-//--------------------------------------------------------------
-void vizManager::updateSliders(){
-	
-	ofxUISlider *slider;
-	//update sliders
-	slider = (ofxUISlider *) guiSliders->getWidget("fsliceX");
-	slider -> setValue(fsliceX);
-	slider = (ofxUISlider *) guiSliders->getWidget("fsliceY");
-	slider -> setValue(fsliceY);
-	slider = (ofxUISlider *) guiSliders->getWidget("fsliceZ");
-	slider -> setValue(fsliceZ);
-}
-
-//--------------------------------------------------------------
-void vizManager::updatePads(){
-	
-	ofxUI2DPad *pad;
-	//update pads
-	pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
-	pad -> setValue(ofVec3f(fsliceX, fsliceZ, 0));
-	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
-	pad -> setValue(ofVec3f(fsliceY,fsliceZ,0));
-	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
-	pad -> setValue(ofVec3f(fsliceX,fsliceY,0));
-	updateLabel();
 }
 
 //--------------------------------------------------------------

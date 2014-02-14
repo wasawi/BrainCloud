@@ -22,7 +22,7 @@ public:
 	void drawSagittal(float x, float y, int zTexOffset);
 	void drawAxial(float x, float y, int zTexOffset);
 	void drawCoronal(float x, float y, int zTexOffset);
-	int getPixelValue();
+	int getVoxelValue();
 	
 protected:
 private:
