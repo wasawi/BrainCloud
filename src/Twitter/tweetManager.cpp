@@ -37,7 +37,7 @@ void tweetManager::update(){
 
 //--------------------------------------------------------------
 void tweetManager::draw(){
-	twitterClient.printDebugInfo();
+
 }
 
 //--------------------------------------------------------------
@@ -239,5 +239,5 @@ void tweetManager::drawQueryTwitters(){
 	 ofDrawBitmapString(info, ofVec2f(20,20));
 	 */
 	
-    twitterClient.printDebugInfo();
+//    twitterClient.printDebugInfo();
 }

@@ -45,14 +45,11 @@ int volumeSlice::getVoxelValue(){
 		}
 	}
 	
-	cout << "volWidth= " << volWidth << endl;
-	cout << "sagittalS= " << sagittalS << endl;
-	cout << "volHeight= " << volHeight << endl;
-	cout << "coronalS= " << coronalS << endl;
-	cout << "volDepth= " << volDepth << endl;
-	cout << "axialS= " << axialS << endl;
-	
-	cout << value << endl;
+
+	ofLogVerbose("volumeSlice") << "sagittalS= " << sagittalS;
+	ofLogVerbose("volumeSlice") << "coronalS= " << coronalS;
+	ofLogVerbose("volumeSlice") << "axialS= " << axialS;
+	ofLogVerbose("volumeSlice") << "voxelValue= " << value;
 	return value;
 }
 

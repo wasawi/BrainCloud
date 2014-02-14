@@ -10,7 +10,6 @@ vizManager::vizManager(){
 vizManager::~vizManager(){
 	delete guiVolume;
 	delete guiSliders;
-	talClient.close();
 }
 
 //--------------------------------------------------------------
@@ -105,7 +104,7 @@ void vizManager::update(){
 	updateSliders();
 	updatePads();
 	updateTalCoords();
-//	updateTalAtlasLabel();
+	updateTalAtlasLabel();
 	updateTalLabel();
 }
 
@@ -137,10 +136,9 @@ void vizManager::updateTalCoords(){
 
 //--------------------------------------------------------------
 void vizManager::updateTalLabel(){
-	vector <string> response;
-	response = talClient.get(talCoord);
-	for (int i=2; i<response.size(); i++) {
-		ofLogNotice("vizManager") << response[i];
+	outputLabels = talClient.get(talCoord);
+	for (int i=2; i<outputLabels.size(); i++) {
+		ofLogVerbose("vizManager") << outputLabels[i];
 	}
 }
 
@@ -242,12 +240,23 @@ void vizManager::draw(){
 		ofPopView();
 		ofPopView();
 		
-		
+		//Draw talairach pixel value and labels
 		ofPushStyle();
 		ofSetColor(voxelValue, 255);
-		ofRect(initX,initY+boxH*2+dist*3,boxH*2+dist*5,initY);
+		int tempY=initY+boxH*2+dist*3;
+		ofRect(initX,tempY,boxH*2+dist*5,dist);
+		ofSetColor(255);
+		tempY+=dist*2;
+		ofDrawBitmapString("Talairarch coordinate :", initX, tempY);
+		string str= "x= "+ ofToString(talCoord.x)+" y= "+ ofToString(talCoord.y)+" z= "+ ofToString(talCoord.z);
+		ofDrawBitmapString(str, initX, tempY+dist);
+		for (int i=0; i<outputLabels.size()-2; i++) {
+			vector<string> items = ofSplitString(outputLabels[i+2], ",");
+				for (int j=0; j<items.size(); j++) {
+					ofDrawBitmapString(items[j], initX + boxW+(dist*2+sliderW), tempY+i*dist+j*dist);
+				}
+		}
 		ofPopStyle();
-		
 	}
 }
 
@@ -482,7 +491,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 void vizManager::keyPressed(int key ){
     switch(key)
     {
-			
+/*			
 		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
@@ -513,7 +522,7 @@ void vizManager::keyPressed(int key ){
 			string lobe = talairachAtlas.getLobe(currentValue);
 			ofLogNotice("Talairach")<< lobe;
 			break;
-			/*
+			
 			 case OF_KEY_UP:
 			 if(bcameraMode)cam.getTarget().boom(-5);
 			 else {

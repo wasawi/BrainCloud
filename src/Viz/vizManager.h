@@ -90,6 +90,7 @@ private:
 	//Talairach Atlas
 	talairachLabels	talairachAtlas;
 	ofxTalairach talClient;
+	vector <string> outputLabels;
 	
 	//updates
 	void updateCoordinates();
