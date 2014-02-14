@@ -24,6 +24,58 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	boxH = bH;
 	
 }
+
+int volumeSlice::getVoxelValue(){
+	
+	int value	=0;
+	for(int z=0; z<volDepth; z++){
+		if (z==axialS){
+			for(int y=0; y<volHeight; y++){
+				if (y==coronalS) {
+					for(int x=0; x<volWidth; x++){
+						if (x==sagittalS){
+							int line = y*volWidth;
+							int page = z*volWidth*volHeight;
+							int i = x + line + page;					// the pointer position at Array
+							value= myData[i];							// the pixel on the image
+						}
+					}
+				}
+			}
+		}
+	}
+	
+
+	ofLogVerbose("volumeSlice") << "sagittalS= " << sagittalS;
+	ofLogVerbose("volumeSlice") << "coronalS= " << coronalS;
+	ofLogVerbose("volumeSlice") << "axialS= " << axialS;
+	ofLogVerbose("volumeSlice") << "voxelValue= " << value;
+	return value;
+}
+
+
+/*
+int volumeSlice::getPixelValue(){
+	for(int z=0; z<volDepth; z++){
+		if (z==axialS){
+			for(int y=0; y<volHeight; y++){
+				if (y==coronalS) {
+					for(int x=0; x<volWidth; x++){
+						if (x==sagittalS){
+							int line = y*volWidth;
+							int page = z*volWidth*volHeight;
+							int i = x + line + page;					// the pointer position at Array
+							return myData[i];							// the pixel on the image
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+ */
+
 //--------------------------------------------------------------
 void volumeSlice::draw(int zTexOffset, viewPoint vP){
 
@@ -54,7 +106,7 @@ void volumeSlice::draw(int zTexOffset, viewPoint vP){
 
 	}else if (myViewPoint==AXIAL){
 		axialS = zTexOffset;
-		drawAxial(halfD, halfH, zTexOffset);
+		drawAxial(halfW, halfH, zTexOffset);
 	}
 
 	
@@ -80,7 +132,6 @@ void volumeSlice::drawCoronal(float x, float y, int zTexOffset){
 				{
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					
 					int i = x + line + page;					// the pointer position at Array
 					myPixels[x+(z*volWidth)] = myData[i];		// the pixel on the image
 				}
@@ -123,7 +174,6 @@ void volumeSlice::drawSagittal(float x, float y, int zTexOffset){
 				if (x==zTexOffset){
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					
 					int i = x + line + page;					// the pointer position at Array
 					myPixels[z+(y*volDepth)] = myData[i];		// the pixel on the image
 				}
@@ -166,7 +216,6 @@ void volumeSlice::drawAxial(float x, float y, int zTexOffset){
 				{
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					
 					int i = x + line + page;					// the pointer position at Array
 					myPixels[x+line] = myData[i];				// the pixel on the image
 				}

@@ -1,8 +1,14 @@
 #include "tweetManager.h"
 
 //----------------------------------------------
-tweetManager::tweetManager()
-{
+tweetManager::tweetManager(){
+	float dim		= 50;
+	float xInit		= 4;
+	float CanvasW   = 550;
+	float ScrollW	= 40;
+	float WidgetW	= CanvasW -ScrollW - (xInit * 4);
+	bool  bsnap		= true;
+	
 }
 
 //----------------------------------------------
@@ -32,7 +38,7 @@ void tweetManager::update(){
 
 //--------------------------------------------------------------
 void tweetManager::draw(){
-	twitterClient.printDebugInfo();
+
 }
 
 //--------------------------------------------------------------
@@ -46,20 +52,64 @@ void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {
 }
 
 //--------------------------------------------------------------
-void tweetManager::setAllQueryTwittersAtGui(){
+void tweetManager::setOneTweetToGui(int tweetIndex){
+	int i = tweetIndex;
+	ofLogVerbose("tweetManager ") << "Start tweet ************************************************";
+	tweet = twitterClient.getTweetByIndex(i);
 	
-	float dim = 50;
-	float xInit		= 4;
-	float CanvasW   = 550;
-	float ScrollW	= 40;
-	float WidgetW = CanvasW -ScrollW - (xInit * 4);
-	bool  bsnap = true;
+	//		ofLogVerbose("tweetManager ") << "default? " << tweet.user.default_profile << endl;
+	//		ofLogVerbose("tweetManager ") << "defaultname? " << tweet.user.default_profile_image << endl;
+	//		ofLogVerbose("tweetManager ") << "geo_enabled? " << tweet.user.geo_enabled << endl;
+	
+	if ( /* here we will check if the tweet has brain coordinates*/ true ) {
+		
+		//Load Content	Tweets
+		//img = new ofImage();
+		//img->loadImage("images/bikers.jpg");
+		//string nameuser = tweet.user.screen_name;
+		//string myText = "\"It's a little-acknowledged fact, yet an unanswerable one, that states exist in great part to maintain a monopoly on violence\" - Deborah Orr";
+		
+		bool validinfo1 = false;
+		bool validinfo2 = false;
+		
+		string screen_name;
+		string tweetText;
+		
+		if ( sizeof(tweet.user.screen_name) ){
+			screen_name = tweet.user.screen_name;
+			validinfo1 = true;
+		}
+		
+		if ( sizeof(tweet.text) ){
+			tweetText = tweet.text;
+			validinfo2 = true;
+		}
+		ofLogVerbose("tweetManager ") << "tweetText = " << tweetText;
+		
+		if(tweet.isProfileImageLoaded()) {
+			
+			imgUsers.push_back(ofImage());
+			imgUsers.back().clone(tweet.user.profile_image);
+			if( validinfo1 && validinfo2 ){
+				guiManager::getInstance()->addTwitterContent(imgUsers.back(),
+															 tweet.user.name,
+															 tweet.user.screen_name,
+															 tweet.text);
+			}
+		}
+		ofLogVerbose("tweetManager ") << "End tweet=" << i << "validinfos = " << validinfo1 << ":" << validinfo2 << "sizes= " << tweet.text.length() << ":" << tweet.user.screen_name.length() << endl;
+		
+	}
+
+}
+
+//--------------------------------------------------------------
+void tweetManager::setAllTweetsToGui(){
 	
 	if(ofGetLogLevel()== OF_LOG_VERBOSE)cout << "GetTotalLoadedTweets =" << twitterClient.getTotalLoadedTweets() << endl;
 	
 	//Clean imgUsers vector and ask again all images
 	cleanImgUsers(imgUsers);
-
 	
 	for(int i=0; i< twitterClient.getTotalLoadedTweets(); i++){
 		
@@ -116,7 +166,7 @@ void tweetManager::setAllQueryTwittersAtGui(){
 void tweetManager::keyReleased(int key){
     
     if(key == 'q') {
-		setAllQueryTwittersAtGui();
+		setAllTweetsToGui();
     }
 /*
     if(key == 'l') {
@@ -190,5 +240,5 @@ void tweetManager::drawQueryTwitters(){
 	 ofDrawBitmapString(info, ofVec2f(20,20));
 	 */
 	
-    twitterClient.printDebugInfo();
+//    twitterClient.printDebugInfo();
 }

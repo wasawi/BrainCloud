@@ -6,7 +6,28 @@
 #include "volumeSlice.h"
 #include "myCamera.h"
 #include "ofUtils.h"
+#include "talairachLabels.h"
+#include "ofxTalairach.h"
 
+
+/*
+ 
+ ************* about MNI
+ Defined originally on the MNI 305 Template
+ MNI Coordinates (0,0,0) is AC (maybe)
+ and simply x,y,z offsets from this.
+ 
+ X (Right+ve,Left–ve)
+ Y (Anterior+ve,Posterior–ve)
+ Z (Superior+ve,Inferior–ve)
+ 
+ volume dimensions = 151x188x154
+ 
+ ************** about Talairach
+ volume dimensions = 141x172x110
+ Offset= -70, -102, -42
+ 
+ */
 
 
 class vizManager {
@@ -20,11 +41,14 @@ public:
 	void draw();
 	void initVolume();
 	void keyPressed  (int key);
-	
-	//UI to remove
+
+private:
+
+	// GUI
 	void saveCameraPosition();
 	void loadCameraPosition();
 	void guiEvent(ofxUIEventArgs &e);
+	void setup_guis();
 	void setup_guiVolume();
 	void setup_guiSliders();
 	ofxUICanvas *guiVolume;
@@ -37,24 +61,6 @@ public:
 	
 	//Volume Slice
 	volumeSlice	volume2D;
-	
-	//All Coordinates
-	int volWidth, volHeight, volDepth;		//volume dimensions in indices
-	int isliceX, isliceY, isliceZ;			//current slices in vol indices
-	float fsliceX, fsliceY, fsliceZ;		//current slices in floats (norm)
-	//	int coronal, sagittal, axial;		//int in 2dVolume
-	float coronalS, sagittalS, axialS;		//floats in slider
-	
-	/*
-	 Defined originally on the MNI 305 Template
-	 MNI Coordinates (0,0,0) is AC (maybe) 
-	 and simply x,y,z offsets from this.
-	 
-	 X (Right+ve,Left–ve)
-	 Y (Anterior+ve,Posterior–ve) 
-	 Z (Superior+ve,Inferior–ve)
-	*/
-	
 	
 	//XML settings
 	ofxXmlSettings XML;
@@ -78,21 +84,37 @@ public:
 
 	//Twitter objects
 	tweet3d  searchTweetByLocation();
-	
-private:
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
+	
+	//Talairach Atlas
+	talairachLabels	talairachAtlas;
+	ofxTalairach talClient;
+	vector <string> outputLabels;
+	
+	//updates
 	void updateCoordinates();
 	void updatePads();
 	void updateSliders();
+	void updateTalCoords();
+	void updateTalAtlasLabel();
+	void updateTalLabel();
 	
+	// Vis vars
 	bool	bDraw;
 	float	initX, initY;
 	float	sliderW;
     float	length;
-	float	boxW;
-	float	boxH;
+	float	boxW, boxH;
 	int		dist;
-//	int		slider;
+	
+	//All Coordinates
+	ofVec3f talCoord;
+	ofVec3f visCoord;
+	ofVec3f volCoord;
+	ofVec3f talOffset;
+//	ofVec3f volDim;
+	int volWidth, volHeight, volDepth;
+	int voxelValue;
 };
 
