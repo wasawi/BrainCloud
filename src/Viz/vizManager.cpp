@@ -2,17 +2,20 @@
 
 
 //----------------------------------------------
-vizManager::vizManager(){
+vizManager::vizManager()
+{
 }
 
 //----------------------------------------------
-vizManager::~vizManager(){
+vizManager::~vizManager()
+{
 	delete guiVolume;
 	delete guiSliders;
 }
 
 //--------------------------------------------------------------
-void vizManager::setup(){
+void vizManager::setup()
+{
 	// Talairach Atlas
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
 	talClient.setup("../../../data/brainData/talairach.jar");
@@ -50,8 +53,8 @@ void vizManager::setup(){
 }
 
 //--------------------------------------------------------------
-void vizManager::initVolume(){
-	
+void vizManager::initVolume()
+{
 //	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
 	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
@@ -77,7 +80,7 @@ void vizManager::initVolume(){
 			for(int x=0; x<volWidth; x++)
 			{
 				if (x<volWidth && y<volHeight)
-				{																// get values from image
+				{																	// get values from image
 					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
 					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
 					volumeData[i] = sample;
@@ -98,8 +101,8 @@ void vizManager::initVolume(){
 }
 
 //--------------------------------------------------------------
-void vizManager::update(){
-	
+void vizManager::update()
+{
 	updateCoordinates();
 	updateSliders();
 	updatePads();
@@ -109,8 +112,8 @@ void vizManager::update(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updateTalAtlasLabel(){
-
+void vizManager::updateTalAtlasLabel()
+{
 	voxelValue = volume2D.getVoxelValue();
 	//mapping from pixel value to index value on the Talairach Atlas
 	int mapValue= ofMap(voxelValue, 0, 255, 0, 1105);
@@ -122,8 +125,8 @@ void vizManager::updateTalAtlasLabel(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updateTalCoords(){
-
+void vizManager::updateTalCoords()
+{
 	talCoord.x = (volCoord.x + talOffset.x)*-1;
 	talCoord.y = volCoord.y + talOffset.y;
 	talCoord.z = volCoord.z + talOffset.z;
@@ -135,7 +138,8 @@ void vizManager::updateTalCoords(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updateTalLabel(){
+void vizManager::updateTalLabel()
+{
 	outputLabels = talClient.get(talCoord);
 	for (int i=2; i<outputLabels.size(); i++) {
 		ofLogVerbose("vizManager") << outputLabels[i];
@@ -143,7 +147,8 @@ void vizManager::updateTalLabel(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updateCoordinates(){
+void vizManager::updateCoordinates()
+{
 
 	// get the distance between the box and the volume
 	float halfW = (boxW - volWidth) /2;
@@ -172,8 +177,8 @@ void vizManager::updateCoordinates(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updateSliders(){
-
+void vizManager::updateSliders()
+{
 	//update sliders
 	ofxUISlider *slider;
 	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.x");
@@ -185,8 +190,8 @@ void vizManager::updateSliders(){
 }
 
 //--------------------------------------------------------------
-void vizManager::updatePads(){
-
+void vizManager::updatePads()
+{
 	//update pads
 	ofxUI2DPad *pad;
 	pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
@@ -199,7 +204,8 @@ void vizManager::updatePads(){
 
 
 //--------------------------------------------------------------
-void vizManager::draw(){
+void vizManager::draw()
+{
 	if (bDraw){
 		
 		//Draw box below
