@@ -48,6 +48,7 @@
 		9CCB7536CDBD99DE6594FFB1 /* volumeSlice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */; };
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
 		9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */; };
+		A75FA3B518ABCDE10030446A /* guiEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A75FA3B318ABCDE10030446A /* guiEvent.cpp */; };
 		A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F85DCF19C282DE4049266F1 /* tweet3d.cpp */; };
 		ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5613D5D24B00D8AD909F7E6A /* ofxUISortableList.cpp */; };
 		AE281BEBF3A00F1FC37F3DA0 /* ofxUIWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9345327AA463407B3DADBADE /* ofxUIWaveform.cpp */; };
@@ -249,6 +250,8 @@
 		A496AFCB33272C03A78C058C /* ofxUIScrollableSliderCanvas.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIScrollableSliderCanvas.h; path = ../../../addons/ofxUI/src/ofxUIScrollableSliderCanvas.h; sourceTree = SOURCE_ROOT; };
 		A5663FFE9C8ACE440C6C4946 /* FTPoint.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTPoint.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTPoint.h; sourceTree = SOURCE_ROOT; };
 		A64B8AA7481267CD4A76C16B /* ofxUITabBar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITabBar.cpp; path = ../../../addons/ofxUI/src/ofxUITabBar.cpp; sourceTree = SOURCE_ROOT; };
+		A75FA3B318ABCDE10030446A /* guiEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = guiEvent.cpp; path = GUI/guiEvent.cpp; sourceTree = "<group>"; };
+		A75FA3B418ABCDE10030446A /* guiEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = guiEvent.h; path = GUI/guiEvent.h; sourceTree = "<group>"; };
 		A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIEventArgs.cpp; path = ../../../addons/ofxUI/src/ofxUIEventArgs.cpp; sourceTree = SOURCE_ROOT; };
 		A912ED542BAC280CB1006F88 /* FTSimpleLayout.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTSimpleLayout.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTSimpleLayout.h; sourceTree = SOURCE_ROOT; };
 		AA19C7B5EB9660087056E75A /* forwards.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = forwards.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/forwards.h; sourceTree = SOURCE_ROOT; };
@@ -551,6 +554,8 @@
 		9C1E03ED636188A91CB83CA1 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
+				A75FA3B318ABCDE10030446A /* guiEvent.cpp */,
+				A75FA3B418ABCDE10030446A /* guiEvent.h */,
 				BD2ACB5D6839E81DE08349B7 /* guiManager.cpp */,
 				15FCE46D80D67D3661FD7433 /* guiManager.h */,
 			);
@@ -1055,6 +1060,7 @@
 				676FD24AABFA7205A11029FB /* ofxFTGLSimpleLayout.cpp in Sources */,
 				202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */,
 				7A5DDC993979FB5561F47EFE /* ofxVolumetrics.cpp in Sources */,
+				A75FA3B518ABCDE10030446A /* guiEvent.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

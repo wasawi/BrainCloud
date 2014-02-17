@@ -10,6 +10,7 @@ tweetManager::tweetManager(){
 	bool  bsnap		= true;
 	
 }
+
 //----------------------------------------------
 tweetManager::~tweetManager(){
 }
