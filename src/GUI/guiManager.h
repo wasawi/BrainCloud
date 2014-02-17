@@ -17,65 +17,89 @@ public:
 	static guiManager* getInstance();
 // end singleton
 
-	
-public:	
+public:
+
 	guiManager();
 	~guiManager();
-	
-public:
+
 	void setup();
 	void update();
 	void draw();
 	void exit();
+
+	// My public methods
+	void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
+	
+private:
+	
+	// Load GUIs
+	void setupTabBar();
 	void updateSlider();
 	void setupScrollCanvas();
-	void setupSearchInput();
-	void scrollCanvasEvent(ofxUIEventArgs &e);
-	void textInputEvent(ofxUIEventArgs &e);
+	void setupSearchCanvas();
+	void setupPostCanvas();
+	void changeTabBar();
 	
-	//add contents methods
-	void adjustContentstoGui(bool bsnap);
-	void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
-
-	//vector<tweet3d> getTweets();
-	
-	// Events
-//	ofEvent <string> newSearch;
-
-	int id;
-	string queryused;
-	string userid;
-	string message;
-	ofVec3f location3d;
-	
-	//TEST DATA TO LOAD
-	string myText;
-    ofImage *_img;
-    ofFilePath imgFile;
-
-private:
+	// Canvas
+	ofxUICanvas *tabCanvas;
+	ofxUICanvas *postCanvas;
 	ofxUICanvas *textInputCanvas;
 	ofxUIScrollableSliderCanvas *scrollCanvas;
-	bool bdrawPadding, bdrawGrid;
-	int gui_sizeHContent;
-	//vector<tweet3d> selectedTweets;
+
+	// Events
+	void scrollCanvasEvent(ofxUIEventArgs &e);
+	void textInputEvent(ofxUIEventArgs &e);
+	void tabCanvasEvent(ofxUIEventArgs &e);
+
+	// Tab
+	enum tabSelector
+	{
+		SEARCH,
+		POST,
+		FILTER
+	};
+	tabSelector myTabselector;
+	bool searchToggle;
+	bool postToggle;
 	
+	//vector<tweet3d> selectedTweets;
+	void adjustContentstoGui(bool bsnap);
+
+	// tabCanvas
+	float tabCanvasX;
+	float tabCanvasY;
+	float tabCanvasW;
+	float tabCanvasH;
+	float toggleW;
+	float toggleH;
+
+	// postCanvas
+	float postCanvasX;
+	float postCanvasY;
+	float postCanvasW;
+	float postCanvasH;
+	
+	// tweetsCanvas
 	float tweetsCanvasX;
 	float tweetsCanvasY;
 	float tweetsCanvasW;
 	float tweetsCanvasH;
-	bool bsnap;
-	float space;
-	
-	
+
+	// searchCanvas
 	float searchCanvasX;
 	float searchCanvasY;
 	float searchCanvasW;
 	float searchCanvasH;
+	
+	// search field
 	float textInputY;
+	float searchFieldX;
+	float searchFieldY;
 	float searchFieldW;
 	float searchFieldH;
-	
+
+	bool bsnap;
+	float space;
 	float dim;
 	float WidgetW;
 	float sliderW;
@@ -86,3 +110,16 @@ private:
 	float nResponsesW;
 };
 
+
+// ???
+/*	int id;
+ string queryused;
+ string userid;
+ string message;
+ ofVec3f location3d;
+ 
+ //TEST DATA TO LOAD
+ string myText;
+ ofImage *_img;
+ ofFilePath imgFile;
+ */

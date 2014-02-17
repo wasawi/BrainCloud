@@ -33,33 +33,52 @@ guiManager::~guiManager()
 
 void guiManager::setup(){
 
+	// tabCanvas
+	tabCanvasX		= 570;
+	tabCanvasY		= 50;
+	tabCanvasW		= 600;
+	tabCanvasH		= 32;
+	toggleW			= 100;
+	toggleH			= 30;
+	
+	// Search field
+	searchCanvasX	= tabCanvasX;
+	searchCanvasY	= tabCanvasY+tabCanvasH;
+	searchCanvasW	= tabCanvasW+sliderW;
+	searchCanvasH	= 36;
+
+	searchFieldX	= 0;
+	searchFieldY	= 16;
+	searchFieldW	= searchCanvasW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
+	searchFieldH	= 16;
+	
+	nResponses		= 10;
+	nResponsesX	= searchFieldW+10;
+	nResponsesY	= 6;
+	nResponsesW	= 50;
+
 	// Tweets Canvas
-	tweetsCanvasX	= 570;
-	tweetsCanvasY	= 110;
-	tweetsCanvasW	= 600;
-	tweetsCanvasH	= 400;
+	tweetsCanvasX	= tabCanvasX;
+	tweetsCanvasY	= searchCanvasY+searchCanvasH;
+	tweetsCanvasW	= tabCanvasW;
+	tweetsCanvasH	= 500;
 	bsnap			= false;
 	
 	dim				= 50;
 	sliderW			= 20;
-	WidgetW			= tweetsCanvasW-sliderW;
-	space = OFX_UI_GLOBAL_WIDGET_SPACING;
+	WidgetW			= tabCanvasW-sliderW;
+	space			= OFX_UI_GLOBAL_WIDGET_SPACING;
 	
+	// postCanvas
+	postCanvasX	= searchCanvasX;
+	postCanvasY	= searchCanvasY;
+	postCanvasW	= searchCanvasW;
+	postCanvasH	= 500;
 	
-	// Search field
-	searchCanvasX	= tweetsCanvasX;
-	searchCanvasY	= 60;
-	searchCanvasW	= tweetsCanvasW+sliderW;
-	searchCanvasH	= 50;
+	// Tab bar
+	myTabselector = SEARCH;
+	setupTabBar();
 
-	searchFieldW	= 470;
-	nResponses		= 15;
-	nResponsesX		= searchFieldW+10;
-	nResponsesY		= 18;
-	nResponsesW		= 50;
-
-	setupSearchInput();
-	setupScrollCanvas();
 }
 //--------------------------------------------------------------
 void guiManager::update(){
@@ -67,19 +86,90 @@ void guiManager::update(){
 }
 //--------------------------------------------------------------
 void guiManager::draw(){
-	ofPushStyle();
-	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	
-	ofPopStyle();
+//	ofPushStyle();
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+//	ofPopStyle();
 }
 
 //--------------------------------------------------------------
-void guiManager::setupSearchInput(){
+void guiManager::setupTabBar()
+{
+	tabCanvas = new ofxUICanvas(tabCanvasX, tabCanvasY,tabCanvasW, tabCanvasH);
+	tabCanvas->setDrawBack(false);
+	tabCanvas->setWidgetSpacing(1);
+	tabCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+	
+	//	(string _name, bool _value, float w, float h, float x, float y, bool _justifyLeft)
+	tabCanvas->addLabelToggle("Search", searchToggle, toggleW, toggleH, 0, 0, false);
+	tabCanvas->setWidgetSpacing(10);
+	tabCanvas->addWidgetRight(new ofxUILabelToggle("Post",
+												   postToggle,
+												   toggleW,
+												   toggleH,
+												   toggleW+20,
+												   0,
+												   OFX_UI_FONT_MEDIUM,
+												   false));
+	// set properties
+	ofColor selected = ofColor(10,10,10,100);
+	ofColor notselected = OFX_UI_COLOR_BACK_ALPHA;
+	ofxUILabelToggle *w = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+	w->setColorFill(selected);
+	w->setColorBack(notselected);
+	w->setDrawOutlineHighLight(false);
+	w->setDrawOutline(false);
+	w->setValue(true);
+	
+	w = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
+	w->setColorFill(selected);
+	w->setColorBack(notselected);
+	w->setDrawOutlineHighLight(false);
+	w->setDrawOutline(false);
+	
+	ofAddListener(tabCanvas->newGUIEvent,this,&guiManager::tabCanvasEvent);
+	
+	
+	// setup UIs
+	setupSearchCanvas();
+	setupScrollCanvas();
+	setupPostCanvas();
+}
+
+//--------------------------------------------------------------
+void guiManager::changeTabBar()
+{
+	if (myTabselector == SEARCH){
+		
+		postCanvas->setVisible(false);
+		scrollCanvas->setVisible(true);
+		textInputCanvas->setVisible(true);
+		
+	}else if(myTabselector == POST){
+
+		postCanvas->setVisible(true);
+		scrollCanvas->setVisible(false);
+		textInputCanvas->setVisible(false);
+
+	}else if(myTabselector == FILTER){
+		
+	}
+}
+
+
+//--------------------------------------------------------------
+void guiManager::setupPostCanvas(){
+    
+	postCanvas = new ofxUICanvas(postCanvasX, postCanvasY,postCanvasW, postCanvasH);
+	postCanvas->setVisible(false);
+	
+}
+
+//--------------------------------------------------------------
+void guiManager::setupSearchCanvas(){
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
-	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_LARGE);
+	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 //	textInputCanvas->setDrawBack(true);
-	//	ofxUITextInput(string _name, string _textstring, float w, float h, float x, float y, int _size) :
 /*	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT",
 													   "",
 													   searchFieldW,
@@ -88,15 +178,13 @@ void guiManager::setupSearchInput(){
 													   0,
 													   OFX_UI_FONT_LARGE));
 */
+	// (string _name, string _textstring, float w, float h, float x, float y, int _size)
+	textInputCanvas->addTextInput("TEXT INPUT", "Search ", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
 	
-	textInputCanvas->addTextInput("TEXT INPUT", "Search ", searchFieldW)->setAutoClear(true);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 
-	
-//	textInputCanvas->addNumberDialer("responses", 0, 100, nResponsesX,0, nResponses, 0)->getLabelWidget();
 	// ofxUINumberDialer(float x, float y, float _min, float _max, float _value, int _precision, string _name, int _size)
-
-	textInputCanvas->addWidget( new ofxUINumberDialer(nResponsesX,
+/*	textInputCanvas->addWidget( new ofxUINumberDialer(nResponsesX,
 														   nResponsesY,
 														   0,
 														   200,
@@ -104,7 +192,7 @@ void guiManager::setupSearchInput(){
 														   0,
 														   "responses",
 														   OFX_UI_FONT_MEDIUM));
-
+*/
 	ofAddListener(textInputCanvas->newGUIEvent,this,&guiManager::textInputEvent);
 }
 
@@ -167,13 +255,16 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 					   OFX_UI_ALIGN_FREE, false)->setDrawBack(false);
 
 	scrollCanvas->addSpacer( WidgetW, 1 );
-	adjustContentstoGui(false);
+	adjustContentstoGui(bsnap);
 }
 
 //--------------------------------------------------------------
 void guiManager::exit(){
+	delete tabCanvas;
+	delete postCanvas;
 	delete scrollCanvas;
-    
+	delete textInputCanvas;
+	
 	//Check number of Images createrd and delete them here
 }
 //--------------------------------------------------------------
@@ -221,6 +312,42 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 	 }
 }
 
+//--------------------------------------------------------------
+void guiManager::tabCanvasEvent(ofxUIEventArgs &e)
+{
+	string name = e.widget->getName();
+	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+	
+	if(name == "Search"){
+		myTabselector=SEARCH;
 
+		searchToggle = true;
+		postToggle=false;
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+		toggle->setValue(searchToggle);
+
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
+		toggle->setValue(postToggle);
+		
+		changeTabBar();
+		ofLogVerbose("tabCanvasEvent") << "searchToggle: " << toggle->getValue();
+
+	}else if (name == "Post"){
+		myTabselector=POST;
+		
+		postToggle=true;
+		searchToggle = false;
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+		toggle->setValue(searchToggle);
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
+		toggle->setValue(postToggle);
+		
+		changeTabBar();
+		ofLogVerbose("tabCanvasEvent") << "postToggle: " << toggle->getValue();
+	}
+}
 
 

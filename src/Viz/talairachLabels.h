@@ -16,14 +16,7 @@
  
  */
  
-struct TaliarchData{
-	int		index;
-	string	hemisphere;
-	string	lobe;
-	string	gyrus;
-	string	tissueType;
-	string	cellType;
-};
+
 
 class talairachLabels{
 public:
@@ -46,6 +39,15 @@ public:
 	
 protected:
 private:
+	
+	struct TaliarchData{
+		int		index;
+		string	hemisphere;
+		string	lobe;
+		string	gyrus;
+		string	tissueType;
+		string	cellType;
+	};
 	
 	string myFilePath;
 	vector<TaliarchData> data;
