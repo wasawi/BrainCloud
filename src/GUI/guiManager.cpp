@@ -32,25 +32,27 @@ guiManager::~guiManager()
 //--------------------------------------------------------------
 
 void guiManager::setup(){
-
+	
+	int lineHeight = 25;
+	
 	// tabCanvas
 	tabCanvasX		= 570;
 	tabCanvasY		= 50;
 	tabCanvasW		= 600;
-	tabCanvasH		= 32;
+	tabCanvasH		= lineHeight+OFX_UI_GLOBAL_SPACING_HEIGHT*2;
 	toggleW			= 100;
-	toggleH			= 30;
+	toggleH			= lineHeight;
 	
 	// Search field
 	searchCanvasX	= tabCanvasX;
-	searchCanvasY	= tabCanvasY+tabCanvasH;
-	searchCanvasW	= tabCanvasW+sliderW;
-	searchCanvasH	= 36;
+	searchCanvasY	= tabCanvasY+tabCanvasH-1;
+	searchCanvasW	= tabCanvasW;
+	searchCanvasH	= lineHeight+OFX_UI_GLOBAL_WIDGET_SPACING*2;
 
 	searchFieldX	= 0;
-	searchFieldY	= 16;
+	searchFieldY	= lineHeight;
 	searchFieldW	= searchCanvasW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
-	searchFieldH	= 16;
+	searchFieldH	= lineHeight;
 	
 	nResponses		= 10;
 	nResponsesX	= searchFieldW+10;
@@ -66,9 +68,9 @@ void guiManager::setup(){
 	
 	dim				= 50;
 	sliderW			= 20;
-	WidgetW			= tabCanvasW-sliderW;
 	space			= OFX_UI_GLOBAL_WIDGET_SPACING;
-	
+	WidgetW			= tabCanvasW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
+
 	// postCanvas
 	postCanvasX	= searchCanvasX;
 	postCanvasY	= searchCanvasY;
@@ -106,25 +108,26 @@ void guiManager::setupTabBar()
 												   postToggle,
 												   toggleW,
 												   toggleH,
-												   toggleW+20,
+												   toggleW,
 												   0,
 												   OFX_UI_FONT_MEDIUM,
 												   false));
 	// set properties
-	ofColor selected = ofColor(10,10,10,100);
+	ofColor selected = OFX_UI_COLOR_BACK;
 	ofColor notselected = OFX_UI_COLOR_BACK_ALPHA;
 	ofxUILabelToggle *w = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
 	w->setColorFill(selected);
 	w->setColorBack(notselected);
 	w->setDrawOutlineHighLight(false);
 	w->setDrawOutline(false);
-	w->setValue(true);
+	w->setValue(true);						// we will use XML settings for this
 	
 	w = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
 	w->setColorFill(selected);
 	w->setColorBack(notselected);
 	w->setDrawOutlineHighLight(false);
 	w->setDrawOutline(false);
+	w->setValue(false);						// we will use XML settings for this
 	
 	ofAddListener(tabCanvas->newGUIEvent,this,&guiManager::tabCanvasEvent);
 	
@@ -166,9 +169,16 @@ void guiManager::setupPostCanvas(){
 
 //--------------------------------------------------------------
 void guiManager::setupSearchCanvas(){
+
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+//	ofColor back = ofColor(10,10,10,150);
+//	textInputCanvas->setColorBack(back);
+	ofLogNotice("textInputCanvas.getGlobalSpacerHeight") << textInputCanvas->getGlobalSpacerHeight();
+	ofLogNotice("textInputCanvas.getPadding") << textInputCanvas->getPadding();
+	ofLogNotice("textInputCanvas.getWidgetSpacing") << textInputCanvas->getWidgetSpacing();
+
 //	textInputCanvas->setDrawBack(true);
 /*	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT",
 													   "",
@@ -178,10 +188,10 @@ void guiManager::setupSearchCanvas(){
 													   0,
 													   OFX_UI_FONT_LARGE));
 */
+
 	// (string _name, string _textstring, float w, float h, float x, float y, int _size)
-	textInputCanvas->addTextInput("TEXT INPUT", "Search ", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
-	
-	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+	textInputCanvas->addTextInput("TEXT INPUT", "Type here ", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
+//	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 
 	// ofxUINumberDialer(float x, float y, float _min, float _max, float _value, int _precision, string _name, int _size)
 /*	textInputCanvas->addWidget( new ofxUINumberDialer(nResponsesX,
@@ -203,8 +213,13 @@ void guiManager::setupScrollCanvas(){
 	// Canvas for Tweets
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH, sliderW);
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
-	//gui->setScrollAreaHeight(tweetsCanvasH);
 	scrollCanvas->setScrollableDirections(false, true);
+//	scrollCanvas->addSpacer( WidgetW, 1 );
+	
+	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
+	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
+	ofLogNotice("scrollCanvas.getWidgetSpacing") << scrollCanvas->getWidgetSpacing();
+
 	
 	ofAddListener(scrollCanvas->newGUIEvent,this,&guiManager::scrollCanvasEvent);
 	adjustContentstoGui(bsnap);
@@ -222,14 +237,15 @@ void guiManager::adjustContentstoGui(bool _bsnap){
 }
 
 void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText){
-	
+
 	float lineHeight = scrollCanvas->getFont()->getLineHeight();
-	scrollCanvas->addWidgetDown( new ofxUIImage( 0, space, dim, dim, img, "IMAGE", false));
-//    ofxUITextArea(string _name, string _textstring, float w, float h = 0, float x = 0, float y = 0, int _size = OFX_UI_FONT_MEDIUM);
-	
+	//(float x, float y, float w, float h, ofImage _image, string _name, bool _showLabel);
+	scrollCanvas->addWidgetDown( new ofxUIImage( 0, 0, dim, dim, img, "IMAGE", false));
+
+	//(string _name, string _textstring, float w, float h = 0, float x = 0, float y = 0, int _size = OFX_UI_FONT_MEDIUM);
 	scrollCanvas->addWidgetRight( new ofxUITextArea("NAME",
 										   name,
-										   (WidgetW - dim)/3,
+										   (WidgetW - dim)/2,
 										   0,
 										   0,
 										   dim*-1. - space,
@@ -238,7 +254,7 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 
 	scrollCanvas->addWidgetDown( new ofxUITextArea("USER",
 										   "@"+user_name,
-										   (WidgetW - dim)/3,
+										   (WidgetW - dim)/2,
 										   0,
 										   dim + space*2,
 										   0,
@@ -250,7 +266,7 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 										  WidgetW,
 										  0,
 										  space,
-										  (lineHeight*-2)+dim+space*2,
+										  lineHeight*-1.8+dim,	// <- this has to be fixed
 										  OFX_UI_FONT_MEDIUM ),
 					   OFX_UI_ALIGN_FREE, false)->setDrawBack(false);
 
@@ -283,7 +299,7 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
 		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
 			ofLogVerbose("searchField") << "ON ENTER: ";
-			//			ofUnregisterKeyEvents((guiManager*)this);
+			//ofUnregisterKeyEvents((guiManager*)this);
 			static guiEvent newEvent;
 			newEvent.message =  textinput->getTextString();
 			newEvent.value	= nResponses;
@@ -293,7 +309,7 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 			ofLogVerbose("searchField") << "ON FOCUS: ";
 //			textinput->
 //			textinput->recalculateDisplayString();
-			//			ofRegisterKeyEvents((guiManager*)this);
+//			ofRegisterKeyEvents((guiManager*)this);
 			textinput->setTextString("");
 		
 		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){

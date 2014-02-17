@@ -17,7 +17,7 @@ void vizManager::setup()
 {
 	// Talairach Atlas
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
-	talClient.setup("../../../data/brainData/talairach.jar");
+//	talClient.setup("../../../data/brainData/talairach.jar");
 	outputLabels.resize(10);
 	
 	// TODO: Remove this from here
