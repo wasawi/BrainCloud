@@ -8,3 +8,4 @@
 #include "guiEvent.h"
 
 ofEvent <guiEvent> guiEvent::newSearch;
+ofEvent <guiEvent> guiEvent::gotTweet;

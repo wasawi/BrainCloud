@@ -129,7 +129,6 @@ void guiManager::setupTabBar()
 	
 	ofAddListener(tabCanvas->newGUIEvent,this,&guiManager::tabCanvasEvent);
 	
-	
 	// setup UIs
 	setupSearchCanvas();
 	setupScrollCanvas();
@@ -320,7 +319,6 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 			newEvent.message =  textinput->getTextString();
 			newEvent.value	= nResponses;
 			ofNotifyEvent(guiEvent::newSearch, newEvent);
-		
 		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
 			ofLogVerbose("searchField") << "ON FOCUS: ";
 //			textinput->

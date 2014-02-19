@@ -14,6 +14,8 @@ public:
     string  message;
 	int		value;
 
+	// my events
     static ofEvent <guiEvent> newSearch;
+	static ofEvent <guiEvent> gotTweet;
 };
 

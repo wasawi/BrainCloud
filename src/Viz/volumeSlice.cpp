@@ -13,6 +13,7 @@ volumeSlice::volumeSlice()
 volumeSlice::~volumeSlice()
 {
 }
+
 //--------------------------------------------------------------
 void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, float bH)
 {
@@ -31,6 +32,7 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	halfD = (boxW - volDepth) /2;
 }
 
+//--------------------------------------------------------------
 int volumeSlice::getVoxelValue(){
 	
 	int value	=0;
@@ -57,29 +59,6 @@ int volumeSlice::getVoxelValue(){
 	ofLogVerbose("volumeSlice") << "voxelValue= " << value;
 	return value;
 }
-
-
-/*
-int volumeSlice::getPixelValue(){
-	for(int z=0; z<volDepth; z++){
-		if (z==axialS){
-			for(int y=0; y<volHeight; y++){
-				if (y==coronalS) {
-					for(int x=0; x<volWidth; x++){
-						if (x==sagittalS){
-							int line = y*volWidth;
-							int page = z*volWidth*volHeight;
-							int i = x + line + page;					// the pointer position at Array
-							return myData[i];							// the pixel on the image
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
-}
- */
 
 //--------------------------------------------------------------
 void volumeSlice::redraw(int zTexOffset, viewPoint vP){

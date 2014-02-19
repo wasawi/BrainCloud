@@ -21,36 +21,27 @@ public:
 	void searchQuery(guiEvent &e);
 	void setupTwitter();
 	void drawQueryTwitters();
-	void setOneTweetToGui(int tweetIndex);
-	void setAllTweetsToGui();
+	void setOneTweetToGui(guiEvent &e);
 	void cleanImgUsers( std::vector <ofImage> & a );
 		
-	//query eaxmple
+		//Tweeter objects
 		ofxTwitter twitterClient;
 		ofxTwitterTweet tweet;
-		int actualTweet;
-		bool reloadTweet;		
-		ofImage userImage;
-		vector<ofImage> imgUsers;
+	
+//		int actualTweet;
+//		bool reloadTweet;
+//		ofImage userImage;
+//		vector<ofImage> imgUsers;
 	
 private:
-		ofxTwitter3d mytwitter3d;
-		vector<tweet3d> alltweets;
-		vector<tweet3d> selectedTweets;
+//		ofxTwitter3d mytwitter3d;
+//		vector<tweet3d> alltweets;
+//		vector<tweet3d> selectedTweets;
 		
-		ofxXmlSettings xmltwitter;
+//		ofxXmlSettings xmltwitter;
 
-	string screen_name;
-	string myText;
-	string name;
-
-	
-	float dim;
-	float xInit;
-	float CanvasW;
-	float ScrollW;
-	float WidgetW;
-	bool  bsnap;
-	
+//	string screen_name;
+//	string myText;
+//	string name;
 	
 };
