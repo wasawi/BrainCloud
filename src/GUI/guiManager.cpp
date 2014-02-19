@@ -33,7 +33,8 @@ guiManager::~guiManager()
 
 void guiManager::setup(){
 	
-	int lineHeight = 25;
+	int lineHeight = 35;
+	int totalHeight = 500;
 	
 	// tabCanvas
 	tabCanvasX		= 570;
@@ -44,7 +45,7 @@ void guiManager::setup(){
 	toggleH			= lineHeight;
 	
 	// Search field
-	searchCanvasX	= tabCanvasX;
+	searchCanvasX	= tabCanvasX+1;
 	searchCanvasY	= tabCanvasY+tabCanvasH-1;
 	searchCanvasW	= tabCanvasW;
 	searchCanvasH	= lineHeight+OFX_UI_GLOBAL_WIDGET_SPACING*2;
@@ -60,27 +61,27 @@ void guiManager::setup(){
 	nResponsesW	= 50;
 
 	// Tweets Canvas
-	tweetsCanvasX	= tabCanvasX;
-	tweetsCanvasY	= searchCanvasY+searchCanvasH;
-	tweetsCanvasW	= tabCanvasW;
-	tweetsCanvasH	= 500;
-	bsnap			= false;
-	
 	dim				= 50;
 	sliderW			= 20;
 	space			= OFX_UI_GLOBAL_WIDGET_SPACING;
-	WidgetW			= tabCanvasW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
+	WidgetW			= tabCanvasW-sliderW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
+	bsnap			= false;
+	
+	tweetsCanvasX	= searchCanvasX;
+	tweetsCanvasY	= searchCanvasY+searchCanvasH;
+	tweetsCanvasW	= tabCanvasW-sliderW;
+	tweetsCanvasH	= totalHeight+tabCanvasH;
 
 	// postCanvas
 	postCanvasX	= searchCanvasX;
 	postCanvasY	= searchCanvasY;
 	postCanvasW	= searchCanvasW;
-	postCanvasH	= 500;
+	postCanvasH	= totalHeight+tabCanvasH+searchCanvasH;
+	postFieldH	= lineHeight*2;
 	
 	// Tab bar
 	myTabselector = SEARCH;
 	setupTabBar();
-
 }
 //--------------------------------------------------------------
 void guiManager::update(){
@@ -113,20 +114,17 @@ void guiManager::setupTabBar()
 												   OFX_UI_FONT_MEDIUM,
 												   false));
 	// set properties
-	ofColor selected = OFX_UI_COLOR_BACK;
-	ofColor notselected = OFX_UI_COLOR_BACK_ALPHA;
 	ofxUILabelToggle *w = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
-	w->setColorFill(selected);
-	w->setColorBack(notselected);
-	w->setDrawOutlineHighLight(false);
-	w->setDrawOutline(false);
+	ofColor back = ofColor(0,0,0,55);		// OFX_UI_COLOR_PADDED / 2
+	w->setColorFill(back);
+	w->setColorFillHighlight(back);
+	w->setColorBack(back);
 	w->setValue(true);						// we will use XML settings for this
 	
 	w = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
-	w->setColorFill(selected);
-	w->setColorBack(notselected);
-	w->setDrawOutlineHighLight(false);
-	w->setDrawOutline(false);
+	w->setColorFill(back);
+	w->setColorFillHighlight(back);
+	w->setColorBack(back);
 	w->setValue(false);						// we will use XML settings for this
 	
 	ofAddListener(tabCanvas->newGUIEvent,this,&guiManager::tabCanvasEvent);
@@ -164,7 +162,21 @@ void guiManager::setupPostCanvas(){
     
 	postCanvas = new ofxUICanvas(postCanvasX, postCanvasY,postCanvasW, postCanvasH);
 	postCanvas->setVisible(false);
+	postCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+	postCanvas->addTextInput("PostField", "Type here ", searchFieldW, postFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
 	
+	postCanvas->addTextInput("URL", "URL here ", searchFieldW, postFieldH, searchFieldX, 0)->setAutoClear(true);
+	
+	postCanvas->addWidgetDown(new ofxUILabelButton("Post",
+												   postToggle,
+												   toggleW,
+												   toggleH,
+												   toggleW,
+												   0,
+												   OFX_UI_FONT_MEDIUM,
+												   false));
+
+	ofAddListener(postCanvas->newGUIEvent,this,&guiManager::postCanvasEvent);
 }
 
 //--------------------------------------------------------------
@@ -173,8 +185,6 @@ void guiManager::setupSearchCanvas(){
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
-//	ofColor back = ofColor(10,10,10,150);
-//	textInputCanvas->setColorBack(back);
 	ofLogNotice("textInputCanvas.getGlobalSpacerHeight") << textInputCanvas->getGlobalSpacerHeight();
 	ofLogNotice("textInputCanvas.getPadding") << textInputCanvas->getPadding();
 	ofLogNotice("textInputCanvas.getWidgetSpacing") << textInputCanvas->getWidgetSpacing();
@@ -238,6 +248,12 @@ void guiManager::adjustContentstoGui(bool _bsnap){
 
 void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText){
 
+	
+	// clean emojis:
+	name = removeEmojis(name);
+	user_name = removeEmojis(user_name);
+	tweetText = removeEmojis(tweetText);
+	
 	float lineHeight = scrollCanvas->getFont()->getLineHeight();
 	//(float x, float y, float w, float h, ofImage _image, string _name, bool _showLabel);
 	scrollCanvas->addWidgetDown( new ofxUIImage( 0, 0, dim, dim, img, "IMAGE", false));
@@ -367,3 +383,62 @@ void guiManager::tabCanvasEvent(ofxUIEventArgs &e)
 }
 
 
+//--------------------------------------------------------------
+void guiManager::postCanvasEvent(ofxUIEventArgs &e)
+{
+	string name = e.widget->getName();
+	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+	
+	if(name == "Search"){
+		myTabselector=SEARCH;
+		
+		searchToggle = true;
+		postToggle=false;
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+		toggle->setValue(searchToggle);
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
+		toggle->setValue(postToggle);
+		
+		changeTabBar();
+		ofLogVerbose("tabCanvasEvent") << "searchToggle: " << toggle->getValue();
+		
+	}else if (name == "Post"){
+		myTabselector=POST;
+		
+		postToggle=true;
+		searchToggle = false;
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+		toggle->setValue(searchToggle);
+		
+		toggle = (ofxUILabelToggle *)  tabCanvas->getWidget("Post");
+		toggle->setValue(postToggle);
+		
+		changeTabBar();
+		ofLogVerbose("tabCanvasEvent") << "postToggle: " << toggle->getValue();
+	}
+}
+
+//--------------------------------------------------------------
+string guiManager::removeEmojis(string s){
+	
+	string returnString = "";
+	int l = s.length();
+	int i;
+	
+	// for each byte
+	for (i = 0; i < l; ++i) {
+		char mychar = s[i];
+		string binary = ofToBinary(mychar);
+		binary =  binary.substr(0,4);
+		if (binary == "1111"){
+			i+=3;		//jump to next char
+			//			cout << "Found Emoji, killing... " << endl;
+		}else{
+			returnString += mychar;
+		}
+	}
+	return returnString;
+}

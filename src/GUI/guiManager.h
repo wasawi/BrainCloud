@@ -47,9 +47,10 @@ private:
 	ofxUIScrollableSliderCanvas *scrollCanvas;
 
 	// Events
+	void tabCanvasEvent(ofxUIEventArgs &e);
 	void scrollCanvasEvent(ofxUIEventArgs &e);
 	void textInputEvent(ofxUIEventArgs &e);
-	void tabCanvasEvent(ofxUIEventArgs &e);
+	void postCanvasEvent(ofxUIEventArgs &e);
 
 	// Tab
 	enum tabSelector
@@ -64,7 +65,8 @@ private:
 	
 	//vector<tweet3d> selectedTweets;
 	void adjustContentstoGui(bool bsnap);
-
+	string removeEmojis(string s);
+	
 	// tabCanvas
 	float tabCanvasX;
 	float tabCanvasY;
@@ -78,6 +80,7 @@ private:
 	float postCanvasY;
 	float postCanvasW;
 	float postCanvasH;
+	float postFieldH;
 	
 	// tweetsCanvas
 	float tweetsCanvasX;
