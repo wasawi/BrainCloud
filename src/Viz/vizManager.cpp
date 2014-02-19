@@ -79,7 +79,7 @@ void vizManager::initVolume()
 			for(int x=0; x<volWidth; x++)
 			{
 				if (x<volWidth && y<volHeight)
-				{																	// get values from image
+				{																// get values from image
 					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
 					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
 					volumeData[i] = sample;
@@ -103,6 +103,7 @@ void vizManager::initVolume()
 void vizManager::update()
 {
 	updateCoordinates();
+	updateSlices();
 	updateSliders();
 	updatePads();
 	updateTalCoords();
@@ -126,6 +127,7 @@ void vizManager::updateTalAtlasLabel()
 //--------------------------------------------------------------
 void vizManager::updateTalCoords()
 {
+	// transform my coordinates to Talairach coordinates using the offstet provided in nifti headers
 	talCoord.x = (volCoord.x + talOffset.x)*-1;
 	talCoord.y = volCoord.y + talOffset.y;
 	talCoord.z = volCoord.z + talOffset.z;
@@ -133,7 +135,6 @@ void vizManager::updateTalCoords()
 	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
 	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
 	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
-
 }
 
 //--------------------------------------------------------------
@@ -148,7 +149,6 @@ void vizManager::updateTalLabel()
 //--------------------------------------------------------------
 void vizManager::updateCoordinates()
 {
-
 	// get the distance between the box and the volume
 	float halfW = (boxW - volWidth) /2;
 	float halfH = (boxW - volHeight) /2;
@@ -160,19 +160,27 @@ void vizManager::updateCoordinates()
 
 	// this must be debugged!!! probably is not exactly correct !!
 	// we need to clamp the output of the map because there are no boxels between the volume and the box.
-	// therefore clamp from 0 to volW/H/D -1! because the number of
+	// therefore clamp from 0 to volW/H/D -1! because the for runs while i < volW
 	volCoord.x		= floor (ofMap(visCoord.x,		-boxW/2, boxW/2, -halfW, volWidth-1 + halfW));
-	volCoord.x		= ofClamp(volCoord.x,0, volWidth-1);
+	volCoordClamp.x		= ofClamp(volCoord.x,0, volWidth-1);
 	
 	volCoord.y		= floor (ofMap(visCoord.y,		-boxW/2, boxW/2, -halfH, volHeight-1 + halfH));
-	volCoord.y		= ofClamp(volCoord.y,0, volHeight-1);
+	volCoordClamp.y		= ofClamp(volCoord.y,0, volHeight-1);
 
 	volCoord.z		= floor (ofMap(visCoord.z,		-boxW/2, boxW/2, -halfD, volDepth-1 + halfD));
-	volCoord.z		= ofClamp(volCoord.z,0, volDepth-1);
+	volCoordClamp.z		= ofClamp(volCoord.z,0, volDepth-1);
 	
 	ofLogVerbose("vizManager") <<	"volCoord.x " << volCoord.x;
 	ofLogVerbose("vizManager") <<	"volCoord.y " << volCoord.y;
 	ofLogVerbose("vizManager") <<	"volCoord.z " << volCoord.z;
+}
+
+//--------------------------------------------------------------
+void vizManager::updateSlices()
+{
+	volume2D.redraw(volCoordClamp.y, CORONAL);
+	volume2D.redraw(volCoordClamp.x, SAGITTAL);
+	volume2D.redraw(volCoordClamp.z, AXIAL);
 }
 
 //--------------------------------------------------------------
@@ -216,16 +224,16 @@ void vizManager::draw()
 		//Draw Slices
 		ofPushView();
 		ofTranslate(dist, dist);
-		volume2D.draw							(volCoord.y, CORONAL);
+		volume2D.drawCoronal(0, 0, volCoord.y);
 		
 		ofPushView();
 		ofTranslate( boxH+ (dist+sliderW), 0);
-		volume2D.draw							(volCoord.x, SAGITTAL);
+		volume2D.drawSagittal(0, 0, volCoord.x);
 		ofPopView();
 		
 		ofPushView();
 		ofTranslate( 0, boxH+ dist);
-		volume2D.draw							(volCoord.z, AXIAL);
+		volume2D.drawAxial(0, 0, volCoord.z);
 		ofPopView();
 		
 		// Draw Volume

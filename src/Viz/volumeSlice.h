@@ -18,17 +18,21 @@ public:
 	volumeSlice();
     virtual ~volumeSlice();
 	void setup(unsigned char * data, int w, int h, int d, float bW, float bH);
-	void draw(int zTexOffset, viewPoint vP);
-	void drawSagittal(float x, float y, int zTexOffset);
-	void drawAxial(float x, float y, int zTexOffset);
-	void drawCoronal(float x, float y, int zTexOffset);
+	void redraw(int zTexOffset, viewPoint vP);
+	void drawSagittal(float x, float y, float z);
+	void drawAxial(float x, float y, float z);
+	void drawCoronal(float x, float y, float z);
 	int getVoxelValue();
 	
 protected:
 private:
+	void drawBox();
+	void redrawSagittal(int zTexOffset);
+	void redrawAxial(int zTexOffset);
+	void redrawCoronal(int zTexOffset);
+
 	
 	unsigned char * myData;
-	ofImage myImage;
 	ofPixels myPixels;
 	viewPoint myViewPoint;
 	int volWidth, volHeight, volDepth;
@@ -44,6 +48,10 @@ private:
 	int axialS;
 	int sagittalS;
 	int coronalS;
+	
+	ofImage coronal;
+	ofImage sagittal;
+	ofImage axial;
 	
 	ofColor lineColor;
 

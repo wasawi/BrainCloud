@@ -94,6 +94,7 @@ private:
 	
 	//updates
 	void updateCoordinates();
+	void updateSlices();
 	void updatePads();
 	void updateSliders();
 	void updateTalCoords();
@@ -112,6 +113,7 @@ private:
 	ofVec3f talCoord;
 	ofVec3f visCoord;
 	ofVec3f volCoord;
+	ofVec3f volCoordClamp;
 	ofVec3f talOffset;
 //	ofVec3f volDim;
 	int volWidth, volHeight, volDepth;

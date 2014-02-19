@@ -73,7 +73,6 @@ void myCamera::reset(){
 	resetTransform();
 	setPosition(0, 0, lastDistance);
 	
-	
 	xRot = 0;
 	yRot = 0;
 	zRot = 0;
