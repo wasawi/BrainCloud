@@ -12,12 +12,12 @@ void ofApp::setup()
 	ofSetFrameRate(30);
 	
 	ofBackground(100);
+	    ofBackgroundGradient(ofColor::white,ofColor::black);
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
 	myTwitterManager.setup(CONSUMER_KEY, CONSUMER_SECRET);
-	guiManager::getInstance()->setup();
-	//	myGuiManager.setup();
+	guiManager::getInstance();
 	myVizManager.setup();
 }
 
@@ -40,7 +40,6 @@ void ofApp::draw()
 void ofApp::exit()
 {
 
-	guiManager::getInstance()->exit();
 }
 
 //--------------------------------------------------------------

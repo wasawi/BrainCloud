@@ -67,12 +67,13 @@ private:
 	string message;
 	
 	//Camera
-    myCamera cam;
+    ofEasyCam cam;
     ofQuaternion camOrientation;
 	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
-	float rot;
+	float rotation;
+	bool rotate;
 	float latitude;
 	
 	//Volume Rendering
@@ -115,6 +116,9 @@ private:
 	ofVec3f volCoord;
 	ofVec3f volCoordClamp;
 	ofVec3f talOffset;
+	int TalDrawX;
+	int TalDrawy;
+	
 //	ofVec3f volDim;
 	int volWidth, volHeight, volDepth;
 	int voxelValue;

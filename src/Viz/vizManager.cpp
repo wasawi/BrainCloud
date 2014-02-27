@@ -22,7 +22,7 @@ void vizManager::setup()
 	
 	// TODO: Remove this from here
 	//	ofEnableSmoothing();
-	initX=50;
+	initX=0;
 	initY=50;
 	sliderW = 20;
 	dist = 20;
@@ -34,12 +34,15 @@ void vizManager::setup()
 	visCoord.z = volDepth /2;
 	
 	talOffset= ofVec3f(-70,-102,-42);
-
+	TalDrawX	= boxW+dist*3+sliderW;
+	TalDrawy	=initY+dist;
+	
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
-	cam.disableMouseInput();
-	rot = .00000001;
+//	cam.disableMouseInput();
+	rotation = .00000001;
+	rotate = false;
 //	cam.setFov(90.);
 //	cam.disableMouseInput();
 
@@ -214,12 +217,23 @@ void vizManager::updatePads()
 void vizManager::draw()
 {
 	if (bDraw){
-		
+		// Draw Volume
+		ofSetColor(255);
+		cam.begin();
+		ofRotateZ(rotation);
+		if (rotate) rotation++;
+		ofPushMatrix();										//	save the old coordinate system
+		ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
+		myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
+		ofPopMatrix();										//	restore the previous coordinate system
+		cam.end();
+		myVolume.draw(0, 0, ofGetWidth(), ofGetHeight());
+
 		//Draw box below
 		ofPushView();
 		ofTranslate(initX, initY);
 		ofSetColor(0,0,0, 100 );
-		ofRect(0, 0, (boxW+dist)*2+dist*3, (boxW+dist)*2+dist);
+		ofRect(0, 0, boxW+dist*3, (boxW+dist)*3+dist);
 		
 		//Draw Slices
 		ofPushView();
@@ -227,46 +241,30 @@ void vizManager::draw()
 		volume2D.drawCoronal(0, 0, volCoord.y);
 		
 		ofPushView();
-		ofTranslate( boxH+ (dist+sliderW), 0);
+		ofTranslate( 0, boxH+ dist);
 		volume2D.drawSagittal(0, 0, volCoord.x);
-		ofPopView();
-		
+
 		ofPushView();
 		ofTranslate( 0, boxH+ dist);
 		volume2D.drawAxial(0, 0, volCoord.z);
 		ofPopView();
-		
-		// Draw Volume
-		ofSetColor(0);
-		ofRect(boxH+ (dist+sliderW), boxH+ dist, boxW, boxH);
-		ofSetColor(255);
-		cam.begin();
-		ofRotateZ(rot);
-		rot++;
-		ofPushMatrix();										//	save the old coordinate system
-		ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
-		myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
-		ofPopMatrix();										//	restore the previous coordinate system
-		cam.end();
-		myVolume.draw(boxH + (dist+sliderW), boxH + dist, boxW, boxH);
-		
+		ofPopView();
 		ofPopView();
 		ofPopView();
 		
 		//Draw talairach pixel value and labels
 		ofPushStyle();
 		ofSetColor(voxelValue, 255);
-		int tempY=initY+boxH*2+dist*3;
-		ofRect(initX,tempY,boxH*2+dist*5,dist);
-		ofSetColor(255);
-		tempY+=dist*2;
-		ofDrawBitmapString("Talairarch coordinate :", initX, tempY);
+//		ofRect(initX,tempY,boxH*2+dist*5,dist);
+		
+		ofSetColor(0, 255, 255);
+		ofDrawBitmapString("Talairarch coordinate :", TalDrawX, TalDrawy);
 		string str= "x= "+ ofToString(talCoord.x)+" y= "+ ofToString(talCoord.y)+" z= "+ ofToString(talCoord.z);
-		ofDrawBitmapString(str, initX, tempY+dist);
+		ofDrawBitmapString(str, TalDrawX, TalDrawy+dist);
 		for (int i=0; i<outputLabels.size()-2; i++) {
 			vector<string> items = ofSplitString(outputLabels[i+2], ",");
 				for (int j=0; j<items.size(); j++) {
-					ofDrawBitmapString(items[j], initX + boxW+(dist*2+sliderW), tempY+i*dist+j*dist);
+					ofDrawBitmapString(items[j], TalDrawX, TalDrawy+i*dist+j*dist+(dist*2));
 				}
 		}
 		ofPopStyle();
@@ -323,10 +321,11 @@ void vizManager::setup_guiVolume()
 //--------------------------------------------------------------
 void vizManager::setup_guiSliders()
 {
-	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*2+dist*3);
-	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
+	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*3+dist*4);
+
 	
 	//--------------------------- Coronal ---------------------------//
+	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
 	guiSliders->addWidget(new ofxUISlider("visCoord.y", -boxH/2, boxH/2, visCoord.y , sliderW,	boxH, boxW+dist, dist));
 	ofxUISlider *slider = (ofxUISlider *) guiSliders->getWidget("visCoord.y");
 	slider->setLabelVisible(false);
@@ -343,7 +342,7 @@ void vizManager::setup_guiSliders()
 	pad->setColorBack(transparent);
 	
 	//--------------------------- Sagittal ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("visCoord.x",-boxH/2, boxH/2, visCoord.x, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, dist));
+	guiSliders->addWidget(new ofxUISlider("visCoord.x",-boxH/2, boxH/2, visCoord.x, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
 	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.x");
 	slider->setLabelVisible(false);
 	
@@ -351,13 +350,14 @@ void vizManager::setup_guiSliders()
 										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
 										 ofVec3f(boxH/2, -boxH/2, 0),		//_rangeY
 										 ofVec3f(visCoord.y,visCoord.z, 0),		//_value
-										 boxW, boxH, boxW+(dist*2)+sliderW, dist));			// float w, float h, float x = 0, float y = 0);
+										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
+//										 boxW, boxH, boxW+(dist*2)+sliderW, dist));			// float w, float h, float x = 0, float y = 0);
 	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
 	
 	//--------------------------- Axial ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("visCoord.z", -boxH/2, boxH/2, visCoord.z, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
+	guiSliders->addWidget(new ofxUISlider("visCoord.z", -boxH/2, boxH/2, visCoord.z, sliderW,	boxH, boxW+dist, boxW*2+dist*2+sliderW));
 	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.z");
 	slider->setLabelVisible(false);
 	
@@ -365,15 +365,16 @@ void vizManager::setup_guiSliders()
 										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
 										 ofVec3f(-boxH/2, boxH/2, 0),		//_rangeY
 										 ofVec3f(visCoord.x,visCoord.y, 0),		//_value
-										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
+										 boxW, boxH, dist, boxW*2+dist*2+sliderW));			// float w, float h, float x = 0, float y = 0);
+//										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
 	
 	//--------------------------- Volume ---------------------------//
-	guiSliders->addWidget(new ofxUISlider( "latitude", -18.0, 18.0, latitude, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW));
-	slider = (ofxUISlider *) guiSliders->getWidget("latitude");
-	slider->setLabelVisible(false);
+//	guiSliders->addWidget(new ofxUISlider( "latitude", -18.0, 18.0, latitude, sliderW,	boxH, (boxW*2)+(dist*2)+sliderW, boxW+dist+sliderW));
+//	slider = (ofxUISlider *) guiSliders->getWidget("latitude");
+//	slider->setLabelVisible(false);
 	
 	ofAddListener(guiSliders->newGUIEvent,this,&vizManager::guiEvent);
 }
@@ -504,8 +505,14 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 void vizManager::keyPressed(int key ){
     switch(key)
     {
-/*			
-		case 's':
+		case ' ':
+			
+			rotate = !rotate;
+
+			break;
+			
+			
+/*		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
 			saveCameraPosition();
@@ -535,35 +542,35 @@ void vizManager::keyPressed(int key ){
 			string lobe = talairachAtlas.getLobe(currentValue);
 			ofLogNotice("Talairach")<< lobe;
 			break;
-			
-			 case OF_KEY_UP:
+		
+		case OF_KEY_UP:
 			 if(bcameraMode)cam.getTarget().boom(-5);
 			 else {
 			 cam.tilt(1);
 			 }
 			 break;
-			 case OF_KEY_DOWN:
+		case OF_KEY_DOWN:
 			 if(bcameraMode)cam.getTarget().boom(5);
 			 else {
 			 cam.tilt(-1);
 			 }
 			 break;
-			 case OF_KEY_LEFT:
+		case OF_KEY_LEFT:
 			 if(bcameraMode)cam.getTarget().truck(-5);
 			 else {
 			 cam.pan(1);
 			 }
 			 break;
-			 case OF_KEY_RIGHT:
+		case OF_KEY_RIGHT:
 			 if(bcameraMode)cam.getTarget().truck(5);
 			 else {
 			 cam.pan(-1);
 			 }
 			 break;
-			 case 'M':
+		case 'M':
 			 bcameraMode = !bcameraMode;
 			 break;
-			 */
+*/
 	}
 	
 }

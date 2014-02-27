@@ -22,11 +22,8 @@ public:
 
 	guiManager();
 	~guiManager();
-
-	void setup();
 	void update();
 	void draw();
-	void exit();
 
 	// My public methods
 	void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);

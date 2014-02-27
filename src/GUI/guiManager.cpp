@@ -22,24 +22,13 @@ guiManager* guiManager::getInstance()
 
 guiManager::guiManager()
 {
-}
-
-//----------------------------------------------
-guiManager::~guiManager()
-{
-}
-
-//--------------------------------------------------------------
-
-void guiManager::setup(){
-	
 	int lineHeight = 35;
-	int totalHeight = 500;
+	int totalHeight = 550;
 	
 	// tabCanvas
-	tabCanvasX		= 570;
+	tabCanvasX		= 1220;
 	tabCanvasY		= 50;
-	tabCanvasW		= 600;
+	tabCanvasW		= 400;
 	tabCanvasH		= lineHeight+OFX_UI_GLOBAL_SPACING_HEIGHT*2;
 	toggleW			= 100;
 	toggleH			= lineHeight;
@@ -49,7 +38,7 @@ void guiManager::setup(){
 	searchCanvasY	= tabCanvasY+tabCanvasH-1;
 	searchCanvasW	= tabCanvasW;
 	searchCanvasH	= lineHeight+OFX_UI_GLOBAL_WIDGET_SPACING*2;
-
+	
 	searchFieldX	= 0;
 	searchFieldY	= lineHeight;
 	searchFieldW	= searchCanvasW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
@@ -59,7 +48,7 @@ void guiManager::setup(){
 	nResponsesX		= searchFieldW+10;
 	nResponsesY		= 6;
 	nResponsesW		= 50;
-
+	
 	// Tweets Canvas
 	dim				= 50;
 	sliderW			= 20;
@@ -71,7 +60,7 @@ void guiManager::setup(){
 	tweetsCanvasY	= searchCanvasY+searchCanvasH;
 	tweetsCanvasW	= tabCanvasW-sliderW;
 	tweetsCanvasH	= totalHeight+tabCanvasH;
-
+	
 	// postCanvas
 	postCanvasX	= searchCanvasX;
 	postCanvasY	= searchCanvasY;
@@ -83,6 +72,18 @@ void guiManager::setup(){
 	myTabselector = SEARCH;
 	setupTabBar();
 }
+
+//----------------------------------------------
+guiManager::~guiManager()
+{
+	delete tabCanvas;
+	delete postCanvas;
+	delete scrollCanvas;
+	delete textInputCanvas;
+	
+	//Check number of Images createrd and delete them here
+}
+
 //--------------------------------------------------------------
 void guiManager::update(){
 
@@ -290,15 +291,6 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 	adjustContentstoGui(bsnap);
 }
 
-//--------------------------------------------------------------
-void guiManager::exit(){
-	delete tabCanvas;
-	delete postCanvas;
-	delete scrollCanvas;
-	delete textInputCanvas;
-	
-	//Check number of Images createrd and delete them here
-}
 //--------------------------------------------------------------
 void guiManager::scrollCanvasEvent(ofxUIEventArgs &e)
 {
