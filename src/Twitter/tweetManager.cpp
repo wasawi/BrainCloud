@@ -71,11 +71,11 @@ void tweetManager::draw(){
 
 //--------------------------------------------------------------
 void tweetManager::keyReleased(int key){
-/*
+
     if(key == 'l') {
         twitterClient.loadCacheFile();
     }
-    
+/*
     if(key == OF_KEY_UP) {
         if(actualTweet < twitterClient.getTotalLoadedTweets()-1) actualTweet += 1;
     }
