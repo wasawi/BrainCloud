@@ -12,6 +12,7 @@
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		0872E51218AC173800D40D08 /* talairachLabels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51018AC173800D40D08 /* talairachLabels.cpp */; };
 		0872E53318AE143900D40D08 /* ofxTalairach.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51E18AE143900D40D08 /* ofxTalairach.cpp */; };
+		08CEA41618BB7FEE00E25D75 /* myUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08CEA41418BB7FEE00E25D75 /* myUtils.cpp */; };
 		1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2813E36CEFD8D1C1B70E600 /* ofxUIRangeSlider.cpp */; };
 		1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */; };
 		202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE68D117096A7022E761A462 /* ofxTexture3d.cpp */; };
@@ -144,6 +145,8 @@
 		0872E51E18AE143900D40D08 /* ofxTalairach.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTalairach.cpp; sourceTree = "<group>"; };
 		0872E51F18AE143900D40D08 /* ofxTalairach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxTalairach.h; sourceTree = "<group>"; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
+		08CEA41418BB7FEE00E25D75 /* myUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = myUtils.cpp; sourceTree = "<group>"; };
+		08CEA41518BB7FEE00E25D75 /* myUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myUtils.h; sourceTree = "<group>"; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0D6768C572B6CA49227C29EA /* ofxUINumberDialer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUINumberDialer.cpp; path = ../../../addons/ofxUI/src/ofxUINumberDialer.cpp; sourceTree = SOURCE_ROOT; };
 		0DD7FDA4984EBEB092D47D02 /* curlrules.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curlrules.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curlrules.h; sourceTree = SOURCE_ROOT; };
@@ -393,6 +396,15 @@
 				0872E51F18AE143900D40D08 /* ofxTalairach.h */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		08CEA41318BB7FEE00E25D75 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				08CEA41418BB7FEE00E25D75 /* myUtils.cpp */,
+				08CEA41518BB7FEE00E25D75 /* myUtils.h */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		1A7DF57EA46ACBE986F0D971 /* include */ = {
@@ -915,6 +927,7 @@
 				374505B6865245282826FE21 /* ofxExampleTwitterClient.h */,
 				2D0B0316D15C4E2499D6A5F5 /* Twitter */,
 				36B8F0CD90028AF47E0E03C4 /* Viz */,
+				08CEA41318BB7FEE00E25D75 /* Utils */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -1051,6 +1064,7 @@
 				0838F57D18AB679A003681F8 /* guiEvent.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
 				7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */,
+				08CEA41618BB7FEE00E25D75 /* myUtils.cpp in Sources */,
 				FFD1EBFCA24DFB4E4427B4FE /* ofxUILabelButton.cpp in Sources */,
 				C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */,
 				9A83D1B3FB64456BC907667F /* ofxUIMinimalSlider.cpp in Sources */,
@@ -1278,6 +1292,47 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					../../../addons/ofxUI/libs,
+					../../../addons/ofxUI/src,
+					../../../addons/ofxXmlSettings/libs,
+					../../../addons/ofxXmlSettings/src,
+					../../../addons/ofxOAuth/libs,
+					../../../addons/ofxOAuth/libs/libcurl,
+					../../../addons/ofxOAuth/libs/libcurl/include,
+					../../../addons/ofxOAuth/libs/libcurl/include/curl,
+					../../../addons/ofxOAuth/libs/libcurl/lib,
+					../../../addons/ofxOAuth/libs/libcurl/lib/osx,
+					../../../addons/ofxOAuth/libs/liboauth,
+					../../../addons/ofxOAuth/libs/liboauth/include,
+					../../../addons/ofxOAuth/libs/liboauth/lib,
+					../../../addons/ofxOAuth/libs/liboauth/lib/osx,
+					../../../addons/ofxOAuth/src,
+					../../../addons/ofxJSON/libs,
+					../../../addons/ofxJSON/libs/jsoncpp,
+					../../../addons/ofxJSON/libs/jsoncpp/include,
+					../../../addons/ofxJSON/libs/jsoncpp/include/json,
+					../../../addons/ofxJSON/libs/jsoncpp/src,
+					../../../addons/ofxJSON/src,
+					../../../addons/ofxTwitter/libs,
+					../../../addons/ofxTwitter/src,
+					../../../addons/ofxFTGL/libs,
+					../../../addons/ofxFTGL/libs/FTGL,
+					../../../addons/ofxFTGL/libs/FTGL/include,
+					../../../addons/ofxFTGL/libs/FTGL/include/FTGL,
+					../../../addons/ofxFTGL/libs/FTGL/lib,
+					../../../addons/ofxFTGL/libs/FTGL/lib/osx,
+					../../../addons/ofxFTGL/libs/FTGL/lib/vs2010,
+					../../../addons/ofxFTGL/libs/FTGL/lib/vs2012,
+					../../../addons/ofxFTGL/src,
+					../../../addons/ofxVolumetrics/libs,
+					../../../addons/ofxVolumetrics/src,
+					src,
+					src/GUI,
+					src/Twitter,
+					src/Viz,
+				);
 				ICON = "$(ICON_NAME_DEBUG)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
@@ -1363,6 +1418,47 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../libs/glut/lib/osx\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = NONE;
+				HEADER_SEARCH_PATHS = (
+					"$(OF_CORE_HEADERS)",
+					../../../addons/ofxUI/libs,
+					../../../addons/ofxUI/src,
+					../../../addons/ofxXmlSettings/libs,
+					../../../addons/ofxXmlSettings/src,
+					../../../addons/ofxOAuth/libs,
+					../../../addons/ofxOAuth/libs/libcurl,
+					../../../addons/ofxOAuth/libs/libcurl/include,
+					../../../addons/ofxOAuth/libs/libcurl/include/curl,
+					../../../addons/ofxOAuth/libs/libcurl/lib,
+					../../../addons/ofxOAuth/libs/libcurl/lib/osx,
+					../../../addons/ofxOAuth/libs/liboauth,
+					../../../addons/ofxOAuth/libs/liboauth/include,
+					../../../addons/ofxOAuth/libs/liboauth/lib,
+					../../../addons/ofxOAuth/libs/liboauth/lib/osx,
+					../../../addons/ofxOAuth/src,
+					../../../addons/ofxJSON/libs,
+					../../../addons/ofxJSON/libs/jsoncpp,
+					../../../addons/ofxJSON/libs/jsoncpp/include,
+					../../../addons/ofxJSON/libs/jsoncpp/include/json,
+					../../../addons/ofxJSON/libs/jsoncpp/src,
+					../../../addons/ofxJSON/src,
+					../../../addons/ofxTwitter/libs,
+					../../../addons/ofxTwitter/src,
+					../../../addons/ofxFTGL/libs,
+					../../../addons/ofxFTGL/libs/FTGL,
+					../../../addons/ofxFTGL/libs/FTGL/include,
+					../../../addons/ofxFTGL/libs/FTGL/include/FTGL,
+					../../../addons/ofxFTGL/libs/FTGL/lib,
+					../../../addons/ofxFTGL/libs/FTGL/lib/osx,
+					../../../addons/ofxFTGL/libs/FTGL/lib/vs2010,
+					../../../addons/ofxFTGL/libs/FTGL/lib/vs2012,
+					../../../addons/ofxFTGL/src,
+					../../../addons/ofxVolumetrics/libs,
+					../../../addons/ofxVolumetrics/src,
+					src,
+					src/GUI,
+					src/Twitter,
+					src/Viz,
+				);
 				ICON = "$(ICON_NAME_RELEASE)";
 				ICON_FILE = "$(ICON_FILE_PATH)$(ICON)";
 				INFOPLIST_FILE = "openFrameworks-Info.plist";

@@ -5,6 +5,7 @@
 #include "ofxTwitter.h"
 #include "ofxUI.h"
 #include "guiEvent.h"
+#include "myUtils.h"
 
 class guiManager {
 
@@ -65,7 +66,6 @@ private:
 	
 	//vector<tweet3d> selectedTweets;
 	void adjustContentstoGui(bool bsnap);
-	string removeEmojis(string s);
 	
 	// tabCanvas
 	float tabCanvasX;

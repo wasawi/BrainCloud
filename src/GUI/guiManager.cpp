@@ -56,9 +56,9 @@ void guiManager::setup(){
 	searchFieldH	= lineHeight;
 	
 	nResponses		= 10;
-	nResponsesX	= searchFieldW+10;
-	nResponsesY	= 6;
-	nResponsesW	= 50;
+	nResponsesX		= searchFieldW+10;
+	nResponsesY		= 6;
+	nResponsesW		= 50;
 
 	// Tweets Canvas
 	dim				= 50;
@@ -222,6 +222,7 @@ void guiManager::setupScrollCanvas(){
 	// Canvas for Tweets
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH, sliderW);
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
+	scrollCanvas->setFBOArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setScrollableDirections(false, true);
 //	scrollCanvas->addSpacer( WidgetW, 1 );
 	
@@ -315,16 +316,24 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
 			ofLogVerbose("searchField") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
+
+			//send text to Twitter
 			static guiEvent newEvent;
 			newEvent.message =  textinput->getTextString();
 			newEvent.value	= nResponses;
 			ofNotifyEvent(guiEvent::newSearch, newEvent);
+			
+			//copy text to Clipboard
+			bool succeded = ofCopyText(textinput->getTextString());
+			
 		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
 			ofLogVerbose("searchField") << "ON FOCUS: ";
 //			textinput->
 //			textinput->recalculateDisplayString();
 //			ofRegisterKeyEvents((guiManager*)this);
+			textInputCanvas->hasKeyboardFocus();
 			textinput->setTextString("");
+			
 		
 		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){
 			ofLogVerbose("searchField") << "ON BLUR: ";
@@ -417,26 +426,4 @@ void guiManager::postCanvasEvent(ofxUIEventArgs &e)
 		changeTabBar();
 		ofLogVerbose("tabCanvasEvent") << "postToggle: " << toggle->getValue();
 	}
-}
-
-//--------------------------------------------------------------
-string guiManager::removeEmojis(string s){
-	
-	string returnString = "";
-	int l = s.length();
-	int i;
-	
-	// for each byte
-	for (i = 0; i < l; ++i) {
-		char mychar = s[i];
-		string binary = ofToBinary(mychar);
-		binary =  binary.substr(0,4);
-		if (binary == "1111"){
-			i+=3;		//jump to next char
-			//			cout << "Found Emoji, killing... " << endl;
-		}else{
-			returnString += mychar;
-		}
-	}
-	return returnString;
 }
