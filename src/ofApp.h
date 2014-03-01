@@ -1,10 +1,13 @@
 #ifndef TESTAPP
 #define TESTAPP
 
+#define WINDOW_WIDTH 1620
+#define WINDOW_HEIGHT 800
+
 #include "ofMain.h"
 
-#include "tweetManager.h"
 #include "guiManager.h"
+#include "tweetManager.h"
 #include "vizManager.h"
 
 class ofApp : public ofBaseApp
@@ -24,9 +27,9 @@ class ofApp : public ofBaseApp
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
-	
+
+	guiManager		myGUIManager;
 	tweetManager	myTwitterManager;
-	//guiManager		myGUIManager;
 	vizManager		myVizManager;
 	
 	bool	drawFill;

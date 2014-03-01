@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "ofMain.h"
 #include "ofCamera.h"
 #include "ofEvents.h"
 
@@ -62,6 +63,16 @@ public:
 
 	ofNode target;
 	
+	// j
+	float	rotation;
+	bool	bRotate;
+	float	getArcBallSize();
+	float	arcBallSize;
+	float	arcBallFactor;
+	void	drawArcBall();
+	void	setArcBallFactor(float factor);
+//	of3dPrimitive::ofBoxPrimitive box;
+	
 private:
 	void setDistance(float distance, bool save);
 	
@@ -79,9 +90,6 @@ private:
 	float drag;
 	
 
-	
-
-	
 	ofVec2f mouse;
 	ofVec2f lastMouse;
 	ofVec2f mouseVel;
@@ -91,6 +99,10 @@ private:
 	unsigned long lastTap;
 	
 	ofQuaternion curRot;
-    
-	ofRectangle viewport;// having the  viewport saved localy will make it easier for all the needed maths dealing with viewport.
+	
+    // having the  viewport saved localy will make it easier for all the needed maths dealing with viewport.
+	ofRectangle viewport;
+	
+	
+	
 };

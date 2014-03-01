@@ -20,14 +20,12 @@ void vizManager::setup()
 //	talClient.setup("../../../data/brainData/talairach.jar");
 	outputLabels.resize(10);
 	
-	// TODO: Remove this from here
-	//	ofEnableSmoothing();
-	initX=0;
-	initY=50;
+	// 2Dpad Canvas
+	initX	=0;
+	initY	=50;
 	sliderW = 20;
-	dist = 20;
-	length = 251;
-	boxW = boxH = 200;
+	dist	= 20;
+	boxW	= boxH = 200;
 	
 	visCoord.y = volHeight /2;
 	visCoord.x = volWidth /2;
@@ -37,15 +35,13 @@ void vizManager::setup()
 	TalDrawX	= boxW+dist*3+sliderW;
 	TalDrawy	=initY+dist;
 	
+	
+	
 	//camera
 	loadCameraPosition();
 	bcameraMode = true;
 //	cam.disableMouseInput();
-	rotation = .00000001;
-	rotate = false;
-//	cam.setFov(90.);
-//	cam.disableMouseInput();
-
+	
 	//Volume
 	initVolume();
 
@@ -220,16 +216,16 @@ void vizManager::draw()
 		// Draw Volume
 		ofSetColor(255);
 		cam.begin();
-		ofRotateZ(rotation);
-		if (rotate) rotation++;
+
 		ofPushMatrix();										//	save the old coordinate system
-		ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
-		myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
+			ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
+			myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
 		ofPopMatrix();										//	restore the previous coordinate system
 		cam.end();
+		cam.drawArcBall();
 		myVolume.draw(0, 0, ofGetWidth(), ofGetHeight());
 
-		//Draw box below
+		//Draw Slices "canvas"
 		ofPushView();
 		ofTranslate(initX, initY);
 		ofSetColor(0,0,0, 100 );
@@ -267,6 +263,7 @@ void vizManager::draw()
 					ofDrawBitmapString(items[j], TalDrawX, TalDrawy+i*dist+j*dist+(dist*2));
 				}
 		}
+//		cam.drawArcBall();
 		ofPopStyle();
 	}
 }
@@ -298,23 +295,28 @@ void vizManager::setup_guis()
 //--------------------------------------------------------------
 void vizManager::setup_guiVolume()
 {
-	float sliderW = 10;
-	float xInit = OFX_UI_GLOBAL_WIDGET_SPACING + OFX_UI_GLOBAL_PADDING;
-    float length = boxW*2+dist*3;
+	// Volume Canvas vars from 2Dpad
+	guiVolume = new ofxUICanvas(initX+ (dist*2)+ sliderW + boxH,
+									initY+dist + (boxH),
+									(dist*2)+ boxH,
+									280);
+	//new vars for widgets
+	float canvasW = boxW+dist*2;
+	float sliderH = 10;
+	float initX = OFX_UI_GLOBAL_WIDGET_SPACING;
+	float sliderW = boxW+dist*2-OFX_UI_GLOBAL_WIDGET_SPACING*2;
 	
-	guiVolume = new ofxUICanvas(initX, initY+ (dist*2) +dist + (boxH*2)+2, boxW*2+(dist*3)+(sliderW*2), 200);
-	//	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
-	//	guiVolume->addSpacer( length-xInit, 2 );
-	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Threshold", 0.0, 1.0, thresh, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Density", 0.0, 1.0, density, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Dithering", 0.0, 1.0, dithering, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, elevation, length-xInit, sliderW)->setDrawBack(true);
-	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, length-xInit, sliderW)->setDrawBack(true);
-	//	guiVolume->addWidgetDown(new ofxUIToggle( sliderW, sliderW, false, "linearFilter"));
-	guiVolume -> autoSizeToFitWidgets();
+	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
+	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Threshold", 0.0, 1.0, thresh, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Density", 0.0, 1.0, density, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, elevation, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, sliderW, sliderH)->setDrawBack(true);
+//	guiVolume->addSlider("Dithering", 0.0, 1.0, dithering, sliderW, sliderH)->setDrawBack(true);
+//	guiVolume->addWidgetDown(new ofxUIToggle( sliderH, sliderH, false, "linearFilter"));
+//	guiVolume -> autoSizeToFitWidgets();
 	ofAddListener(guiVolume->newGUIEvent,this,&vizManager::guiEvent);
 }
 
@@ -506,13 +508,12 @@ void vizManager::keyPressed(int key ){
     switch(key)
     {
 		case ' ':
-			
-			rotate = !rotate;
-
+			cam.bRotate = !cam.bRotate;
 			break;
-			
-			
-/*		case 's':
+		case 'h':
+            guiVolume->toggleVisible();
+			break;
+		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
 			saveCameraPosition();
@@ -530,10 +531,6 @@ void vizManager::keyPressed(int key ){
 			ofSetVerticalSync(true);
 			ofSetFullscreen(true);
 			break;
-		case 'h':
-            guiVolume->toggleVisible();
-			//			guiSliders->toggleVisible();
-			break;
 		case 't':
 			int voxelValue = volume2D.getVoxelValue();
 			//mapping from pixel value to index value on the Talairach Atlas
@@ -543,7 +540,7 @@ void vizManager::keyPressed(int key ){
 			ofLogNotice("Talairach")<< lobe;
 			break;
 		
-		case OF_KEY_UP:
+/*		case OF_KEY_UP:
 			 if(bcameraMode)cam.getTarget().boom(-5);
 			 else {
 			 cam.tilt(1);

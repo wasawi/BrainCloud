@@ -23,7 +23,9 @@ public:
 	void drawQueryTwitters();
 	void setOneTweetToGui(guiEvent &e);
 	void cleanImgUsers( std::vector <ofImage> & a );
-		
+	
+	guiManager	myGuiManager;
+	
 		//Tweeter objects
 		ofxTwitter twitterClient;
 		ofxTwitterTweet tweet;

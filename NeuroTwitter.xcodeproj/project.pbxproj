@@ -44,7 +44,6 @@
 		7D393646FB859A930EF58917 /* ofxUIButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F8238006E98A8E39851968C /* ofxUIButton.cpp */; };
 		7F2CD93F681F3C1547B3BF2C /* ofxUIImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6280B5FA1CEA20450916E49 /* ofxUIImageButton.cpp */; };
 		82845E1F8C90E1F5A99D9868 /* ofxUIWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */; };
-		84AECEC55DABE0D256CCE0E1 /* ofxUITextAreaFTGLSimpleLayout.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 33D36A2380092CD1C56E19B6 /* ofxUITextAreaFTGLSimpleLayout.cpp */; };
 		8913F0EFD789AED0AA86CA0D /* tweetManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1B0810229C8FFF3A9199639 /* tweetManager.cpp */; };
 		933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2B40EDA85BEB63E46785BC29 /* tinyxml.cpp */; };
 		9A83D1B3FB64456BC907667F /* ofxUIMinimalSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2BE7216430113F333B8351ED /* ofxUIMinimalSlider.cpp */; };
@@ -180,7 +179,6 @@
 		31517A9D3D67D9C054954DC5 /* ofxUIDropDownList.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIDropDownList.cpp; path = ../../../addons/ofxUI/src/ofxUIDropDownList.cpp; sourceTree = SOURCE_ROOT; };
 		32BD050A579633ADBCA5AF6B /* ofxUIWidget.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidget.h; path = ../../../addons/ofxUI/src/ofxUIWidget.h; sourceTree = SOURCE_ROOT; };
 		334840CA6B3402C8C30CAC4E /* ofxUIOFWrapper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIOFWrapper.h; path = ../../../addons/ofxUI/src/ofxUIOFWrapper.h; sourceTree = SOURCE_ROOT; };
-		33D36A2380092CD1C56E19B6 /* ofxUITextAreaFTGLSimpleLayout.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextAreaFTGLSimpleLayout.cpp; path = ../../../addons/ofxUI/src/ofxUITextAreaFTGLSimpleLayout.cpp; sourceTree = SOURCE_ROOT; };
 		36DCA30BBD213346B313140F /* typecheck-gcc.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = "typecheck-gcc.h"; path = "../../../addons/ofxOAuth/libs/libcurl/include/curl/typecheck-gcc.h"; sourceTree = SOURCE_ROOT; };
 		374505B6865245282826FE21 /* ofxExampleTwitterClient.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxExampleTwitterClient.h; path = src/ofxExampleTwitterClient.h; sourceTree = SOURCE_ROOT; };
 		388AAF8A80C304BB3E971E09 /* FTGLBitmapFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTGLBitmapFont.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTGLBitmapFont.h; sourceTree = SOURCE_ROOT; };
@@ -281,7 +279,6 @@
 		BF57A5AD5B18ABAEF1C0DCA6 /* curl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curl.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curl.h; sourceTree = SOURCE_ROOT; };
 		BFD3387AA9EFA53E1B4F087B /* ofxUIScrollableCanvas.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIScrollableCanvas.cpp; path = ../../../addons/ofxUI/src/ofxUIScrollableCanvas.cpp; sourceTree = SOURCE_ROOT; };
 		C161222F68D4F7CE28BC4F61 /* ofxUIBaseDraws.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIBaseDraws.h; path = ../../../addons/ofxUI/src/ofxUIBaseDraws.h; sourceTree = SOURCE_ROOT; };
-		C1A8382637674132693A25AC /* ofxUITextAreaFTGLSimpleLayout.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUITextAreaFTGLSimpleLayout.h; path = ../../../addons/ofxUI/src/ofxUITextAreaFTGLSimpleLayout.h; sourceTree = SOURCE_ROOT; };
 		C1B0810229C8FFF3A9199639 /* tweetManager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = tweetManager.cpp; path = src/Twitter/tweetManager.cpp; sourceTree = SOURCE_ROOT; };
 		C38D6DCC3AB9AAE213A64015 /* ofxUIScrollableCanvas.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIScrollableCanvas.h; path = ../../../addons/ofxUI/src/ofxUIScrollableCanvas.h; sourceTree = SOURCE_ROOT; };
 		C6305369801B450557086284 /* ofxUISpectrum.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUISpectrum.h; path = ../../../addons/ofxUI/src/ofxUISpectrum.h; sourceTree = SOURCE_ROOT; };
@@ -844,8 +841,6 @@
 				D45991C927E805C3B1AD7516 /* ofxUITabBar.h */,
 				DBE31D52BCB0CE44B9D154F0 /* ofxUITextArea.cpp */,
 				F9DF961B5E7D4C4E1E5D029C /* ofxUITextArea.h */,
-				33D36A2380092CD1C56E19B6 /* ofxUITextAreaFTGLSimpleLayout.cpp */,
-				C1A8382637674132693A25AC /* ofxUITextAreaFTGLSimpleLayout.h */,
 				06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */,
 				E65D547C2CD6A84FC9AF15FA /* ofxUITextInput.h */,
 				48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */,
@@ -1087,7 +1082,6 @@
 				5AE95ADB5549701423B6DA48 /* ofxUITabBar.cpp in Sources */,
 				0872E53318AE143900D40D08 /* ofxTalairach.cpp in Sources */,
 				C961BE22AB9A8CCF037FC18F /* ofxUITextArea.cpp in Sources */,
-				84AECEC55DABE0D256CCE0E1 /* ofxUITextAreaFTGLSimpleLayout.cpp in Sources */,
 				F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */,
 				04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */,
 				E3A1109F67D711D6C256031E /* ofxUIToggleMatrix.cpp in Sources */,

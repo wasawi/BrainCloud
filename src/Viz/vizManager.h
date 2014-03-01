@@ -67,13 +67,12 @@ private:
 	string message;
 	
 	//Camera
-    ofEasyCam cam;
+//    ofEasyCam cam;
+	myCamera cam;
     ofQuaternion camOrientation;
 	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
-	float rotation;
-	bool rotate;
 	float latitude;
 	
 	//Volume Rendering

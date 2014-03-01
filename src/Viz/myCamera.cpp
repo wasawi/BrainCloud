@@ -14,7 +14,10 @@ myCamera::myCamera(){
 	lastTap	= 0;
 	lastDistance = 0;
 	drag = 0.9f;
-	sensitivityRot = 1.0f;//when 1 moving the mouse from one side to the other of the arcball (min(viewport.width, viewport.height)) will rotate 180degrees. when .5, 90 degrees.
+	
+	//when 1 moving the mouse from one side to the other of the arcball (min(viewport.width, viewport.height))
+	//will rotate 180degrees. when .5, 90 degrees.
+	sensitivityRot = 1.0f;
 	sensitivityXY = .5;
 	sensitivityZ= .7;
 	fov= 110;
@@ -23,7 +26,7 @@ myCamera::myCamera(){
 	bDoRotate = false;
 	bApplyInertia =false;
 	bDoTranslate = false;
-	bInsideArcball = true;
+
 	bValidClick = false;
 	bEnableMouseMiddleButton = true;
 	bAutoDistance = true;
@@ -31,7 +34,16 @@ myCamera::myCamera(){
 	
 	reset();
 	enableMouseInput();
+
 	
+	//Rotation	j
+	rotation = .00000001;
+	bRotate = false;
+	
+	//arcBall
+	arcBallFactor = .7;
+	bInsideArcball = true;
+	arcBallSize = getArcBallSize();
 }
 
 //----------------------------------------
@@ -61,6 +73,10 @@ void myCamera::update(ofEventArgs & args){
 void myCamera::begin(ofRectangle viewport){
 	this->viewport = viewport;
 	ofCamera::begin(viewport);
+	
+	ofRotateZ(rotation);
+	if (bRotate) rotation++;
+	
 }
 
 //----------------------------------------
@@ -209,7 +225,10 @@ void myCamera::updateMouse(){
 			reset();
 		}
 		
-		if ((bEnableMouseMiddleButton && ofGetMousePressed(OF_MOUSE_BUTTON_MIDDLE)) || ofGetKeyPressed(doTranslationKey)  || ofGetMousePressed(OF_MOUSE_BUTTON_RIGHT)){
+		if ((bEnableMouseMiddleButton && ofGetMousePressed(OF_MOUSE_BUTTON_MIDDLE))
+			|| ofGetKeyPressed(doTranslationKey)
+			|| ofGetMousePressed(OF_MOUSE_BUTTON_RIGHT)){
+			
 			bDoTranslate = true;
 			bDoRotate = false;
 			bApplyInertia = false;
@@ -217,7 +236,10 @@ void myCamera::updateMouse(){
 			bDoTranslate = false;
 			bDoRotate = true;
 			bApplyInertia = false;
-			if(ofVec2f(mouse.x - viewport.x - (viewport.width/2), mouse.y - viewport.y - (viewport.height/2)).length() < min(viewport.width/2, viewport.height/2)){
+			getArcBallSize();
+
+			if(ofVec2f(mouse.x - viewport.x - (viewport.width/2), mouse.y - viewport.y - (viewport.height/2)).length()
+			   < min(viewport.width/2, viewport.height/2)*	arcBallFactor){
 				bInsideArcball = true;
 			}else {
 				bInsideArcball = false;
@@ -270,3 +292,37 @@ void myCamera::updateMouse(){
 		}
 	}
 }
+
+
+
+// j
+//----------------------------------------
+void myCamera::setArcBallFactor(float factor){
+	arcBallFactor = factor;
+}
+//----------------------------------------
+float myCamera::getArcBallSize(){
+
+	arcBallSize = min(viewport.width/2, viewport.height/2)*	arcBallFactor;
+	return	arcBallSize;
+}
+//----------------------------------------
+void myCamera::drawArcBall(){
+	
+	if (ofGetMousePressed()){
+		ofPushStyle();
+		ofNoFill();
+		ofSetCircleResolution(100);
+		ofSetColor(ofColor::black);
+		ofSetLineWidth(.1);
+		ofCircle(viewport.width/2, viewport.height/2, arcBallSize);
+//		ofBoxPrimitive.draw();
+//		ofPu
+		ofPopStyle();
+	}
+}
+
+
+
+
+

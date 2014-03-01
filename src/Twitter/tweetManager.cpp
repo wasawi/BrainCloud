@@ -50,11 +50,16 @@ void tweetManager::setOneTweetToGui(guiEvent &e){
 	if ( /* here we will check if the tweet has brain coordinates*/ true ) {
 		
 		if(tweet.isProfileImageLoaded()) {
-			guiManager::getInstance()->addTwitterContent(tweet.user.profile_image,
-															 tweet.user.name,
-															 tweet.user.screen_name,
-															 tweet.text);
-			
+
+//			guiManager::getInstance()->addTwitterContent(tweet.user.profile_image,
+//															 tweet.user.name,
+//															 tweet.user.screen_name,
+//															 tweet.text);
+			myGuiManager.addTwitterContent(tweet.user.profile_image,
+														 tweet.user.name,
+														 tweet.user.screen_name,
+														 tweet.text);
+
 		}		
 	}
 }

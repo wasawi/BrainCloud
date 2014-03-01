@@ -1,5 +1,5 @@
 #include "guiManager.h"
-
+/*
 // SINGLETON initalizations
 bool guiManager::instanceFlag = false;
 guiManager* guiManager::single = NULL;
@@ -17,7 +17,7 @@ guiManager* guiManager::getInstance()
         return single;
     }
 }
-
+*/
 //----------------------------------------------
 
 guiManager::guiManager()
@@ -225,12 +225,10 @@ void guiManager::setupScrollCanvas(){
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setFBOArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setScrollableDirections(false, true);
-//	scrollCanvas->addSpacer( WidgetW, 1 );
 	
 	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
 	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
 	ofLogNotice("scrollCanvas.getWidgetSpacing") << scrollCanvas->getWidgetSpacing();
-
 	
 	ofAddListener(scrollCanvas->newGUIEvent,this,&guiManager::scrollCanvasEvent);
 	adjustContentstoGui(bsnap);
@@ -248,7 +246,6 @@ void guiManager::adjustContentstoGui(bool _bsnap){
 }
 
 void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText){
-
 	
 	// clean emojis:
 	name = removeEmojis(name);

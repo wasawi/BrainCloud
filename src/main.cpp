@@ -4,12 +4,11 @@
 #include "ofApp.h"
 #include "ofAppGlutWindow.h"
 
-
 //========================================================================
 int main( ){
 
     ofAppGlutWindow window;
-//	window.setGlutDisplayString("rgba double samples>=6 depth");        
-	ofSetupOpenGL(&window, 1620, 800, OF_WINDOW);			// <-------- setup the GL context
+	ofSetupOpenGL(&window, WINDOW_WIDTH, WINDOW_HEIGHT, OF_WINDOW);			// <-------- setup the GL context
+	window.setWindowTitle("NeuroTwitter");
 	ofRunApp( new ofApp());
 }

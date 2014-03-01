@@ -1,14 +1,14 @@
 #pragma once
 
 #include "ofMain.h"
-#include "tweetManager.h"
+//#include "tweetManager.h"
 #include "ofxTwitter.h"
 #include "ofxUI.h"
 #include "guiEvent.h"
 #include "myUtils.h"
 
 class guiManager {
-
+/*
 // variables & methods for singleton
 private:
     static bool	instanceFlag;
@@ -17,7 +17,7 @@ private:
 public:
 	static guiManager* getInstance();
 // end singleton
-
+*/
 public:
 
 	guiManager();

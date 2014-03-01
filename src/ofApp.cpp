@@ -1,5 +1,6 @@
 #include "ofApp.h"
 
+
 //--------------------------------------------------------------
 void ofApp::setup()
 {	
@@ -11,13 +12,10 @@ void ofApp::setup()
 	ofEnableSmoothing();
 	ofSetFrameRate(30);
 	
-	ofBackground(100);
-	    ofBackgroundGradient(ofColor::white,ofColor::black);
-	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
 	myTwitterManager.setup(CONSUMER_KEY, CONSUMER_SECRET);
-	guiManager::getInstance();
+//	guiManager.setup();
 	myVizManager.setup();
 }
 
@@ -30,10 +28,13 @@ void ofApp::update()
 
 //--------------------------------------------------------------
 void ofApp::draw()
-{	
-	guiManager::getInstance()->draw();
-	myTwitterManager.draw();
+{
+//	ofBackground(50);
+	ofBackgroundGradient(150,20);
 	myVizManager.draw();
+	myGUIManager.draw();
+	myTwitterManager.draw();
+
 }
 
 //--------------------------------------------------------------
@@ -81,7 +82,8 @@ void ofApp::mouseReleased(int x, int y, int button)
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h)
 {
-
+	ofSetWindowShape( WINDOW_WIDTH, WINDOW_HEIGHT);
+	
 }
 
 //--------------------------------------------------------------
