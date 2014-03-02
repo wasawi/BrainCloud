@@ -53,8 +53,8 @@ void vizManager::setup()
 //--------------------------------------------------------------
 void vizManager::initVolume()
 {
-//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
-	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
+	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
+//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
@@ -213,18 +213,20 @@ void vizManager::updatePads()
 void vizManager::draw()
 {
 	if (bDraw){
+		
 		// Draw Volume
 		ofSetColor(255);
 		cam.begin();
-
-		ofPushMatrix();										//	save the old coordinate system
-			ofScale(1.0f, -1.0f);								//	flip the y axis vertically, so that it points upwards
-			myVolume.update(0,0,0, ofGetHeight(), 0);			//	draw Volume
-		ofPopMatrix();										//	restore the previous coordinate system
+		ofPushMatrix();									//	save the old coordinate system
+			//myVolume.drawSlices();
+			ofScale(1.0f, -1.0f);						//	flip the y axis vertically, so that it points upwards
+			myVolume.update(0,0,0, ofGetHeight(), 0);	//	draw Volume
+		ofPopMatrix();									//	restore the previous coordinate system
 		cam.end();
-		cam.drawArcBall();
 		myVolume.draw(0, 0, ofGetWidth(), ofGetHeight());
-
+		cam.drawArcBall();
+		
+		
 		//Draw Slices "canvas"
 		ofPushView();
 		ofTranslate(initX, initY);
@@ -263,7 +265,6 @@ void vizManager::draw()
 					ofDrawBitmapString(items[j], TalDrawX, TalDrawy+i*dist+j*dist+(dist*2));
 				}
 		}
-//		cam.drawArcBall();
 		ofPopStyle();
 	}
 }

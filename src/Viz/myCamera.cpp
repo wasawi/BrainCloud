@@ -313,7 +313,7 @@ void myCamera::drawArcBall(){
 		ofPushStyle();
 		ofNoFill();
 		ofSetCircleResolution(100);
-		ofSetColor(ofColor::black);
+		ofSetColor(140);
 		ofSetLineWidth(.1);
 		ofCircle(viewport.width/2, viewport.height/2, arcBallSize);
 //		ofBoxPrimitive.draw();
