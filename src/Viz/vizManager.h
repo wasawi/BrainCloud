@@ -100,6 +100,7 @@ private:
 	void updateTalCoords();
 	void updateTalAtlasLabel();
 	void updateTalLabel();
+	void updateVolumeSlices();
 	
 	// Vis vars
 	bool	bDraw;
@@ -110,11 +111,25 @@ private:
 	int		dist;
 	
 	//All Coordinates
-	ofVec3f talCoord;
-	ofVec3f visCoord;
-	ofVec3f volCoord;
-	ofVec3f volCoordClamp;
-	ofVec3f talOffset;
+	ofVec3f volCoord;		// coordinates in Volume (integers from 0 to volWidth..)
+	ofVec3f visCoord;		// coordinates used in GUI (floats from -1 to 1)
+	ofVec3f volCoordClamp;	// the clamped coordinates of volCoord
+	ofVec3f talOffset;		// the offset of the origin (0,0,0) in Tal coordinates
+	ofVec3f talCoord;		// volume coords + offset Tal coords for Tal tables.
+	
+	/* how to use Coordinate space
+	 we are using Anatomical Plane for volume slices:
+	 http://en.wikipedia.org/wiki/Anatomical_plane
+	 
+	 we are using
+	 
+	 X	=
+	 Y	=
+	 Z	=
+	
+	*/
+	
+	
 	int TalDrawX;
 	int TalDrawy;
 	
@@ -122,4 +137,9 @@ private:
 	int volWidth, volHeight, volDepth;
 	int voxelValue;
 };
+
+
+
+
+
 

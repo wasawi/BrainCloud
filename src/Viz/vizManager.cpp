@@ -109,6 +109,25 @@ void vizManager::update()
 	updateTalCoords();
 	updateTalAtlasLabel();
 //	updateTalLabel();
+	updateVolumeSlices();
+}
+
+//--------------------------------------------------------------
+void vizManager::updateVolumeSlices()
+{
+	myVolume.setCoronalPlane(visCoord.y);
+	myVolume.setSagittalPlane(visCoord.x);
+	myVolume.setAxialPlane(visCoord.z);
+}
+
+//--------------------------------------------------------------
+void vizManager::updateTalLabel()
+{
+	outputLabels = talClient.get(talCoord);
+	for (int i=2; i<outputLabels.size(); i++)
+	{
+		ofLogVerbose("vizManager") << outputLabels[i];
+	}
 }
 
 //--------------------------------------------------------------
@@ -127,7 +146,8 @@ void vizManager::updateTalAtlasLabel()
 //--------------------------------------------------------------
 void vizManager::updateTalCoords()
 {
-	// transform my coordinates to Talairach coordinates using the offstet provided in nifti headers
+	// transform my coordinates to Talairach coordinates
+	// using the offstet provided in nifti headers
 	talCoord.x = (volCoord.x + talOffset.x)*-1;
 	talCoord.y = volCoord.y + talOffset.y;
 	talCoord.z = volCoord.z + talOffset.z;
@@ -135,16 +155,6 @@ void vizManager::updateTalCoords()
 	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
 	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
 	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
-}
-
-//--------------------------------------------------------------
-void vizManager::updateTalLabel()
-{
-	outputLabels = talClient.get(talCoord);
-	for (int i=2; i<outputLabels.size(); i++)
-	{
-		ofLogVerbose("vizManager") << outputLabels[i];
-	}
 }
 
 //--------------------------------------------------------------
