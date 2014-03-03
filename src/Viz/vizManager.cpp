@@ -64,7 +64,8 @@ void vizManager::initVolume()
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
 	//fill out the array pixel in white
-	for (int i=0; i<volWidth*volHeight*volDepth; i++ ){
+	for (int i=0; i<volWidth*volHeight*volDepth; i++ )
+	{
 		volumeData[i]= (unsigned char) 255;
 	}
 	
@@ -140,7 +141,8 @@ void vizManager::updateTalCoords()
 void vizManager::updateTalLabel()
 {
 	outputLabels = talClient.get(talCoord);
-	for (int i=2; i<outputLabels.size(); i++) {
+	for (int i=2; i<outputLabels.size(); i++)
+	{
 		ofLogVerbose("vizManager") << outputLabels[i];
 	}
 }
@@ -212,7 +214,8 @@ void vizManager::updatePads()
 //--------------------------------------------------------------
 void vizManager::draw()
 {
-	if (bDraw){
+	if (bDraw)
+	{
 		
 		// Draw Volume
 		ofSetColor(255);
@@ -389,55 +392,64 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	int kind = e.widget->getKind();
 	//	ofLogVerbose("vizManager") << "GUI:: got event from: " << name;
 	
-	if(name == "FBO quality"){
+	if(name == "FBO quality")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "FBO quality " << slider->getScaledValue();
 		FBOq = slider->getScaledValue();
 		myVolume.setXyQuality(FBOq);
 	}
-	else if(name == "Z quality"){
+	else if(name == "Z quality")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Z quality " << slider->getScaledValue();
 		Zq = slider->getScaledValue();
 		myVolume.setZQuality(Zq);
 	}
-	else if(name == "Threshold"){
+	else if(name == "Threshold")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Threshold " << slider->getScaledValue();
 		thresh = slider->getScaledValue();
 		myVolume.setThreshold(thresh);
 	}
-	else if(name == "Density"){
+	else if(name == "Density")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Density " << slider->getScaledValue();
 		density = slider->getScaledValue();
 		myVolume.setDensity(density);
 	}
-	else if(name == "Dithering"){
+	else if(name == "Dithering")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Dithering " << slider->getScaledValue();
 		dithering = slider->getScaledValue();
 		myVolume.setDithering(dithering);
 	}
-	else if(name == "Clip depth"){
+	else if(name == "Clip depth")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Cut Plane Depth " << slider->getScaledValue();
 		clipPlaneDepth = slider->getScaledValue();
 		myVolume.setClipDepth(clipPlaneDepth);
 	}
-	else if(name == "Elevation clip angle"){
+	else if(name == "Elevation clip angle")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Elevation " << slider->getScaledValue();
 		elevation = slider->getValue();
 		myVolume.setElevation(elevation);
 	}
-	else if(name == "Azimuth clip angle"){
+	else if(name == "Azimuth clip angle")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		ofLogVerbose() << "Azimuth " << slider->getScaledValue();
 		azimuth = slider->getValue();
 		myVolume.setAzimuth(azimuth);
 	}
-	else if(name == "linearFilter"){
+	else if(name == "linearFilter")
+	{
 		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
 		linearFilter = toggle->getValue();
 		if (linearFilter){
@@ -446,13 +458,15 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
             myVolume.setVolumeTextureFilterMode(GL_NEAREST);
         };
 	}
-	else if(name == "visCoord.y"){
+	else if(name == "visCoord.y")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		visCoord.y = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"visCoord.y " << visCoord.y;
 		update();
 	}
-	else if(name == "visCoord.x"){
+	else if(name == "visCoord.x")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		visCoord.x = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"visCoord.x " << visCoord.x;
@@ -463,8 +477,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		ofLogVerbose() <<	"visCoord.z " << visCoord.z;
 		update();
 	}
-	
-	else if (name== "coronalPad"){
+	else if (name== "coronalPad")
+	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
 		
 		// get values
@@ -474,8 +488,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		ofLogVerbose() <<	"coronalPad.y =  " << visCoord.z;
 		update();
 	}
-	
-	else if (name== "sagittalPad"){
+	else if (name== "sagittalPad")
+	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
 		
 		// get values
@@ -485,8 +499,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		ofLogVerbose() <<	"SagittalPad.y = " << visCoord.z;
 		update();
 	}
-	
-	else if (name== "axialPad"){
+	else if (name== "axialPad")
+	{
 		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 		
 		// get values
@@ -496,8 +510,8 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		ofLogVerbose() <<	"axialPad.y = " << visCoord.y;
 		update();
 	}
-	
-	else if(name == "latitude"){
+	else if(name == "latitude")
+	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		latitude = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"latitude " << latitude;

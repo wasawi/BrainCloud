@@ -61,8 +61,8 @@ int volumeSlice::getVoxelValue(){
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redraw(int zTexOffset, viewPoint vP){
-
+void volumeSlice::redraw(int zTexOffset, viewPoint vP)
+{
 	myViewPoint	= vP;
 	
 	if(myViewPoint==CORONAL){
@@ -79,7 +79,8 @@ void volumeSlice::redraw(int zTexOffset, viewPoint vP){
 	}
 }
 //--------------------------------------------------------------
-void volumeSlice::drawBox(){
+void volumeSlice::drawBox()
+{
 	// Draw Box
 	ofPushStyle();
 	ofSetColor(0);
@@ -88,7 +89,8 @@ void volumeSlice::drawBox(){
 	ofSetColor(255);
 }
 //--------------------------------------------------------------
-void volumeSlice::drawCoronal(float x, float y, float z){
+void volumeSlice::drawCoronal(float x, float y, float z)
+{
 	drawBox();
 	if(z>-1&&z<volHeight){
 		coronal.draw(halfW, halfD);
@@ -97,7 +99,8 @@ void volumeSlice::drawCoronal(float x, float y, float z){
 
 
 //--------------------------------------------------------------
-void volumeSlice::drawSagittal(float x, float y, float z){
+void volumeSlice::drawSagittal(float x, float y, float z)
+{
 	drawBox();
 	if(z>-1&&z<volWidth){
 		sagittal.draw(halfH, halfD);
@@ -105,7 +108,8 @@ void volumeSlice::drawSagittal(float x, float y, float z){
 }
 
 //--------------------------------------------------------------
-void volumeSlice::drawAxial(float x, float y, float z){
+void volumeSlice::drawAxial(float x, float y, float z)
+{
 	drawBox();
 	if(z>-1&&z<volDepth){
 		axial.draw(halfW, halfH);
@@ -113,13 +117,14 @@ void volumeSlice::drawAxial(float x, float y, float z){
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawCoronal(int zTexOffset){
-	
+void volumeSlice::redrawCoronal(int zTexOffset)
+{
 	//allocate my pixls size of the resulting image
 	myPixels.allocate(volWidth, volDepth, OF_IMAGE_GRAYSCALE);
 	
 	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volWidth * volDepth; i++ ){
+	for (int i=0; i<volWidth * volDepth; i++ )
+	{
 		myPixels[i]= (unsigned char) 255;
 	}
 	
@@ -154,13 +159,14 @@ void volumeSlice::redrawCoronal(int zTexOffset){
 
 
 //--------------------------------------------------------------
-void volumeSlice::redrawSagittal(int zTexOffset){
-	
+void volumeSlice::redrawSagittal(int zTexOffset)
+{
 	//allocate my pixls size of the resulting image
 	myPixels.allocate(volDepth, volHeight, OF_IMAGE_GRAYSCALE);
 	
 	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volDepth * volHeight; i++ ){
+	for (int i=0; i<volDepth * volHeight; i++ )
+	{
 		myPixels[i]= (unsigned char) 255;
 	}
 	
@@ -195,13 +201,14 @@ void volumeSlice::redrawSagittal(int zTexOffset){
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawAxial(int zTexOffset){
-	
+void volumeSlice::redrawAxial(int zTexOffset)
+{
 	//allocate my pixls size of the resulting image
 	myPixels.allocate(volWidth, volHeight, OF_IMAGE_GRAYSCALE);
 	
 	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volWidth * volHeight; i++ ){
+	for (int i=0; i<volWidth * volHeight; i++ )
+	{
 		myPixels[i]= (unsigned char) 255;
 	}
 	

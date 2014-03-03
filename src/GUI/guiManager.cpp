@@ -139,19 +139,20 @@ void guiManager::setupTabBar()
 //--------------------------------------------------------------
 void guiManager::changeTabBar()
 {
-	if (myTabselector == SEARCH){
-		
+	if (myTabselector == SEARCH)
+	{
 		postCanvas->setVisible(false);
 		scrollCanvas->setVisible(true);
 		textInputCanvas->setVisible(true);
-		
-	}else if(myTabselector == POST){
-
+	}
+	else if(myTabselector == POST)
+	{
 		postCanvas->setVisible(true);
 		scrollCanvas->setVisible(false);
 		textInputCanvas->setVisible(false);
-
-	}else if(myTabselector == FILTER){
+	}
+	else if(myTabselector == FILTER)
+	{
 		
 	}
 }
@@ -218,8 +219,8 @@ void guiManager::setupSearchCanvas(){
 
 
 //--------------------------------------------------------------
-void guiManager::setupScrollCanvas(){
-
+void guiManager::setupScrollCanvas()
+{
 	// Canvas for Tweets
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH, sliderW);
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
@@ -234,19 +235,21 @@ void guiManager::setupScrollCanvas(){
 	adjustContentstoGui(bsnap);
 }
 
-void guiManager::adjustContentstoGui(bool _bsnap){
-	
-	if(_bsnap){
+void guiManager::adjustContentstoGui(bool _bsnap)
+{
+	if(_bsnap)
+	{
 		scrollCanvas->autoSizeToFitWidgets();
 	}
-	else {
+	else
+	{
 		scrollCanvas->setSnapping(_bsnap); //Auto damping levels only works for full size window
 		scrollCanvas->updateScrollBarSize(scrollCanvas->getScroll()->getWidgets(), 3000 , 500); // set new default size depending content inside // max , min
 	}
 }
 
-void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText){
-	
+void guiManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText)
+{
 	// clean emojis:
 	name = removeEmojis(name);
 	user_name = removeEmojis(user_name);
@@ -302,7 +305,8 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 	if(name == "TEXT INPUT")
 	 {
 		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
-		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER){
+		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
 			ofLogVerbose("searchField") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
 
@@ -314,26 +318,31 @@ void guiManager::textInputEvent(ofxUIEventArgs &e)
 			
 			//copy text to Clipboard
 			bool succeded = ofCopyText(textinput->getTextString());
-			
-		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS){
+		}
+		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
+		{
 			ofLogVerbose("searchField") << "ON FOCUS: ";
 //			textinput->
 //			textinput->recalculateDisplayString();
 //			ofRegisterKeyEvents((guiManager*)this);
 			textInputCanvas->hasKeyboardFocus();
 			textinput->setTextString("");
-			
-		
-		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS){
+		}
+		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+		{
 			ofLogVerbose("searchField") << "ON BLUR: ";
 		
-		}else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD){
+		}
+		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
+		{
 			ofLogVerbose("searchField") << "ON LOAD: ";
 		}
 		string output = textinput->getTextString();
 		cout << output << endl;
 	 
-	 }else if (name == "responses"){
+	 }
+	else if (name == "responses")
+	{
 		ofxUINumberDialer *numDialer = (ofxUINumberDialer *) e.widget;
 		nResponses = numDialer->getValue();
 		ofLogVerbose("searchField") << "nResponses: " << nResponses;
@@ -346,7 +355,8 @@ void guiManager::tabCanvasEvent(ofxUIEventArgs &e)
 	string name = e.widget->getName();
 	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
 	
-	if(name == "Search"){
+	if(name == "Search")
+	{
 		myTabselector=SEARCH;
 
 		searchToggle = true;
@@ -361,7 +371,9 @@ void guiManager::tabCanvasEvent(ofxUIEventArgs &e)
 		changeTabBar();
 		ofLogVerbose("tabCanvasEvent") << "searchToggle: " << toggle->getValue();
 
-	}else if (name == "Post"){
+	}
+	else if (name == "Post")
+	{
 		myTabselector=POST;
 		
 		postToggle=true;
