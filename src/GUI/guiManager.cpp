@@ -52,7 +52,7 @@ guiManager::guiManager()
 	// Tweets Canvas
 	dim				= 50;
 	sliderW			= 20;
-	space			= OFX_UI_GLOBAL_WIDGET_SPACING;
+	space			= 10;
 	WidgetW			= tabCanvasW-sliderW-OFX_UI_GLOBAL_WIDGET_SPACING*2;
 	bsnap			= false;
 	
@@ -226,6 +226,7 @@ void guiManager::setupScrollCanvas()
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setFBOArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setScrollableDirections(false, true);
+	scrollCanvas->setWidgetSpacing(space);
 	
 	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
 	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
