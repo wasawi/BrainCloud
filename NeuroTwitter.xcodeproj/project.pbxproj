@@ -13,6 +13,7 @@
 		0872E51218AC173800D40D08 /* talairachLabels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51018AC173800D40D08 /* talairachLabels.cpp */; };
 		0872E53318AE143900D40D08 /* ofxTalairach.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51E18AE143900D40D08 /* ofxTalairach.cpp */; };
 		08CEA41618BB7FEE00E25D75 /* myUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08CEA41418BB7FEE00E25D75 /* myUtils.cpp */; };
+		08FF0ECF18C63CF200CF4BAF /* ofxUI3DPad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FF0ECD18C63CF200CF4BAF /* ofxUI3DPad.cpp */; };
 		1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2813E36CEFD8D1C1B70E600 /* ofxUIRangeSlider.cpp */; };
 		1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */; };
 		202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE68D117096A7022E761A462 /* ofxTexture3d.cpp */; };
@@ -146,6 +147,8 @@
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
 		08CEA41418BB7FEE00E25D75 /* myUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = myUtils.cpp; sourceTree = "<group>"; };
 		08CEA41518BB7FEE00E25D75 /* myUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myUtils.h; sourceTree = "<group>"; };
+		08FF0ECD18C63CF200CF4BAF /* ofxUI3DPad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxUI3DPad.cpp; path = ../../../addons/ofxUI/src/ofxUI3DPad.cpp; sourceTree = "<group>"; };
+		08FF0ECE18C63CF200CF4BAF /* ofxUI3DPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxUI3DPad.h; path = ../../../addons/ofxUI/src/ofxUI3DPad.h; sourceTree = "<group>"; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0D6768C572B6CA49227C29EA /* ofxUINumberDialer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUINumberDialer.cpp; path = ../../../addons/ofxUI/src/ofxUINumberDialer.cpp; sourceTree = SOURCE_ROOT; };
 		0DD7FDA4984EBEB092D47D02 /* curlrules.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = curlrules.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/curlrules.h; sourceTree = SOURCE_ROOT; };
@@ -760,6 +763,8 @@
 		D60F85FE32E11F4003B80627 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				08FF0ECD18C63CF200CF4BAF /* ofxUI3DPad.cpp */,
+				08FF0ECE18C63CF200CF4BAF /* ofxUI3DPad.h */,
 				64C6F7AD018FFD34C7ABB6F2 /* ofxUI.h */,
 				02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */,
 				653CFAE31336DAA04B1F1503 /* ofxUI2DGraph.h */,
@@ -1075,6 +1080,7 @@
 				3CB7D2F1C94EDF626EA83342 /* ofxUIScrollableSliderCanvas.cpp in Sources */,
 				71D220E16245067F59A3637C /* ofxUIScrollSlider.cpp in Sources */,
 				740A58CBFDFE578C83A349AF /* ofxUISlider.cpp in Sources */,
+				08FF0ECF18C63CF200CF4BAF /* ofxUI3DPad.cpp in Sources */,
 				ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */,
 				BFEFCE32DAFE10A8EB519F6C /* ofxUISpacer.cpp in Sources */,
 				52AFF80A869790144ACCC9BA /* ofxUISpectrum.cpp in Sources */,

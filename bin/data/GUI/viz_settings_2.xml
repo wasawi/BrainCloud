@@ -1,33 +1,33 @@
 <Widget>
     <Kind>5</Kind>
     <Name>visCoord.y</Name>
-    <Value>-49.000000000</Value>
+    <Value>0.000000000</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>coronalPad</Name>
-    <XValue>-39.999996185</XValue>
-    <YValue>35.000003815</YValue>
+    <XValue>7.000005245</XValue>
+    <YValue>-0.999999046</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
     <Name>visCoord.x</Name>
-    <Value>-39.999996185</Value>
+    <Value>7.000005245</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>sagittalPad</Name>
-    <XValue>-49.000000000</XValue>
-    <YValue>35.000003815</YValue>
+    <XValue>0.000000000</XValue>
+    <YValue>-0.999999046</YValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
     <Name>visCoord.z</Name>
-    <Value>35.000003815</Value>
+    <Value>-0.999999046</Value>
 </Widget>
 <Widget>
     <Kind>11</Kind>
     <Name>axialPad</Name>
-    <XValue>-39.999996185</XValue>
-    <YValue>-49.000000000</YValue>
+    <XValue>7.000005245</XValue>
+    <YValue>0.000000000</YValue>
 </Widget>

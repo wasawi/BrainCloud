@@ -116,6 +116,7 @@ private:
 	ofVec3f volCoordClamp;	// the clamped coordinates of volCoord
 	ofVec3f talOffset;		// the offset of the origin (0,0,0) in Tal coordinates
 	ofVec3f talCoord;		// volume coords + offset Tal coords for Tal tables.
+	ofVec3f uiCoord;		// coordinates used in GUI (floats from -1 to 1)
 	
 	/* how to use Coordinate space
 	 we are using Anatomical Plane for volume slices:
@@ -128,10 +129,14 @@ private:
 	 Z	=
 	
 	*/
+	bool bUpdating;
+
+	ofVec3f* coronalPad;
+	ofVec3f* sagittalPad;
+	ofVec3f* axialPad;
 	
-	
-	int TalDrawX;
-	int TalDrawy;
+	int talDrawX;
+	int talDrawY;
 	
 //	ofVec3f volDim;
 	int volWidth, volHeight, volDepth;

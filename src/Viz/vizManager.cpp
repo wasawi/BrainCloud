@@ -27,15 +27,26 @@ void vizManager::setup()
 	dist	= 20;
 	boxW	= boxH = 200;
 	
+	// initialize UI coordinates
 	visCoord.y = volHeight /2;
 	visCoord.x = volWidth /2;
 	visCoord.z = volDepth /2;
 	
-	talOffset= ofVec3f(-70,-102,-42);
-	TalDrawX	= boxW+dist*3+sliderW;
-	TalDrawy	=initY+dist;
+	coronalPad	= &visCoord;
+	sagittalPad = &visCoord;
+	axialPad	= &visCoord;
 	
+/*
+	coronalPad	= ofVec3f(visCoord.x,visCoord.z,visCoord.y);
+	sagittalPad = ofVec3f(visCoord.y,visCoord.z,visCoord.x);
+	axialPad	= ofVec3f(visCoord.x,visCoord.y,visCoord.z);
+*/
+	// initialize Talairach coordinates
+	talOffset	= ofVec3f(-70,-102,-42);
+	talDrawX	= boxW+dist*3+sliderW;
+	talDrawY	=initY+dist;
 	
+	bUpdating= true;
 	
 	//camera
 	loadCameraPosition();
@@ -269,13 +280,13 @@ void vizManager::draw()
 //		ofRect(initX,tempY,boxH*2+dist*5,dist);
 		
 		ofSetColor(0, 255, 255);
-		ofDrawBitmapString("Talairarch coordinate :", TalDrawX, TalDrawy);
+		ofDrawBitmapString("Talairarch coordinate :", talDrawX, talDrawY);
 		string str= "x= "+ ofToString(talCoord.x)+" y= "+ ofToString(talCoord.y)+" z= "+ ofToString(talCoord.z);
-		ofDrawBitmapString(str, TalDrawX, TalDrawy+dist);
+		ofDrawBitmapString(str, talDrawX, talDrawY+dist);
 		for (int i=0; i<outputLabels.size()-2; i++) {
 			vector<string> items = ofSplitString(outputLabels[i+2], ",");
 				for (int j=0; j<items.size(); j++) {
-					ofDrawBitmapString(items[j], TalDrawX, TalDrawy+i*dist+j*dist+(dist*2));
+					ofDrawBitmapString(items[j], talDrawX, talDrawY+i*dist+j*dist+(dist*2));
 				}
 		}
 		ofPopStyle();
@@ -286,24 +297,21 @@ void vizManager::draw()
 void vizManager::setup_guis()
 {
 	
-	//GUI
-	/*	guiVolume->setFont("Arial Unicode.ttf");
-	 guiVolume->setFontSize(OFX_UI_FONT_LARGE, 14);
-	 guiVolume->setFontSize(OFX_UI_FONT_MEDIUM, 10);
-	 guiVolume->setFontSize(OFX_UI_FONT_SMALL, 8);
-	 */
+	// Volume UI
 	setup_guiVolume();
 	guiVolume->loadSettings("GUI/viz_settings.xml");
 	guiVolume->setDrawBack(true);
 	guiVolume->setVisible(false);
 	
-	//3d Views
+	// Sliders UI
 	bDraw = true;
 	setup_guiSliders();
 	guiSliders->loadSettings("GUI/viz_settings_2.xml");
 	guiSliders->setDrawBack(false);
 	//	guiSliders->setAutoDraw(true);
 	
+	bDraw = true;
+	bUpdating = false;
 }
 
 //--------------------------------------------------------------
@@ -321,13 +329,13 @@ void vizManager::setup_guiVolume()
 	float sliderW = boxW+dist*2-OFX_UI_GLOBAL_WIDGET_SPACING*2;
 	
 	guiVolume->addWidgetDown(new ofxUILabel("Volume Settings", OFX_UI_FONT_MEDIUM));
-	guiVolume->addSlider("FBO quality", 0.0, 1.0, FBOq, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Z quality", 0.0, 2.0, Zq, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Threshold", 0.0, 1.0, thresh, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Density", 0.0, 1.0, density, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Clip depth", -1.0, 1.0, clipPlaneDepth, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, elevation, sliderW, sliderH)->setDrawBack(true);
-	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, azimuth, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("FBO quality", 0.0, 1.0, &FBOq, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Z quality", 0.0, 2.0, &Zq, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Threshold", 0.0, 1.0, &thresh, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Density", 0.0, 1.0, &density, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Clip depth", -1.0, 1.0, &clipPlaneDepth, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Elevation clip angle", -1.0, 1.0, &elevation, sliderW, sliderH)->setDrawBack(true);
+	guiVolume->addSlider("Azimuth clip angle", -1.0, 1.0, &azimuth, sliderW, sliderH)->setDrawBack(true);
 //	guiVolume->addSlider("Dithering", 0.0, 1.0, dithering, sliderW, sliderH)->setDrawBack(true);
 //	guiVolume->addWidgetDown(new ofxUIToggle( sliderH, sliderH, false, "linearFilter"));
 //	guiVolume -> autoSizeToFitWidgets();
@@ -338,19 +346,25 @@ void vizManager::setup_guiVolume()
 void vizManager::setup_guiSliders()
 {
 	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*3+dist*4);
-
+	
+//	ofxUISlider slider = ;
+//		ofxUI2DPad* pad =
 	
 	//--------------------------- Coronal ---------------------------//
 	//(string _name, T _min, T _max, T _value, float w, float h, float x = 0, float y = 0);
-	guiSliders->addWidget(new ofxUISlider("visCoord.y", -boxH/2, boxH/2, visCoord.y , sliderW,	boxH, boxW+dist, dist));
+	guiSliders->addWidget(new ofxUISlider("visCoord.y", -boxH/2, boxH/2, &visCoord.y , sliderW,	boxH, boxW+dist, dist));
 	ofxUISlider *slider = (ofxUISlider *) guiSliders->getWidget("visCoord.y");
 	slider->setLabelVisible(false);
 	
-	guiSliders->addWidget(new ofxUI2DPad("coronalPad",
-										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
-										 ofVec3f(boxH/2, -boxH/2, 0),		//_rangeY
-										 ofVec3f(visCoord.x,visCoord.z, 0),		//_value
-										 boxW, boxH, dist, dist));			// float w, float h, float x = 0, float y = 0);
+	guiSliders->addWidget(new ofxUI3DPad("coronalPad",
+										 ofVec3f(-1, 1, 0),			//_rangeX
+										 ofVec3f(-1, 1, 0),			//_rangeY
+										 ofVec3f(-1, 1, 0),			//_rangeZ
+										 &uiCoord,					//_value
+										 boxW, boxH, dist, dist,	// w, h, x, y
+										 OFX_UI_FRONT));			// viewPoint
+
+
 	ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
 	pad->setLabelVisible(false);
 	ofColor transparent;
@@ -358,31 +372,35 @@ void vizManager::setup_guiSliders()
 	pad->setColorBack(transparent);
 	
 	//--------------------------- Sagittal ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("visCoord.x",-boxH/2, boxH/2, visCoord.x, sliderW,	boxH, boxW+dist, boxW+dist+sliderW));
+	guiSliders->addWidget(new ofxUISlider("visCoord.x",-boxH/2, boxH/2, &visCoord.x, sliderW, boxH, boxW+dist, boxW+dist+sliderW));
 	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.x");
 	slider->setLabelVisible(false);
 	
-	guiSliders->addWidget(new ofxUI2DPad("sagittalPad",
-										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
-										 ofVec3f(boxH/2, -boxH/2, 0),		//_rangeY
-										 ofVec3f(visCoord.y,visCoord.z, 0),		//_value
-										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
-//										 boxW, boxH, boxW+(dist*2)+sliderW, dist));			// float w, float h, float x = 0, float y = 0);
+	guiSliders->addWidget(new ofxUI3DPad("sagittalPad",
+										 ofVec3f(-1, 1, 0),			//_rangeX
+										 ofVec3f(-1, 1, 0),			//_rangeY
+										 ofVec3f(-1, 1, 0),			//_rangeZ
+										 &uiCoord,					//_value
+										 boxW, boxH, dist, boxW+dist+sliderW,	// w, h, x, y
+										 OFX_UI_LEFT));				// viewPoint
+
 	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
 	
 	//--------------------------- Axial ---------------------------//
-	guiSliders->addWidget(new ofxUISlider("visCoord.z", -boxH/2, boxH/2, visCoord.z, sliderW,	boxH, boxW+dist, boxW*2+dist*2+sliderW));
+	guiSliders->addWidget(new ofxUISlider("visCoord.z", -boxH/2, boxH/2, &visCoord.z, sliderW,	boxH, boxW+dist, boxW*2+dist*2+sliderW));
 	slider = (ofxUISlider *) guiSliders->getWidget("visCoord.z");
 	slider->setLabelVisible(false);
 	
-	guiSliders->addWidget(new ofxUI2DPad("axialPad",
-										 ofVec3f(-boxW/2, boxW/2, 0),		//_rangeX
-										 ofVec3f(-boxH/2, boxH/2, 0),		//_rangeY
-										 ofVec3f(visCoord.x,visCoord.y, 0),		//_value
-										 boxW, boxH, dist, boxW*2+dist*2+sliderW));			// float w, float h, float x = 0, float y = 0);
-//										 boxW, boxH, dist, boxW+dist+sliderW));			// float w, float h, float x = 0, float y = 0);
+	guiSliders->addWidget(new ofxUI3DPad("axialPad",
+										 ofVec3f(-1, 1, 0),			//_rangeX
+										 ofVec3f(-1, 1, 0),			//_rangeY
+										 ofVec3f(-1, 1, 0),			//_rangeZ
+										 &uiCoord,					//_value
+										 boxW, boxH, dist, boxW*2+dist*2+sliderW,	// w, h, x, y
+										 OFX_UI_TOP));				// viewPoint
+
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
@@ -398,6 +416,8 @@ void vizManager::setup_guiSliders()
 //--------------------------------------------------------------
 void vizManager::guiEvent(ofxUIEventArgs &e)
 {
+	if (bUpdating)
+	{
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
 	//	ofLogVerbose("vizManager") << "GUI:: got event from: " << name;
@@ -526,6 +546,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		latitude = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"latitude " << latitude;
 	}
+	}
 }
 
 //--------------------------------------------------------------
@@ -551,6 +572,9 @@ void vizManager::keyPressed(int key ){
 			ofSetWindowPosition(0, 0);
 			ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
+			break;
+		case 'u':
+			bUpdating=!bUpdating;
 			break;
 		case 'F':
 			ofSetVerticalSync(true);
