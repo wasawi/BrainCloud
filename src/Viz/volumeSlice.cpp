@@ -92,7 +92,7 @@ void volumeSlice::drawBox()
 void volumeSlice::drawCoronal(float x, float y, float z)
 {
 	drawBox();
-	if(z>-1&&z<volHeight){
+	if(z>-1&&z<volHeight){					//this has to be erased and function drawCoronal must have no params
 		coronal.draw(halfW, halfD);
 	}
 }

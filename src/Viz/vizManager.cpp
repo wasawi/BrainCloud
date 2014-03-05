@@ -192,6 +192,8 @@ void vizManager::updateCoordinates()
 //--------------------------------------------------------------
 void vizManager::updateSlices()
 {
+	// update de Depth of the slices drawn by volumeSlice
+	// this uptade must only run when there is a gui event
 	volume2D.redraw(volCoordClamp.y, CORONAL);
 	volume2D.redraw(volCoordClamp.x, SAGITTAL);
 	volume2D.redraw(volCoordClamp.z, AXIAL);
@@ -415,63 +417,46 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	if(name == "FBO quality")
 	{
 		ofLogVerbose() << "FBO quality " << FBOq;
-//		ofxUISlider *slider = (ofxUISlider *) e.widget;
-//		FBOq = slider->getScaledValue();
-//		myVolume.setXyQuality(FBOq);
+		myVolume.setXyQuality(FBOq);
 	}
 	else if(name == "Z quality")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Z quality " << slider->getScaledValue();
-		Zq = slider->getScaledValue();
+		ofLogVerbose() << "Z quality " << Zq;
 		myVolume.setZQuality(Zq);
 	}
 	else if(name == "Threshold")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Threshold " << slider->getScaledValue();
-		thresh = slider->getScaledValue();
+		ofLogVerbose() << "Threshold " << thresh;
 		myVolume.setThreshold(thresh);
 	}
 	else if(name == "Density")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Density " << slider->getScaledValue();
-		density = slider->getScaledValue();
+		ofLogVerbose() << "Density " << density;
 		myVolume.setDensity(density);
 	}
 	else if(name == "Dithering")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Dithering " << slider->getScaledValue();
-		dithering = slider->getScaledValue();
+		ofLogVerbose() << "Dithering " << dithering;
 		myVolume.setDithering(dithering);
 	}
 	else if(name == "Clip depth")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Cut Plane Depth " << slider->getScaledValue();
-		clipPlaneDepth = slider->getScaledValue();
+		ofLogVerbose() << "Cut Plane Depth " << clipPlaneDepth;
 		myVolume.setClipDepth(clipPlaneDepth);
 	}
 	else if(name == "Elevation clip angle")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Elevation " << slider->getScaledValue();
-		elevation = slider->getValue();
+		ofLogVerbose() << "Elevation " << elevation;
 		myVolume.setElevation(elevation);
 	}
 	else if(name == "Azimuth clip angle")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		ofLogVerbose() << "Azimuth " << slider->getScaledValue();
-		azimuth = slider->getValue();
+		ofLogVerbose() << "Azimuth " << azimuth;
 		myVolume.setAzimuth(azimuth);
 	}
 	else if(name == "linearFilter")
 	{
-		ofxUIToggle *toggle = (ofxUIToggle *) e.widget;
-		linearFilter = toggle->getValue();
+		ofLogVerbose() << "linearFilter " << linearFilter;
 		if (linearFilter){
             myVolume.setVolumeTextureFilterMode(GL_LINEAR);
         }else {
@@ -480,55 +465,34 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	}
 	else if(name == "coronalDepth")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		visCoord.y = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"coronalDepth " << visCoord.y;
+		ofLogVerbose() <<	"coronalDepth " << uiCoord.z;
 		update();
 	}
 	else if(name == "sagittalDepth")
 	{
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		visCoord.x = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"sagittalDepth " << visCoord.x;
+		ofLogVerbose() <<	"sagittalDepth " << uiCoord.x;
 		update();
 	}
 	else if(name == "axialDepth"){
-		ofxUISlider *slider = (ofxUISlider *) e.widget;
-		visCoord.z = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"axialDepth " << visCoord.z;
+		ofLogVerbose() <<	"axialDepth " << uiCoord.y;
 		update();
 	}
 	else if (name== "coronalPad")
 	{
-		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
-		
-		// get values
-		visCoord.x = pad->getScaledValue().x;
-		visCoord.z = pad->getScaledValue().y;
-		ofLogVerbose() <<	"coronalPad.x =  " << visCoord.x;
-		ofLogVerbose() <<	"coronalPad.y =  " << visCoord.z;
+		ofLogVerbose() <<	"coronalPad.x =  " << uiCoord.x;
+		ofLogVerbose() <<	"coronalPad.y =  " << uiCoord.y;
 		update();
 	}
 	else if (name== "sagittalPad")
 	{
-		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
-		
-		// get values
-		visCoord.y = pad->getScaledValue().x;
-		visCoord.z = pad->getScaledValue().y;
-		ofLogVerbose() <<	"SagittalPad.x = " << visCoord.y;
-		ofLogVerbose() <<	"SagittalPad.y = " << visCoord.z;
+		ofLogVerbose() <<	"SagittalPad.x = " << uiCoord.z;
+		ofLogVerbose() <<	"SagittalPad.y = " << uiCoord.y;
 		update();
 	}
 	else if (name== "axialPad")
 	{
-		ofxUI2DPad *pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
-		
-		// get values
-		visCoord.x = pad->getScaledValue().x;
-		visCoord.y = pad->getScaledValue().y;
-		ofLogVerbose() <<	"axialPad.x = " << visCoord.x;
-		ofLogVerbose() <<	"axialPad.y = " << visCoord.y;
+		ofLogVerbose() <<	"axialPad.x = " << uiCoord.x;
+		ofLogVerbose() <<	"axialPad.y = " << uiCoord.z;
 		update();
 	}
 	else if(name == "latitude")
