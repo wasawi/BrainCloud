@@ -53,15 +53,7 @@ private:
 	void setup_guiSliders();
 	ofxUICanvas *guiVolume;
 	ofxUICanvas *guiSliders;
-	
-	//UI vars
-	float FBOq, Zq, thresh, density, dithering;
-	float lastClipPlaneDepth;
-	float clipPlaneDepth, azimuth, elevation;
-	
-	//Volume Slice
-	volumeSlice	volume2D;
-	
+			
 	//XML settings
 	ofxXmlSettings XML;
 	string message;
@@ -75,28 +67,37 @@ private:
 	bool bcameraMode;
 	float latitude;
 	
-	//Volume Rendering
+	// Volume Rendering
     ofxVolumetrics myVolume;
     unsigned char * volumeData;
     ofxImageSequencePlayer imageSequence;
     bool linearFilter;
 	ofFbo myfboRender;
+	
+	// Volume UI vars
+	float FBOq, Zq, thresh, density, dithering;
+	float lastClipPlaneDepth;
+	float clipPlaneDepth, azimuth, elevation;
+	bool bUpdating;
+	
+	// Volume Slice
+	volumeSlice	volume2D;
 
-	//Twitter objects
+	// Twitter objects
 	tweet3d  searchTweetByLocation();
 	vector<tweet3d> alltweets;
     vector<tweet3d> selectedTweets;
 	
-	//Talairach Atlas
+	// Talairach Atlas
 	talairachLabels	talairachAtlas;
 	ofxTalairach talClient;
 	vector <string> outputLabels;
 	
-	//updates
+	// updates
 	void updateCoordinates();
 	void updateSlices();
-	void updatePads();
-	void updateSliders();
+//	void updatePads();
+//	void updateSliders();
 	void updateTalCoords();
 	void updateTalAtlasLabel();
 	void updateTalLabel();
@@ -112,11 +113,12 @@ private:
 	
 	//All Coordinates
 	ofVec3f volCoord;		// coordinates in Volume (integers from 0 to volWidth..)
-	ofVec3f visCoord;		// coordinates used in GUI (floats from -1 to 1)
+	ofVec3f visCoord;		// coordinates used in VolumeSlice (floats from -100 to 100)
 	ofVec3f volCoordClamp;	// the clamped coordinates of volCoord
 	ofVec3f talOffset;		// the offset of the origin (0,0,0) in Tal coordinates
 	ofVec3f talCoord;		// volume coords + offset Tal coords for Tal tables.
-	ofVec3f uiCoord;		// coordinates used in GUI (floats from -1 to 1)
+	ofVec3f uiCoord;		// NORMALISED coordinates used in GUI (floats from -1 to 1)
+	ofVec3f	uiRange;		// maximum and minimum values for UIs
 	
 	/* how to use Coordinate space
 	 we are using Anatomical Plane for volume slices:
@@ -127,13 +129,19 @@ private:
 	 X	=
 	 Y	=
 	 Z	=
-	
-	*/
-	bool bUpdating;
+	 
+	 // 3Dpads
+	 front	= x y z
+	 back	= -x y z
+	 left	= z y x
+	 right	= -z y x
+	 top	= x z y
+	 bottom = -x z y
 
-	ofVec3f* coronalPad;
-	ofVec3f* sagittalPad;
-	ofVec3f* axialPad;
+	 coronalDepth	= uiCoord.z	= visCoord.X
+	 sagittalDepth	= uiCoord.x	= visCoord.Y
+	 axialDepth		= uiCoord.y	= visCoord.Z
+	 */
 	
 	int talDrawX;
 	int talDrawY;
