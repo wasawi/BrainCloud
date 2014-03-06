@@ -50,7 +50,6 @@ void vizManager::setup()
 	//setup GUIs
 	bUpdating= true;
 	setup_guis();
-	
 }
 
 //--------------------------------------------------------------
@@ -97,6 +96,8 @@ void vizManager::initVolume()
 	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
+	myVolume.setPlanes(&uiCoord);
+	myVolume.cam=&cam;
 	
 	// Init Slices
 	volume2D.setup	(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
@@ -107,21 +108,12 @@ void vizManager::update()
 {
 	updateCoordinates();
 
-	updateSlices();
+	update2DSlices();
 	updateVolumeSlices();
 
 	updateTalCoords();
-	updateTalAtlasLabel();
+//	updateTalAtlasLabel();
 	//	updateTalLabel();
-}
-
-//--------------------------------------------------------------
-void vizManager::updateVolumeSlices()
-{
-	// move the planes rendered in Volumetrics
-	myVolume.setCoronalPlane(uiCoord.z);
-	myVolume.setSagittalPlane(uiCoord.x);
-	myVolume.setAxialPlane(uiCoord.y);
 }
 
 //--------------------------------------------------------------
@@ -152,13 +144,12 @@ void vizManager::updateTalCoords()
 {
 	// transform my coordinates to Talairach coordinates
 	// using the offstet provided in nifti headers
-	talCoord.x = (volCoord.x + talOffset.x)*-1;
-	talCoord.y = volCoord.y + talOffset.y;
-	talCoord.z = volCoord.z + talOffset.z;
+	talCoord = volCoord + talOffset;
+	talCoord.x *=-1;
 	
-	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
-	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
-	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
+//	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
+//	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
+//	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
 }
 
 //--------------------------------------------------------------
@@ -168,35 +159,45 @@ void vizManager::updateCoordinates()
 	float halfW = (boxW - volWidth) /2;
 	float halfH = (boxW - volHeight) /2;
 	float halfD = (boxW - volDepth) /2;
+	
+	ofLogVerbose("vizManager") <<	"uiCoord.x " << ofToString(uiCoord.x,2);
+	ofLogVerbose("vizManager") <<	"uiCoord.y " << ofToString(uiCoord.y,2);
+	ofLogVerbose("vizManager") <<	"uiCoord.z " << ofToString(uiCoord.z,2);
 
-	ofLogVerbose("vizManager") <<	"visCoord.x " << ofToString(visCoord.x,2);
-	ofLogVerbose("vizManager") <<	"visCoord.y " << ofToString(visCoord.y,2);
-	ofLogVerbose("vizManager") <<	"visCoord.z " << ofToString(visCoord.z,2);
-	
-	// we need to clamp the output of the map because there are no boxels between the volume and the box.
-	// therefore clamp from 0 to volW/H/D -1! because the for runs while i < volW
-	volCoord.x		= floor (ofMap(visCoord.x,		-boxW/2, boxW/2, -halfW, volWidth-1 + halfW));
-	volCoordClamp.x		= ofClamp(volCoord.x,0, volWidth-1);
-	
-	volCoord.y		= floor (ofMap(visCoord.y,		-boxW/2, boxW/2, -halfH, volHeight-1 + halfH));
-	volCoordClamp.y		= ofClamp(volCoord.y,0, volHeight-1);
+	// it would be nice to do it like this:
+	// volCoord = floor(ofMap(uiCoord, uiRangeMin, uiRangeMax, 0, volSize));
+	// all using vec3f and mapped all at once.
+	volCoord.z = floor(ofMap(uiCoord.z, uiRange.x, uiRange.y, 0 -halfH, volHeight + halfH));
+	volCoord.x = floor(ofMap(uiCoord.x, uiRange.x, uiRange.y, 0 -halfW, volWidth + halfW));
+	volCoord.y = floor(ofMap(uiCoord.y, uiRange.y, uiRange.x, 0 -halfD, volDepth + halfD));
 
-	volCoord.z		= floor (ofMap(visCoord.z,		-boxW/2, boxW/2, -halfD, volDepth-1 + halfD));
-	volCoordClamp.z		= ofClamp(volCoord.z,0, volDepth-1);
-	
+
 	ofLogVerbose("vizManager") <<	"volCoord.x " << volCoord.x;
 	ofLogVerbose("vizManager") <<	"volCoord.y " << volCoord.y;
 	ofLogVerbose("vizManager") <<	"volCoord.z " << volCoord.z;
+	
+	
 }
 
 //--------------------------------------------------------------
-void vizManager::updateSlices()
+void vizManager::update2DSlices()
 {
 	// update de Depth of the slices drawn by volumeSlice
 	// this uptade must only run when there is a gui event
-	volume2D.redraw(volCoordClamp.y, CORONAL);
-	volume2D.redraw(volCoordClamp.x, SAGITTAL);
-	volume2D.redraw(volCoordClamp.z, AXIAL);
+	volume2D.redraw(CORONAL, volCoord.z);
+	volume2D.redraw(SAGITTAL, volCoord.x);
+	volume2D.redraw(AXIAL, volCoord.y);
+}
+
+//--------------------------------------------------------------
+void vizManager::updateVolumeSlices()
+{
+/*
+	// move the planes rendered in Volumetrics
+	myVolume.setCoronalPlane	(uiCoord.z);
+	myVolume.setSagittalPlane	(uiCoord.x);
+	myVolume.setAxialPlane		(uiCoord.y);
+ */
 }
 
 //--------------------------------------------------------------
@@ -204,7 +205,6 @@ void vizManager::draw()
 {
 	if (bDraw)
 	{
-		
 		// Draw Volume
 		ofSetColor(255);
 		cam.begin();
@@ -220,21 +220,23 @@ void vizManager::draw()
 		//Draw Slices "canvas"
 		ofPushView();
 		ofTranslate(initX, initY);
-		ofSetColor(0,0,0, 100 );
-		ofRect(0, 0, boxW+dist*3, (boxW+dist)*3+dist);
+		ofPushStyle();
+			ofSetColor(OFX_UI_COLOR_BACK);
+			ofRect(0, 0, boxW+dist*3, (boxW+dist)*3+dist);
+		ofPopStyle();
 		
 		//Draw Slices
 		ofPushView();
 		ofTranslate(dist, dist);
-		volume2D.drawCoronal(0, 0, volCoord.y);
+		volume2D.draw(CORONAL);
 		
 		ofPushView();
 		ofTranslate( 0, boxH+ dist);
-		volume2D.drawSagittal(0, 0, volCoord.x);
-
+		volume2D.draw(SAGITTAL);
+		
 		ofPushView();
 		ofTranslate( 0, boxH+ dist);
-		volume2D.drawAxial(0, 0, volCoord.z);
+		volume2D.draw(AXIAL);
 		
 		ofPopView();
 		ofPopView();
@@ -278,7 +280,7 @@ void vizManager::setup_guis()
 	//	guiSliders->setAutoDraw(true);
 	
 	bDraw = true;
-	bUpdating = false;
+//	bUpdating = false;
 }
 
 //--------------------------------------------------------------

@@ -1,33 +1,36 @@
 <Widget>
     <Kind>5</Kind>
-    <Name>visCoord.y</Name>
+    <Name>coronalDepth</Name>
     <Value>0.000000000</Value>
 </Widget>
 <Widget>
-    <Kind>11</Kind>
+    <Kind>12</Kind>
     <Name>coronalPad</Name>
-    <XValue>7.000005245</XValue>
-    <YValue>-0.999999046</YValue>
+    <XValue>0.019999981</XValue>
+    <YValue>0.009999990</YValue>
+    <ZValue>0.000000000</ZValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
-    <Name>visCoord.x</Name>
-    <Value>7.000005245</Value>
+    <Name>sagittalDepth</Name>
+    <Value>0.019999981</Value>
 </Widget>
 <Widget>
-    <Kind>11</Kind>
+    <Kind>12</Kind>
     <Name>sagittalPad</Name>
-    <XValue>0.000000000</XValue>
-    <YValue>-0.999999046</YValue>
+    <XValue>0.019999981</XValue>
+    <YValue>0.009999990</YValue>
+    <ZValue>0.000000000</ZValue>
 </Widget>
 <Widget>
     <Kind>5</Kind>
-    <Name>visCoord.z</Name>
-    <Value>-0.999999046</Value>
+    <Name>axialDepth</Name>
+    <Value>0.009999990</Value>
 </Widget>
 <Widget>
-    <Kind>11</Kind>
+    <Kind>12</Kind>
     <Name>axialPad</Name>
-    <XValue>7.000005245</XValue>
-    <YValue>0.000000000</YValue>
+    <XValue>0.019999981</XValue>
+    <YValue>0.009999990</YValue>
+    <ZValue>0.000000000</ZValue>
 </Widget>

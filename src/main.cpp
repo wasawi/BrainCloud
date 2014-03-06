@@ -1,5 +1,3 @@
-#define USE_FTGL
-
 #include "ofMain.h"
 #include "ofApp.h"
 #include "ofAppGlutWindow.h"

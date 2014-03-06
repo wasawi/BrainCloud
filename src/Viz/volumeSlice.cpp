@@ -5,9 +5,6 @@ volumeSlice::volumeSlice()
     volWidth = 0;
     volHeight = 0;
     volDepth = 0;
-	myViewPoint = SAGITTAL;
-	
-	lineColor.set(150,150,150);
 }
 //--------------------------------------------------------------
 volumeSlice::~volumeSlice()
@@ -21,15 +18,32 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
     volHeight	= h;
     volDepth	= d;
 	myData		= data;
-	boxW = bW;
-	boxH = bH;
+	boxW		= bW;
+	boxH		= bH;
 	
-	// needed to align the volume at the center of the box
+	// Needed to align the volume at the center of the box
 	// Attention! this is not correct..
 	// will give problems if W & H are not d same
 	halfH = (boxW - volHeight) /2;
 	halfW = (boxW - volWidth) /2;
 	halfD = (boxW - volDepth) /2;
+	
+	//allocate my pixls size of the resulting image
+	coronalPixels.allocate(volWidth, volDepth, OF_IMAGE_GRAYSCALE);
+	coronalPixels.set(255);
+	sagittalPixels.allocate(volDepth, volHeight, OF_IMAGE_GRAYSCALE);
+	sagittalPixels.set(255);
+	axialPixels.allocate(volWidth, volHeight, OF_IMAGE_GRAYSCALE);
+	axialPixels.set(255);
+	/*
+	//fill out the added pixel in white.. just to see any errors
+	for (int i=0; i<volWidth * volDepth; i++ )
+	{
+		coronalPixels[i]= (unsigned char) 255;
+	}
+*/
+	
+	
 }
 
 //--------------------------------------------------------------
@@ -61,21 +75,64 @@ int volumeSlice::getVoxelValue(){
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redraw(int zTexOffset, viewPoint vP)
+void volumeSlice::redraw(viewPoint vP, int depth)
 {
-	myViewPoint	= vP;
-	
-	if(myViewPoint==CORONAL){
-		coronalS = zTexOffset;
-		redrawCoronal(zTexOffset);
-		
-	}else if(myViewPoint==SAGITTAL){
-		sagittalS = zTexOffset;
-		redrawSagittal(zTexOffset);
 
-	}else if (myViewPoint==AXIAL){
-		axialS = zTexOffset;
-		redrawAxial(zTexOffset);
+	// try clamp the value like this out = MIN(volHeight, MAX(in, 0));
+	if(vP==CORONAL)
+	{
+		coronalS = depth;	// maybe talairch will need unclamped position??
+		if(depth>=0 && depth<volHeight)
+		{
+			insideCoronal=true;
+			redrawCoronal();
+		}else{
+			insideCoronal=false;
+//			coronalS = MIN(volHeight, MAX(depth, 0));
+
+		}
+	}
+	else if(vP==SAGITTAL)
+	{
+		sagittalS = depth;
+		if(depth>=0 && depth<volWidth)
+		{
+			insideSagittal=true;
+			redrawSagittal();
+		}else{
+			insideSagittal=false;
+//			sagittalS = MIN(volWidth, MAX(depth, 0));
+		}
+	}
+	else if (vP==AXIAL)
+	{
+		axialS = depth;
+		if(depth>=0 && depth<volDepth)
+		{
+			insideAxial=true;
+			redrawAxial();
+		}else{
+			insideAxial=false;
+//			axialS = MIN(volDepth, MAX(depth, 0));
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void volumeSlice::draw(viewPoint vP)
+{
+	drawBox();
+	if(vP==CORONAL)
+	{
+		if(insideCoronal) coronal.draw(halfW, halfD);	// otherwise set to black (do not draw).
+	}
+	else if(vP==SAGITTAL)
+	{
+		if(insideSagittal) sagittal.draw(halfH, halfD);	// otherwise set to black (do not draw).
+	}
+	else if(vP==AXIAL)
+	{
+		if(insideAxial) axial.draw(halfW, halfH);		// otherwise set to black (do not draw).
 	}
 }
 //--------------------------------------------------------------
@@ -88,15 +145,18 @@ void volumeSlice::drawBox()
 	ofPopStyle();
 	ofSetColor(255);
 }
+
+/*
 //--------------------------------------------------------------
 void volumeSlice::drawCoronal(float x, float y, float z)
 {
+	// this will test if z is within the limits and then draw the image
+	// otherwise set to black (do not draw).
 	drawBox();
 	if(z>-1&&z<volHeight){					//this has to be erased and function drawCoronal must have no params
 		coronal.draw(halfW, halfD);
 	}
 }
-
 
 //--------------------------------------------------------------
 void volumeSlice::drawSagittal(float x, float y, float z)
@@ -115,128 +175,77 @@ void volumeSlice::drawAxial(float x, float y, float z)
 		axial.draw(halfW, halfH);
 	}
 }
+*/
 
 //--------------------------------------------------------------
-void volumeSlice::redrawCoronal(int zTexOffset)
+void volumeSlice::redrawCoronal()
 {
-	//allocate my pixls size of the resulting image
-	myPixels.allocate(volWidth, volDepth, OF_IMAGE_GRAYSCALE);
-	
-	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volWidth * volDepth; i++ )
-	{
-		myPixels[i]= (unsigned char) 255;
-	}
-	
 	for(int z=0; z<volDepth; z++)
 	{
 		for(int y=0; y<volHeight; y++)
 		{
-			if (y==zTexOffset){
+			if (y==coronalS){
 				for(int x=0; x<volWidth; x++)
 				{
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					int i = x + line + page;					// the pointer position at Array
-					myPixels[x+(z*volWidth)] = myData[i];		// the pixel on the image
+					int i = x + line + page;					// the position at the pixel array
+					coronalPixels[x+(z*volWidth)] = myData[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
 	}
 	
-	//draw 2dVolume
-	coronal.setFromPixels(myPixels.getPixels(), volWidth, volDepth, OF_IMAGE_GRAYSCALE);
+	//draw image
+	coronal.setFromPixels(coronalPixels.getPixels(), volWidth, volDepth, OF_IMAGE_GRAYSCALE);
 	coronal.mirror(true, false);
-	/*
-	 //Axial X and Y LINES
-	 int	invCoronalS;
-	 invCoronalS = ofMap(coronalS, 0, volWidth-1, volWidth-1, 0);
-	 ofSetColor(lineColor);
-	 ofLine(0, invCoronalS+ y, boxW, invCoronalS+ y);			//axial hor line
-	 ofLine(sagittalS+ x, 0, sagittalS+ x, boxH);				//axial vert line
-	 */
 }
 
-
 //--------------------------------------------------------------
-void volumeSlice::redrawSagittal(int zTexOffset)
+void volumeSlice::redrawSagittal()
 {
-	//allocate my pixls size of the resulting image
-	myPixels.allocate(volDepth, volHeight, OF_IMAGE_GRAYSCALE);
-	
-	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volDepth * volHeight; i++ )
-	{
-		myPixels[i]= (unsigned char) 255;
-	}
-	
 	for(int z=0; z<volDepth; z++)
     {
 		for(int y=0; y<volHeight; y++)
         {
 			for(int x=0; x<volWidth; x++)
 			{
-				if (x==zTexOffset){
+				if (x==sagittalS){
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					int i = x + line + page;					// the pointer position at Array
-					myPixels[z+(y*volDepth)] = myData[i];		// the pixel on the image
+					int i = x + line + page;					// the position at the pixel array
+					sagittalPixels[z+(y*volDepth)] = myData[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
     }
 	
-	//draw 2dVolume
-	sagittal.setFromPixels(myPixels.getPixels(), volDepth, volHeight, OF_IMAGE_GRAYSCALE);
+	//draw image
+	sagittal.setFromPixels(sagittalPixels.getPixels(), volDepth, volHeight, OF_IMAGE_GRAYSCALE);
 	sagittal.rotate90(3);
-	
-	/*
-	 // Sagittal X and Y LINES
-	 int	invCoronalS;
-	 invCoronalS = ofMap(coronalS, 0, volWidth-1, volWidth-1, 0);
-	 ofSetColor(lineColor);
-	 ofLine(0, invCoronalS+ y, boxW, invCoronalS+ y);		//sagital hor line
-	 ofLine(axialS+ x, 0, axialS+ x, boxH);					//sagital vert line
-	 */
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawAxial(int zTexOffset)
+void volumeSlice::redrawAxial()
 {
-	//allocate my pixls size of the resulting image
-	myPixels.allocate(volWidth, volHeight, OF_IMAGE_GRAYSCALE);
-	
-	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volWidth * volHeight; i++ )
-	{
-		myPixels[i]= (unsigned char) 255;
-	}
-	
 	for(int z=0; z<volDepth; z++)
     {
-		if (z==zTexOffset){
+		if (z==axialS){
 			for(int y=0; y<volHeight; y++)
 			{
 				for(int x=0; x<volWidth; x++)
 				{
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
-					int i = x + line + page;					// the pointer position at Array
-					myPixels[x+line] = myData[i];				// the pixel on the image
+					int i = x + line + page;			// the position at the pixel array
+					axialPixels[x+line] = myData[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
     }
-	
-	//draw 2dVolume
-	axial.setFromPixels(myPixels.getPixels(), volWidth, volHeight, OF_IMAGE_GRAYSCALE);
 
-	/*
-	 //Coronal X and Y LINES
-	 ofSetColor(lineColor);
-	 ofLine(0, axialS+ y, boxW,  axialS+ y);					//coronal hor line
-	 ofLine(sagittalS+ x, 0, sagittalS+ x, boxH);			//coronal vert
-	 */
+	//draw image
+	axial.setFromPixels(axialPixels.getPixels(), volWidth, volHeight, OF_IMAGE_GRAYSCALE);
 }
 
 

@@ -7,9 +7,9 @@
 //Volume Cutting Viepoint
 enum viewPoint
 {
+	CORONAL,	//	collar
 	SAGITTAL,	//	cresta
-	AXIAL,		//	diadema
-	CORONAL		//	collar
+	AXIAL		//	diadema
 };
 
 class volumeSlice : public  ofxTexture3d, ofTexture{
@@ -18,23 +18,22 @@ public:
 	volumeSlice();
     virtual ~volumeSlice();
 	void setup(unsigned char * data, int w, int h, int d, float bW, float bH);
-	void redraw(int zTexOffset, viewPoint vP);
-	void drawSagittal(float x, float y, float z);
-	void drawAxial(float x, float y, float z);
-	void drawCoronal(float x, float y, float z);
+	void redraw(viewPoint vP, int depth);
+
 	int getVoxelValue();
+	void draw(viewPoint vP);
 	
 protected:
 private:
 	void drawBox();
-	void redrawSagittal(int zTexOffset);
-	void redrawAxial(int zTexOffset);
-	void redrawCoronal(int zTexOffset);
+	void redrawSagittal();
+	void redrawAxial();
+	void redrawCoronal();
 
 	
 	unsigned char * myData;
 	ofPixels myPixels;
-	viewPoint myViewPoint;
+//	viewPoint myViewPoint;
 	int volWidth, volHeight, volDepth;
 	int renderWidth, renderHeight;
 	
@@ -45,14 +44,28 @@ private:
 	float boxW;
 	float boxH;
 
-	int axialS;
-	int sagittalS;
+	// the depth of the current slice
 	int coronalS;
-	
+	int sagittalS;
+	int axialS;
+
+	// one image for eaxh point of view
 	ofImage coronal;
 	ofImage sagittal;
 	ofImage axial;
 	
+	// one pixel array for each image
+	ofPixels coronalPixels;
+	ofPixels sagittalPixels;
+	ofPixels axialPixels;
+	
 	ofColor lineColor;
-
+	
+	bool insideCoronal;
+	bool insideSagittal;
+	bool insideAxial;
+	
+	//	void drawSagittal(float x, float y, float z);
+	//	void drawAxial(float x, float y, float z);
+	//	void drawCoronal(float x, float y, float z);
 };
