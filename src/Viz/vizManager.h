@@ -120,10 +120,8 @@ private:
 	void updateCoordinates();
 	
 	void update2DSlices();
-	void updateVolumeSlices();
-
-//	void updatePads();
-//	void updateSliders();
+	void updateVolumeCoords();
+	
 	void updateTalCoords();
 	void updateTalAtlasLabel();
 	void updateTalLabel();
@@ -140,13 +138,10 @@ private:
 	ofVec3f uiCoord;		// NORMALISED coordinates used in GUI (floats from -1 to 1)
 	ofVec3f volCoord;		// coordinates in voxels (integers from 0 to volWidth..)
 							// needed to draw the image on position
-	ofVec3f volCoordClamp;	// needed to draw the slice
-	
-	ofVec3f visCoord;		// used in old UI (floats from -boxW/2 to boxW/2)
-	
+	ofVec3f uiClampCoord;	// same as ui but usin values only inside volume
+
 	ofVec3f talOffset;		// the offset of the origin (0,0,0) in Tal coordinates
 	ofVec3f talCoord;		// volume coords + offset Tal coords for Tal tables.
-
 	ofVec3f	uiRange;		// maximum and minimum values for UIs
 	
 

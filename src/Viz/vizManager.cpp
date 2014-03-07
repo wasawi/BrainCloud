@@ -30,10 +30,7 @@ void vizManager::setup()
 	// coordinates in UIs
 	uiRange	= ofVec3f(-1,1,0);
 	uiCoord	= ofVec3f(0,0,0);
-	
-	// initialize VolumeSlice coordinates
-	visCoord = uiCoord * boxW/2;
-	
+		
 	// initialize Talairach coordinates
 	talOffset	= ofVec3f(-70,-102,-42);
 	talDrawX	= boxW+dist*3+sliderW;
@@ -92,12 +89,12 @@ void vizManager::initVolume()
     }
 	
 	// Init Volume
-    myVolume.setup(volWidth, volHeight, volDepth, ofVec3f(1,1,1));
+	ofVec3f voxelSize =	ofVec3f(1);
+    myVolume.setup(volWidth, volHeight, volDepth, voxelSize);
 	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
-	myVolume.setPlanes(&uiCoord);
-	myVolume.cam=&cam;
+	myVolume.setPlanes(&uiClampCoord);
 	
 	// Init Slices
 	volume2D.setup	(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
@@ -109,7 +106,7 @@ void vizManager::update()
 	updateCoordinates();
 
 	update2DSlices();
-	updateVolumeSlices();
+	updateVolumeCoords();
 
 	updateTalCoords();
 //	updateTalAtlasLabel();
@@ -171,11 +168,9 @@ void vizManager::updateCoordinates()
 	volCoord.x = floor(ofMap(uiCoord.x, uiRange.x, uiRange.y, 0 -halfW, volWidth + halfW));
 	volCoord.y = floor(ofMap(uiCoord.y, uiRange.y, uiRange.x, 0 -halfD, volDepth + halfD));
 
-
 	ofLogVerbose("vizManager") <<	"volCoord.x " << volCoord.x;
 	ofLogVerbose("vizManager") <<	"volCoord.y " << volCoord.y;
 	ofLogVerbose("vizManager") <<	"volCoord.z " << volCoord.z;
-	
 	
 }
 
@@ -190,14 +185,22 @@ void vizManager::update2DSlices()
 }
 
 //--------------------------------------------------------------
-void vizManager::updateVolumeSlices()
+void vizManager::updateVolumeCoords()
 {
-/*
-	// move the planes rendered in Volumetrics
-	myVolume.setCoronalPlane	(uiCoord.z);
-	myVolume.setSagittalPlane	(uiCoord.x);
-	myVolume.setAxialPlane		(uiCoord.y);
- */
+	//ofClamp(volCoord.z,0, volDepth-1);
+	ofVec3f uiCoord_;
+	float uiSize=100;
+	uiCoord_ = uiCoord*uiSize;	// map it to pixel values;
+	uiCoord_.y= ofMap(uiCoord_.y, -volWidth/2, volWidth/2, -uiSize, uiSize);
+	uiCoord_.z= ofMap(uiCoord_.z, -volHeight/2, volHeight/2, -uiSize, uiSize);
+	uiCoord_.x= ofMap(uiCoord_.x, -volDepth/2, volDepth/2, -uiSize, uiSize);
+	uiCoord_ = uiCoord_/100;
+	uiCoord_.x = ofClamp(uiCoord_.x, -1, 1);
+	uiCoord_.y = ofClamp(uiCoord_.y, -1, 1);
+	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
+	uiClampCoord = uiCoord_;
+//	uiClampCoord.s
+	
 }
 
 //--------------------------------------------------------------
@@ -645,7 +648,6 @@ void vizManager::loadCameraPosition()
 }
 
 
-
 /*
 //	THE FOLLOWING ARE NOT USED
 
@@ -674,11 +676,6 @@ void vizManager::updatePads()
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad -> setValue(uiCoord);
 }
-
-
-
-
-
 */
 
 

@@ -34,16 +34,7 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	sagittalPixels.allocate(volDepth, volHeight, OF_IMAGE_GRAYSCALE);
 	sagittalPixels.set(255);
 	axialPixels.allocate(volWidth, volHeight, OF_IMAGE_GRAYSCALE);
-	axialPixels.set(255);
-	/*
-	//fill out the added pixel in white.. just to see any errors
-	for (int i=0; i<volWidth * volDepth; i++ )
-	{
-		coronalPixels[i]= (unsigned char) 255;
-	}
-*/
-	
-	
+	axialPixels.set(255);	
 }
 
 //--------------------------------------------------------------
@@ -146,37 +137,6 @@ void volumeSlice::drawBox()
 	ofSetColor(255);
 }
 
-/*
-//--------------------------------------------------------------
-void volumeSlice::drawCoronal(float x, float y, float z)
-{
-	// this will test if z is within the limits and then draw the image
-	// otherwise set to black (do not draw).
-	drawBox();
-	if(z>-1&&z<volHeight){					//this has to be erased and function drawCoronal must have no params
-		coronal.draw(halfW, halfD);
-	}
-}
-
-//--------------------------------------------------------------
-void volumeSlice::drawSagittal(float x, float y, float z)
-{
-	drawBox();
-	if(z>-1&&z<volWidth){
-		sagittal.draw(halfH, halfD);
-	}
-}
-
-//--------------------------------------------------------------
-void volumeSlice::drawAxial(float x, float y, float z)
-{
-	drawBox();
-	if(z>-1&&z<volDepth){
-		axial.draw(halfW, halfH);
-	}
-}
-*/
-
 //--------------------------------------------------------------
 void volumeSlice::redrawCoronal()
 {
@@ -249,3 +209,34 @@ void volumeSlice::redrawAxial()
 }
 
 
+
+/*
+ //--------------------------------------------------------------
+ void volumeSlice::drawCoronal(float x, float y, float z)
+ {
+ // this will test if z is within the limits and then draw the image
+ // otherwise set to black (do not draw).
+ drawBox();
+ if(z>-1&&z<volHeight){					//this has to be erased and function drawCoronal must have no params
+ coronal.draw(halfW, halfD);
+ }
+ }
+ 
+ //--------------------------------------------------------------
+ void volumeSlice::drawSagittal(float x, float y, float z)
+ {
+ drawBox();
+ if(z>-1&&z<volWidth){
+ sagittal.draw(halfH, halfD);
+ }
+ }
+ 
+ //--------------------------------------------------------------
+ void volumeSlice::drawAxial(float x, float y, float z)
+ {
+ drawBox();
+ if(z>-1&&z<volDepth){
+ axial.draw(halfW, halfH);
+ }
+ }
+ */

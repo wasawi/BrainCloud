@@ -9,7 +9,6 @@ void ofApp::setup()
 	//	ofSetLogLevel(OF_LOG_NOTICE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
-	ofEnableSmoothing();
 	ofSetFrameRate(30);
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
