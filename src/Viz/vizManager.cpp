@@ -45,15 +45,14 @@ void vizManager::setup()
 	initVolume();
 
 	//setup GUIs
-	bUpdating= true;
 	setup_guis();
 }
 
 //--------------------------------------------------------------
 void vizManager::initVolume()
 {
-	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
-//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
+//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
+	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
@@ -90,11 +89,11 @@ void vizManager::initVolume()
 	
 	// Init Volume
 	ofVec3f voxelSize =	ofVec3f(1);
-    myVolume.setup(volWidth, volHeight, volDepth, voxelSize);
+    myVolume.setup(volWidth, volHeight, volDepth, voxelSize,true);
 	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
-	myVolume.setPlanes(&uiClampCoord);
+	myVolume.setPlanes(&uiClamp);
 	
 	// Init Slices
 	volume2D.setup	(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
@@ -104,13 +103,12 @@ void vizManager::initVolume()
 void vizManager::update()
 {
 	updateCoordinates();
-
-	update2DSlices();
+	update2DVolume();
 	updateVolumeCoords();
 
 	updateTalCoords();
-//	updateTalAtlasLabel();
-	//	updateTalLabel();
+	updateTalAtlasLabel();
+//	updateTalLabel();
 }
 
 //--------------------------------------------------------------
@@ -139,7 +137,7 @@ void vizManager::updateTalAtlasLabel()
 //--------------------------------------------------------------
 void vizManager::updateTalCoords()
 {
-	// transform my coordinates to Talairach coordinates
+	// transform my volume coordinates to Talairach coordinates
 	// using the offstet provided in nifti headers
 	talCoord = volCoord + talOffset;
 	talCoord.x *=-1;
@@ -175,7 +173,7 @@ void vizManager::updateCoordinates()
 }
 
 //--------------------------------------------------------------
-void vizManager::update2DSlices()
+void vizManager::update2DVolume()
 {
 	// update de Depth of the slices drawn by volumeSlice
 	// this uptade must only run when there is a gui event
@@ -189,18 +187,28 @@ void vizManager::updateVolumeCoords()
 {
 	//ofClamp(volCoord.z,0, volDepth-1);
 	ofVec3f uiCoord_;
+
+	// map it to pixel values;
 	float uiSize=100;
-	uiCoord_ = uiCoord*uiSize;	// map it to pixel values;
-	uiCoord_.y= ofMap(uiCoord_.y, -volWidth/2, volWidth/2, -uiSize, uiSize);
+	uiCoord_ = uiCoord*uiSize;
+
+	//use the pixel positions that are only inside the volume
+	//(excluding areas between volume and uiPad limits)
+	// coronal
 	uiCoord_.z= ofMap(uiCoord_.z, -volHeight/2, volHeight/2, -uiSize, uiSize);
-	uiCoord_.x= ofMap(uiCoord_.x, -volDepth/2, volDepth/2, -uiSize, uiSize);
+	// sagittal
+	uiCoord_.x= ofMap(uiCoord_.x, -volWidth/2, volWidth/2, -uiSize, uiSize);
+	// axial
+	uiCoord_.y= ofMap(uiCoord_.y, -volDepth/2, volDepth/2, -uiSize, uiSize);
+	
+	//normalized again
 	uiCoord_ = uiCoord_/100;
+	
+	//clamp the mapped values
 	uiCoord_.x = ofClamp(uiCoord_.x, -1, 1);
 	uiCoord_.y = ofClamp(uiCoord_.y, -1, 1);
 	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
-	uiClampCoord = uiCoord_;
-//	uiClampCoord.s
-	
+	uiClamp = uiCoord_;
 }
 
 //--------------------------------------------------------------
@@ -283,7 +291,6 @@ void vizManager::setup_guis()
 	//	guiSliders->setAutoDraw(true);
 	
 	bDraw = true;
-//	bUpdating = false;
 }
 
 //--------------------------------------------------------------
@@ -294,6 +301,8 @@ void vizManager::setup_guiVolume()
 									initY+dist + (boxH),
 									(dist*2)+ boxH,
 									280);
+	guiVolume->setPadding(4);
+	
 	//new vars for widgets
 	float canvasW = boxW+dist*2;
 	float sliderH = 10;
@@ -413,8 +422,6 @@ void vizManager::setup_guiSliders()
 //--------------------------------------------------------------
 void vizManager::guiEvent(ofxUIEventArgs &e)
 {
-	if (bUpdating)
-	{
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
 	//	ofLogVerbose("vizManager") << "GUI:: got event from: " << name;
@@ -506,7 +513,6 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		latitude = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"latitude " << latitude;
 	}
-	}
 }
 
 //--------------------------------------------------------------
@@ -532,9 +538,6 @@ void vizManager::keyPressed(int key ){
 			ofSetWindowPosition(0, 0);
 			ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
-			break;
-		case 'u':
-			bUpdating=!bUpdating;
 			break;
 		case 'F':
 			ofSetVerticalSync(true);

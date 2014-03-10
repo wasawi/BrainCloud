@@ -50,9 +50,6 @@
  
  */
 
-
-
-
 class vizManager {
 	
 public:
@@ -76,34 +73,44 @@ private:
 	ofxUICanvas *guiVolume;
 	ofxUICanvas *guiSliders;
 			
+	// GUI vars
+	bool	bDraw;
+	float	initX, initY;
+	float	sliderW;
+    float	length;
+	float	boxW, boxH;
+	int		dist;
+	int		talDrawX;
+	int		talDrawY;
+	
 	//XML settings
 	ofxXmlSettings XML;
 	string message;
 	
 	//Camera
-//    ofEasyCam cam;
+//	ofEasyCam cam;
 	myCamera cam;
-    ofQuaternion camOrientation;
-	ofVec3f camPos;
 	ofMatrix4x4 posMat;
 	bool bcameraMode;
 	float latitude;
-	
+
+
 	// Volume Rendering
     ofxVolumetrics myVolume;
     unsigned char * volumeData;
     ofxImageSequencePlayer imageSequence;
-    bool linearFilter;
 	ofFbo myfboRender;
+
+	// Volume Slice
+	volumeSlice	volume2D;
+	int volWidth, volHeight, volDepth;
+	int voxelValue;
 	
-	// Volume UI vars
+	// Volume rendering UI vars
 	float FBOq, Zq, thresh, density, dithering;
 	float lastClipPlaneDepth;
 	float clipPlaneDepth, azimuth, elevation;
-	bool bUpdating;
-	
-	// Volume Slice
-	volumeSlice	volume2D;
+    bool linearFilter;
 
 	// Twitter objects
 	tweet3d  searchTweetByLocation();
@@ -118,40 +125,22 @@ private:
 	// updates
 	void update();
 	void updateCoordinates();
-	
-	void update2DSlices();
+	void update2DVolume();
 	void updateVolumeCoords();
 	
 	void updateTalCoords();
 	void updateTalAtlasLabel();
 	void updateTalLabel();
 	
-	// Vis vars
-	bool	bDraw;
-	float	initX, initY;
-	float	sliderW;
-    float	length;
-	float	boxW, boxH;
-	int		dist;
-	
 	//All Coordinates
-	ofVec3f uiCoord;		// NORMALISED coordinates used in GUI (floats from -1 to 1)
-	ofVec3f volCoord;		// coordinates in voxels (integers from 0 to volWidth..)
-							// needed to draw the image on position
-	ofVec3f uiClampCoord;	// same as ui but usin values only inside volume
+	ofVec3f	uiRange;	// maximum and minimum values for UIs
+	ofVec3f uiCoord;	// NORMALISED coordinates used in GUI (floats from -1 to 1)
+	ofVec3f volCoord;	// coordinates in voxels (integers from 0 to volWidth..)
+						// needed to draw the image on position
+	ofVec3f uiClamp;	// same as ui but using values only inside volume
 
-	ofVec3f talOffset;		// the offset of the origin (0,0,0) in Tal coordinates
-	ofVec3f talCoord;		// volume coords + offset Tal coords for Tal tables.
-	ofVec3f	uiRange;		// maximum and minimum values for UIs
-	
-
-	
-	int talDrawX;
-	int talDrawY;
-	
-//	ofVec3f volDim;
-	int volWidth, volHeight, volDepth;
-	int voxelValue;
+	ofVec3f talOffset;	// the offset of the origin (0,0,0) in Tal coordinates
+	ofVec3f talCoord;	// volume coords + offset Tal coords for Tal tables.
 };
 
 
