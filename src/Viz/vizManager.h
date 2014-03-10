@@ -60,7 +60,13 @@ public:
 	void draw();
 	void initVolume();
 	void keyPressed  (int key);
-
+	
+	//Camera
+	//	ofEasyCam cam;
+	myCamera cam;
+	ofxUICanvas *guiVolume;
+	ofxUICanvas *guiSliders;
+	
 private:
 
 	// GUI
@@ -70,8 +76,6 @@ private:
 	void setup_guis();
 	void setup_guiVolume();
 	void setup_guiSliders();
-	ofxUICanvas *guiVolume;
-	ofxUICanvas *guiSliders;
 			
 	// GUI vars
 	bool	bDraw;
@@ -82,18 +86,15 @@ private:
 	int		dist;
 	int		talDrawX;
 	int		talDrawY;
+	bool	allowEvent;
 	
 	//XML settings
 	ofxXmlSettings XML;
 	string message;
 	
 	//Camera
-//	ofEasyCam cam;
-	myCamera cam;
 	ofMatrix4x4 posMat;
-	bool bcameraMode;
 	float latitude;
-
 
 	// Volume Rendering
     ofxVolumetrics myVolume;

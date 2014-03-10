@@ -28,6 +28,19 @@ public:
 	// My public methods
 	void addTwitterContent(ofImage img, string name ,string user_name, string tweetText);
 	
+	// Canvas (needs public for mouse events)
+	ofxUICanvas *tabCanvas;
+	ofxUICanvas *postCanvas;
+	ofxUICanvas *textInputCanvas;
+	ofxUIScrollableSliderCanvas *scrollCanvas;
+	
+	// tweetsCanvas (needs public for mouse events)
+	float tweetsCanvasX;
+	float tweetsCanvasY;
+	float tweetsCanvasW;
+	float tweetsCanvasH;
+
+	
 private:
 	
 	// Load GUIs
@@ -38,12 +51,6 @@ private:
 	void setupPostCanvas();
 	void changeTabBar();
 	
-	// Canvas
-	ofxUICanvas *tabCanvas;
-	ofxUICanvas *postCanvas;
-	ofxUICanvas *textInputCanvas;
-	ofxUIScrollableSliderCanvas *scrollCanvas;
-
 	// Events
 	void tabCanvasEvent(ofxUIEventArgs &e);
 	void scrollCanvasEvent(ofxUIEventArgs &e);
@@ -79,12 +86,6 @@ private:
 	float postCanvasH;
 	float postFieldH;
 	
-	// tweetsCanvas
-	float tweetsCanvasX;
-	float tweetsCanvasY;
-	float tweetsCanvasW;
-	float tweetsCanvasH;
-
 	// searchCanvas
 	float searchCanvasX;
 	float searchCanvasY;

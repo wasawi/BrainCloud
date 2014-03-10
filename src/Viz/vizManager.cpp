@@ -38,8 +38,6 @@ void vizManager::setup()
 	
 	//camera
 	loadCameraPosition();
-	bcameraMode = true;
-//	cam.disableMouseInput();
 	
 	//Volume
 	initVolume();
@@ -141,7 +139,7 @@ void vizManager::updateTalCoords()
 	// using the offstet provided in nifti headers
 	talCoord = volCoord + talOffset;
 	talCoord.x *=-1;
-	
+
 //	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
 //	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
 //	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
@@ -169,7 +167,6 @@ void vizManager::updateCoordinates()
 	ofLogVerbose("vizManager") <<	"volCoord.x " << volCoord.x;
 	ofLogVerbose("vizManager") <<	"volCoord.y " << volCoord.y;
 	ofLogVerbose("vizManager") <<	"volCoord.z " << volCoord.z;
-	
 }
 
 //--------------------------------------------------------------
@@ -276,7 +273,7 @@ void vizManager::draw()
 //--------------------------------------------------------------
 void vizManager::setup_guis()
 {
-	
+	allowEvent	= false;
 	// Volume UI
 	setup_guiVolume();
 	guiVolume->loadSettings("GUI/viz_settings.xml");
@@ -284,13 +281,14 @@ void vizManager::setup_guis()
 	guiVolume->setVisible(false);
 	
 	// Sliders UI
-	bDraw = true;
 	setup_guiSliders();
 	guiSliders->loadSettings("GUI/viz_settings_2.xml");
 	guiSliders->setDrawBack(false);
 	//	guiSliders->setAutoDraw(true);
 	
-	bDraw = true;
+	bDraw		= true;
+	allowEvent	= true;
+	update();
 }
 
 //--------------------------------------------------------------
@@ -326,7 +324,7 @@ void vizManager::setup_guiVolume()
 //--------------------------------------------------------------
 void vizManager::setup_guiSliders()
 {
-	guiSliders = new ofxUICanvas(initX, initY, boxW*2+(dist*3)+(sliderW*2), boxW*3+dist*4);
+	guiSliders = new ofxUICanvas(initX, initY, boxW+sliderW+dist*2, boxW*3+dist*4);
 	ofAddListener(guiSliders->newGUIEvent,this,&vizManager::guiEvent);
 	
 	// ADDING WIDGETS:
@@ -416,7 +414,7 @@ void vizManager::setup_guiSliders()
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
-	
+
 }
 
 //--------------------------------------------------------------
@@ -478,34 +476,29 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	else if(name == "coronalDepth")
 	{
 		ofLogVerbose() <<	"coronalDepth " << uiCoord.z;
-		update();
 	}
 	else if(name == "sagittalDepth")
 	{
 		ofLogVerbose() <<	"sagittalDepth " << uiCoord.x;
-		update();
 	}
-	else if(name == "axialDepth"){
+	else if(name == "axialDepth")
+	{
 		ofLogVerbose() <<	"axialDepth " << uiCoord.y;
-		update();
 	}
 	else if (name== "coronalPad")
 	{
 		ofLogVerbose() <<	"coronalPad.x =  " << uiCoord.x;
 		ofLogVerbose() <<	"coronalPad.y =  " << uiCoord.y;
-		update();
 	}
 	else if (name== "sagittalPad")
 	{
 		ofLogVerbose() <<	"SagittalPad.x = " << uiCoord.z;
 		ofLogVerbose() <<	"SagittalPad.y = " << uiCoord.y;
-		update();
 	}
 	else if (name== "axialPad")
 	{
 		ofLogVerbose() <<	"axialPad.x = " << uiCoord.x;
 		ofLogVerbose() <<	"axialPad.y = " << uiCoord.z;
-		update();
 	}
 	else if(name == "latitude")
 	{
@@ -513,6 +506,7 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		latitude = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"latitude " << latitude;
 	}
+	if (allowEvent)update();
 }
 
 //--------------------------------------------------------------
@@ -551,35 +545,6 @@ void vizManager::keyPressed(int key ){
 			string lobe = talairachAtlas.getLobe(currentValue);
 			ofLogNotice("Talairach")<< lobe;
 			break;
-		
-/*		case OF_KEY_UP:
-			 if(bcameraMode)cam.getTarget().boom(-5);
-			 else {
-			 cam.tilt(1);
-			 }
-			 break;
-		case OF_KEY_DOWN:
-			 if(bcameraMode)cam.getTarget().boom(5);
-			 else {
-			 cam.tilt(-1);
-			 }
-			 break;
-		case OF_KEY_LEFT:
-			 if(bcameraMode)cam.getTarget().truck(-5);
-			 else {
-			 cam.pan(1);
-			 }
-			 break;
-		case OF_KEY_RIGHT:
-			 if(bcameraMode)cam.getTarget().truck(5);
-			 else {
-			 cam.pan(-1);
-			 }
-			 break;
-		case 'M':
-			 bcameraMode = !bcameraMode;
-			 break;
-*/
 	}
 	
 }

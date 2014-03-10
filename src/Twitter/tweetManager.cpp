@@ -38,7 +38,7 @@ void tweetManager::cleanImgUsers( std::vector <ofImage> & a ) {
 
 //--------------------------------------------------------------
 void tweetManager::setOneTweetToGui(guiEvent &e){
-	
+		
 	int i = e.value;
 	tweet = twitterClient.getTweetByIndex(i);
 	

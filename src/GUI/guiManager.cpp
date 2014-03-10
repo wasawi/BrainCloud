@@ -186,9 +186,9 @@ void guiManager::setupSearchCanvas(){
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
-	ofLogNotice("textInputCanvas.getGlobalSpacerHeight") << textInputCanvas->getGlobalSpacerHeight();
-	ofLogNotice("textInputCanvas.getPadding") << textInputCanvas->getPadding();
-	ofLogNotice("textInputCanvas.getWidgetSpacing") << textInputCanvas->getWidgetSpacing();
+//	ofLogNotice("textInputCanvas.getGlobalSpacerHeight") << textInputCanvas->getGlobalSpacerHeight();
+//	ofLogNotice("textInputCanvas.getPadding") << textInputCanvas->getPadding();
+//	ofLogNotice("textInputCanvas.getWidgetSpacing") << textInputCanvas->getWidgetSpacing();
 
 //	textInputCanvas->setDrawBack(true);
 /*	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT",
@@ -228,9 +228,9 @@ void guiManager::setupScrollCanvas()
 	scrollCanvas->setScrollableDirections(false, true);
 	scrollCanvas->setWidgetSpacing(space);
 	
-	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
-	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
-	ofLogNotice("scrollCanvas.getWidgetSpacing") << scrollCanvas->getWidgetSpacing();
+//	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
+//	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
+//	ofLogNotice("scrollCanvas.getWidgetSpacing") << scrollCanvas->getWidgetSpacing();
 	
 	ofAddListener(scrollCanvas->newGUIEvent,this,&guiManager::scrollCanvasEvent);
 	adjustContentstoGui(bsnap);

@@ -58,12 +58,28 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
-	
+	if (
+		myVizManager.guiSliders->isHit(x, y)	||
+		myVizManager.guiVolume->isHit(x, y)		||
+		myGUIManager.tabCanvas->isHit(x, y)		||
+		myGUIManager.postCanvas->isHit(x, y)	||
+		myGUIManager.textInputCanvas->isHit(x, y)||
+		// this hack is needed because scrollcanvas is using FBO x and y
+		myGUIManager.scrollCanvas->isHit(x-myGUIManager.tweetsCanvasX, y-myGUIManager.tweetsCanvasY)
+		)
+	{
+		myVizManager.cam.disableMouseInput();
+	}
+	else
+	{
+		myVizManager.cam.enableMouseInput();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button)
 {
+	
 }
 
 //--------------------------------------------------------------
@@ -82,7 +98,6 @@ void ofApp::mouseReleased(int x, int y, int button)
 void ofApp::windowResized(int w, int h)
 {
 	ofSetWindowShape( WINDOW_WIDTH, WINDOW_HEIGHT);
-	
 }
 
 //--------------------------------------------------------------
