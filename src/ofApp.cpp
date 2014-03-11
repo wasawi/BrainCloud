@@ -46,7 +46,12 @@ void ofApp::exit()
 void ofApp::keyPressed(int key)
 {
 	myVizManager.keyPressed(key);
-
+    switch(key)
+    {
+		case 'f':
+			myGUIManager.scrollCanvas->toggleFBO();
+			break;
+	}
 }
 
 //--------------------------------------------------------------
@@ -64,8 +69,7 @@ void ofApp::mouseMoved(int x, int y )
 		myGUIManager.tabCanvas->isHit(x, y)		||
 		myGUIManager.postCanvas->isHit(x, y)	||
 		myGUIManager.textInputCanvas->isHit(x, y)||
-		// this hack is needed because scrollcanvas is using FBO x and y
-		myGUIManager.scrollCanvas->isHit(x-myGUIManager.tweetsCanvasX, y-myGUIManager.tweetsCanvasY)
+		myGUIManager.scrollCanvas->isHit(x, y)
 		)
 	{
 		myVizManager.cam.disableMouseInput();

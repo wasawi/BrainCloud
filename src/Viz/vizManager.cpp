@@ -49,8 +49,8 @@ void vizManager::setup()
 //--------------------------------------------------------------
 void vizManager::initVolume()
 {
-//	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
-	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
+	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
+//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
@@ -284,7 +284,7 @@ void vizManager::setup_guis()
 	setup_guiSliders();
 	guiSliders->loadSettings("GUI/viz_settings_2.xml");
 	guiSliders->setDrawBack(false);
-	//	guiSliders->setAutoDraw(true);
+//	guiSliders->setAutoDraw(true);	this method does not work
 	
 	bDraw		= true;
 	allowEvent	= true;
@@ -529,13 +529,13 @@ void vizManager::keyPressed(int key ){
 			guiVolume->loadSettings("GUI/viz_settings.xml");
 			break;
 		case 'f':
-			ofSetWindowPosition(0, 0);
-			ofSetVerticalSync(false);
+			//ofSetWindowPosition(0, 0);
+			//ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
 			break;
 		case 'F':
 			ofSetVerticalSync(true);
-			ofSetFullscreen(true);
+			//ofSetFullscreen(true);
 			break;
 		case 't':
 			int voxelValue = volume2D.getVoxelValue();
@@ -546,7 +546,6 @@ void vizManager::keyPressed(int key ){
 			ofLogNotice("Talairach")<< lobe;
 			break;
 	}
-	
 }
 
 //--------------------------------------------------------------

@@ -90,9 +90,6 @@ void guiManager::update(){
 }
 //--------------------------------------------------------------
 void guiManager::draw(){
-//	ofPushStyle();
-//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-//	ofPopStyle();
 }
 
 //--------------------------------------------------------------
@@ -100,6 +97,12 @@ void guiManager::setupTabBar()
 {
 	tabCanvas = new ofxUICanvas(tabCanvasX, tabCanvasY,tabCanvasW, tabCanvasH);
 	tabCanvas->setDrawBack(false);
+//	tabCanvas->setDrawPadding(false);
+//	tabCanvas->setDrawFill(false);
+//	tabCanvas->setDrawFillHighLight(false);
+//	tabCanvas->setDrawOutline(false);
+//	tabCanvas->setDrawOutlineHighLight(false);
+		
 	tabCanvas->setWidgetSpacing(1);
 	tabCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 	
@@ -164,9 +167,20 @@ void guiManager::setupPostCanvas(){
 	postCanvas = new ofxUICanvas(postCanvasX, postCanvasY,postCanvasW, postCanvasH);
 	postCanvas->setVisible(false);
 	postCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
-	postCanvas->addTextInput("PostField", "Type here ", searchFieldW, postFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
 	
-	postCanvas->addTextInput("URL", "URL here ", searchFieldW, postFieldH, searchFieldX, 0)->setAutoClear(true);
+	postCanvas->addTextInput("PostField",
+							 "Type here ",
+							 searchFieldW,
+							 postFieldH,
+							 searchFieldX,
+							 searchFieldY)->setAutoClear(true);
+	
+	postCanvas->addTextInput("URL",
+							 "URL here ",
+							 searchFieldW,
+							 postFieldH,
+							 searchFieldX,
+							 0)->setAutoClear(true);
 	
 	postCanvas->addWidgetDown(new ofxUILabelButton("Post",
 												   postToggle,
@@ -186,19 +200,6 @@ void guiManager::setupSearchCanvas(){
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
-//	ofLogNotice("textInputCanvas.getGlobalSpacerHeight") << textInputCanvas->getGlobalSpacerHeight();
-//	ofLogNotice("textInputCanvas.getPadding") << textInputCanvas->getPadding();
-//	ofLogNotice("textInputCanvas.getWidgetSpacing") << textInputCanvas->getWidgetSpacing();
-
-//	textInputCanvas->setDrawBack(true);
-/*	textInputCanvas->addWidget( new ofxUITextInput( "TEXT INPUT",
-													   "",
-													   searchFieldW,
-													   searchFieldH,
-													   10,
-													   0,
-													   OFX_UI_FONT_LARGE));
-*/
 
 	// (string _name, string _textstring, float w, float h, float x, float y, int _size)
 	textInputCanvas->addTextInput("TEXT INPUT", "Type here ", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
@@ -224,13 +225,8 @@ void guiManager::setupScrollCanvas()
 	// Canvas for Tweets
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH, sliderW);
 	scrollCanvas->setScrollArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
-	scrollCanvas->setFBOArea(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
-	scrollCanvas->setScrollableDirections(false, true);
 	scrollCanvas->setWidgetSpacing(space);
-	
-//	ofLogNotice("scrollCanvas.getGlobalSpacerHeight") << scrollCanvas->getGlobalSpacerHeight();
-//	ofLogNotice("scrollCanvas.getPadding") << scrollCanvas->getPadding();
-//	ofLogNotice("scrollCanvas.getWidgetSpacing") << scrollCanvas->getWidgetSpacing();
+	scrollCanvas->enableFBO();
 	
 	ofAddListener(scrollCanvas->newGUIEvent,this,&guiManager::scrollCanvasEvent);
 	adjustContentstoGui(bsnap);
@@ -245,7 +241,8 @@ void guiManager::adjustContentstoGui(bool _bsnap)
 	else
 	{
 		scrollCanvas->setSnapping(_bsnap); //Auto damping levels only works for full size window
-		scrollCanvas->updateScrollBarSize(scrollCanvas->getScroll()->getWidgets(), 3000 , 500); // set new default size depending content inside // max , min
+		// set new default size depending content inside // max , min
+//		scrollCanvas->updateScrollBarSize(scrollCanvas->getScroll()->getWidgets(), 3000 , 500);
 	}
 }
 
@@ -272,23 +269,23 @@ void guiManager::addTwitterContent(ofImage img, string name, string user_name, s
 
 	scrollCanvas->addWidgetDown( new ofxUITextArea("USER",
 										   "@"+user_name,
-										   (WidgetW - dim)/2,
-										   0,
-										   dim + space*2,
-										   0,
+										   (WidgetW - dim)/2,		//w
+										   0,						//h
+										   dim + space*2,			//x
+										   0,						//y
 										   OFX_UI_FONT_SMALL ),
 						OFX_UI_ALIGN_FREE, false)->setDrawBack(false);
 
 	scrollCanvas->addWidgetDown( new ofxUITextArea("TEXT",
 										  tweetText,
-										  WidgetW,
-										  0,
-										  space,
-										  lineHeight*-1.8+dim,	// <- this has to be fixed
+										  WidgetW-space,					//w
+										  0,						//h
+										  space,					//x
+										  lineHeight*-1.9+dim,		//y <- this has to be fixed
 										  OFX_UI_FONT_MEDIUM ),
 					   OFX_UI_ALIGN_FREE, false)->setDrawBack(false);
 
-	scrollCanvas->addSpacer( WidgetW, 1 );
+	scrollCanvas->addSpacer( WidgetW -space, 1 );
 	adjustContentstoGui(bsnap);
 }
 

@@ -308,17 +308,16 @@ float myCamera::getArcBallSize(){
 }
 //----------------------------------------
 void myCamera::drawArcBall(){
-	
 	if (ofGetMousePressed()){
-		ofPushStyle();
-		ofNoFill();
-		ofSetCircleResolution(100);
-		ofSetColor(140);
-		ofSetLineWidth(.1);
-		ofCircle(viewport.width/2, viewport.height/2, arcBallSize);
-//		ofBoxPrimitive.draw();
-//		ofPu
-		ofPopStyle();
+		if(bMouseInputEnabled){
+			ofPushStyle();
+			ofNoFill();
+			ofSetCircleResolution(100);
+			ofSetColor(140);
+			ofSetLineWidth(.1);
+			ofCircle(viewport.width/2, viewport.height/2, arcBallSize);
+			ofPopStyle();
+		}
 	}
 }
 
