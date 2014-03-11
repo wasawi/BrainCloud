@@ -9,6 +9,7 @@ void ofApp::setup()
 	//	ofSetLogLevel(OF_LOG_NOTICE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
+	
 	ofSetFrameRate(30);
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
@@ -28,8 +29,8 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-//	ofBackground(50);
-	ofBackgroundGradient(150,20);
+	ofBackground(150);
+//	ofBackgroundGradient(150,20);
 	myVizManager.draw();
 	myGUIManager.draw();
 	myTwitterManager.draw();
@@ -51,6 +52,33 @@ void ofApp::keyPressed(int key)
 		case 'f':
 			myGUIManager.scrollCanvas->toggleFBO();
 			break;
+			
+		case OF_KEY_F1:
+			ofSetLogLevel(OF_LOG_SILENT);
+			break;
+			
+		case OF_KEY_F2:
+			ofSetLogLevel(OF_LOG_VERBOSE);
+			break;
+
+		case OF_KEY_F3:
+			ofSetLogLevel(OF_LOG_NOTICE);
+			break;
+			
+		case OF_KEY_F4:
+			ofLog(OF_LOG_VERBOSE, "PubMed");
+			ofSetLogLevel("PubMed", OF_LOG_VERBOSE);
+			break;
+
+		case OF_KEY_F5:
+			ofLog(OF_LOG_VERBOSE, "Twitter");
+			ofSetLogLevel("Twitter", OF_LOG_VERBOSE);
+			break;
+			
+		case OF_KEY_F6:
+			ofLog(OF_LOG_VERBOSE, "Vis");
+			ofSetLogLevel("Vis", OF_LOG_VERBOSE);
+			break;
 	}
 }
 
@@ -63,6 +91,7 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
+	/*
 	if (
 		myVizManager.guiSliders->isHit(x, y)	||
 		myVizManager.guiVolume->isHit(x, y)		||
@@ -78,6 +107,7 @@ void ofApp::mouseMoved(int x, int y )
 	{
 		myVizManager.cam.enableMouseInput();
 	}
+	 */
 }
 
 //--------------------------------------------------------------
