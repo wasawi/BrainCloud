@@ -10,30 +10,26 @@ void ofApp::setup()
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	
+//	ofSetVerticalSync(true);
 	ofSetFrameRate(30);
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
 	myTwitterManager.setup(CONSUMER_KEY, CONSUMER_SECRET);
-//	guiManager.setup();
 	myVizManager.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	myTwitterManager.update();
-//	myGuiManager.update();
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-	ofBackground(150);
-//	ofBackgroundGradient(150,20);
+//	ofBackground(150);
+	ofBackgroundGradient(150,20);
 	myVizManager.draw();
-	myGUIManager.draw();
-	myTwitterManager.draw();
 
 }
 
@@ -49,10 +45,15 @@ void ofApp::keyPressed(int key)
 	myVizManager.keyPressed(key);
     switch(key)
     {
-		case 'f':
-			myGUIManager.scrollCanvas->toggleFBO();
+		case 'l':
+			myTwitterManager.twitterClient.loadCacheFile();
 			break;
-			
+		case 'f':
+			myTwitterManager.scrollCanvas->toggleFBO();
+			break;
+		case 's':
+			myTwitterManager.scrollCanvas->toggleScrollBar();
+			break;
 		case OF_KEY_F1:
 			ofSetLogLevel(OF_LOG_SILENT);
 			break;
@@ -85,20 +86,20 @@ void ofApp::keyPressed(int key)
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key)
 {
-	myTwitterManager.keyReleased(key);
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
-	/*
+	
 	if (
 		myVizManager.guiSliders->isHit(x, y)	||
 		myVizManager.guiVolume->isHit(x, y)		||
 		myGUIManager.tabCanvas->isHit(x, y)		||
-		myGUIManager.postCanvas->isHit(x, y)	||
-		myGUIManager.textInputCanvas->isHit(x, y)||
-		myGUIManager.scrollCanvas->isHit(x, y)
+		myTwitterManager.postCanvas->isHit(x, y)	||
+		myTwitterManager.textInputCanvas->isHit(x, y)||
+		myTwitterManager.scrollCanvas->isHit(x, y)
 		)
 	{
 		myVizManager.cam.disableMouseInput();
@@ -107,7 +108,7 @@ void ofApp::mouseMoved(int x, int y )
 	{
 		myVizManager.cam.enableMouseInput();
 	}
-	 */
+
 }
 
 //--------------------------------------------------------------

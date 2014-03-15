@@ -10,6 +10,11 @@
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		0838F57D18AB679A003681F8 /* guiEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0838F57B18AB679A003681F8 /* guiEvent.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
+		0869123B18D50CF900B44C21 /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0869122418D50CF900B44C21 /* Base.cpp */; };
+		0869123C18D50CF900B44C21 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0869122618D50CF900B44C21 /* Camera.cpp */; };
+		0869123D18D50CF900B44C21 /* Plane.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0869122818D50CF900B44C21 /* Plane.cpp */; };
+		0869123E18D50CF900B44C21 /* Projector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0869122A18D50CF900B44C21 /* Projector.cpp */; };
+		0869123F18D50CF900B44C21 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0869122C18D50CF900B44C21 /* Ray.cpp */; };
 		0872E51218AC173800D40D08 /* talairachLabels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51018AC173800D40D08 /* talairachLabels.cpp */; };
 		0872E53318AE143900D40D08 /* ofxTalairach.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0872E51E18AE143900D40D08 /* ofxTalairach.cpp */; };
 		08CEA41618BB7FEE00E25D75 /* myUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08CEA41418BB7FEE00E25D75 /* myUtils.cpp */; };
@@ -140,6 +145,17 @@
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
 		0838F57B18AB679A003681F8 /* guiEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = guiEvent.cpp; path = GUI/guiEvent.cpp; sourceTree = "<group>"; };
 		0838F57C18AB679A003681F8 /* guiEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = guiEvent.h; path = GUI/guiEvent.h; sourceTree = "<group>"; };
+		0869122418D50CF900B44C21 /* Base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Base.cpp; sourceTree = "<group>"; };
+		0869122518D50CF900B44C21 /* Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base.h; sourceTree = "<group>"; };
+		0869122618D50CF900B44C21 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		0869122718D50CF900B44C21 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		0869122818D50CF900B44C21 /* Plane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plane.cpp; sourceTree = "<group>"; };
+		0869122918D50CF900B44C21 /* Plane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plane.h; sourceTree = "<group>"; };
+		0869122A18D50CF900B44C21 /* Projector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Projector.cpp; sourceTree = "<group>"; };
+		0869122B18D50CF900B44C21 /* Projector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projector.h; sourceTree = "<group>"; };
+		0869122C18D50CF900B44C21 /* Ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ray.cpp; sourceTree = "<group>"; };
+		0869122D18D50CF900B44C21 /* Ray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ray.h; sourceTree = "<group>"; };
+		0869122E18D50CF900B44C21 /* ofxRay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxRay.h; sourceTree = "<group>"; };
 		0872E51018AC173800D40D08 /* talairachLabels.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = talairachLabels.cpp; path = Viz/talairachLabels.cpp; sourceTree = "<group>"; };
 		0872E51118AC173800D40D08 /* talairachLabels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = talairachLabels.h; path = Viz/talairachLabels.h; sourceTree = "<group>"; };
 		0872E51E18AE143900D40D08 /* ofxTalairach.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTalairach.cpp; sourceTree = "<group>"; };
@@ -380,6 +396,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		086911CE18D50CF900B44C21 /* ofxRay */ = {
+			isa = PBXGroup;
+			children = (
+				0869122218D50CF900B44C21 /* src */,
+			);
+			name = ofxRay;
+			path = ../../../addons/ofxRay;
+			sourceTree = "<group>";
+		};
+		0869122218D50CF900B44C21 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				0869122318D50CF900B44C21 /* ofxRay */,
+				0869122E18D50CF900B44C21 /* ofxRay.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		0869122318D50CF900B44C21 /* ofxRay */ = {
+			isa = PBXGroup;
+			children = (
+				0869122418D50CF900B44C21 /* Base.cpp */,
+				0869122518D50CF900B44C21 /* Base.h */,
+				0869122618D50CF900B44C21 /* Camera.cpp */,
+				0869122718D50CF900B44C21 /* Camera.h */,
+				0869122818D50CF900B44C21 /* Plane.cpp */,
+				0869122918D50CF900B44C21 /* Plane.h */,
+				0869122A18D50CF900B44C21 /* Projector.cpp */,
+				0869122B18D50CF900B44C21 /* Projector.h */,
+				0869122C18D50CF900B44C21 /* Ray.cpp */,
+				0869122D18D50CF900B44C21 /* Ray.h */,
+			);
+			path = ofxRay;
+			sourceTree = "<group>";
+		};
 		0872E51818AE143900D40D08 /* ofxTalairach */ = {
 			isa = PBXGroup;
 			children = (
@@ -670,6 +721,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				086911CE18D50CF900B44C21 /* ofxRay */,
 				0872E51818AE143900D40D08 /* ofxTalairach */,
 				A492CE86424AB8905550BFD8 /* ofxUI */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
@@ -1039,6 +1091,7 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				D999941B6F2BDE0A87EEE06A /* guiManager.cpp in Sources */,
+				0869123C18D50CF900B44C21 /* Camera.cpp in Sources */,
 				2E592F90ED46A225F36431CF /* ofxTwitter3d.cpp in Sources */,
 				A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */,
 				8913F0EFD789AED0AA86CA0D /* tweetManager.cpp in Sources */,
@@ -1055,12 +1108,14 @@
 				9BE4AE0AA2B8C436BDFE9D4D /* ofxUIDragableLabelButton.cpp in Sources */,
 				F392A99D83698FC099127880 /* ofxUIDropDownList.cpp in Sources */,
 				084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */,
+				0869123F18D50CF900B44C21 /* Ray.cpp in Sources */,
 				7252706DA14C1BE63950ADDA /* ofxUIFPS.cpp in Sources */,
 				22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */,
 				3D4EA8E172D3E4A30FEFA969 /* ofxUIImage.cpp in Sources */,
 				7F2CD93F681F3C1547B3BF2C /* ofxUIImageButton.cpp in Sources */,
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,
+				0869123B18D50CF900B44C21 /* Base.cpp in Sources */,
 				0838F57D18AB679A003681F8 /* guiEvent.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
 				7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */,
@@ -1081,6 +1136,7 @@
 				71D220E16245067F59A3637C /* ofxUIScrollSlider.cpp in Sources */,
 				740A58CBFDFE578C83A349AF /* ofxUISlider.cpp in Sources */,
 				08FF0ECF18C63CF200CF4BAF /* ofxUI3DPad.cpp in Sources */,
+				0869123D18D50CF900B44C21 /* Plane.cpp in Sources */,
 				ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */,
 				BFEFCE32DAFE10A8EB519F6C /* ofxUISpacer.cpp in Sources */,
 				52AFF80A869790144ACCC9BA /* ofxUISpectrum.cpp in Sources */,
@@ -1097,6 +1153,7 @@
 				CE5D89B9893EAA12F511DCAC /* ofxUIWidgetWithLabel.cpp in Sources */,
 				63B57AC5BF4EF088491E0317 /* ofxXmlSettings.cpp in Sources */,
 				933A2227713C720CEFF80FD9 /* tinyxml.cpp in Sources */,
+				0869123E18D50CF900B44C21 /* Projector.cpp in Sources */,
 				9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */,
 				5A4349E9754D6FA14C0F2A3A /* tinyxmlparser.cpp in Sources */,
 				37BE17853C4F3BA04E10C8A8 /* ofxOAuth.cpp in Sources */,

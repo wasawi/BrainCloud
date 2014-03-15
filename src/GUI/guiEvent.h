@@ -17,5 +17,6 @@ public:
 	// my events
     static ofEvent <guiEvent> newSearch;
 	static ofEvent <guiEvent> gotTweet;
+	static ofEvent <guiEvent> tabSelected;
 };
 

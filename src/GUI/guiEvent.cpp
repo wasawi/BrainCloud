@@ -9,3 +9,4 @@
 
 ofEvent <guiEvent> guiEvent::newSearch;
 ofEvent <guiEvent> guiEvent::gotTweet;
+ofEvent <guiEvent> guiEvent::tabSelected;
