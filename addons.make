@@ -5,3 +5,5 @@ ofxJSON
 ofxTwitter
 ofxFTGL
 ofxVolumetrics
+ofxRay
+ofxTalairach
