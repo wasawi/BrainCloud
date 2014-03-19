@@ -30,7 +30,6 @@ private:
 	void redrawAxial();
 	void redrawCoronal();
 
-	
 	unsigned char * myData;
 	ofPixels myPixels;
 //	viewPoint myViewPoint;

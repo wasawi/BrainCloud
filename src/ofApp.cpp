@@ -12,6 +12,8 @@ void ofApp::setup()
 	
 //	ofSetVerticalSync(true);
 	ofSetFrameRate(30);
+	// this is the default on windows os
+	doubleclickTime = 200;
 	
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
 	string const CONSUMER_SECRET = "vUMkjJE70B4xC4nWpMxtScgZYjqzJsceGUbyE3iQ";
@@ -120,7 +122,11 @@ void ofApp::mouseDragged(int x, int y, int button)
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button)
 {
-
+	unsigned long curTap = ofGetElapsedTimeMillis();
+	if(lastTap != 0 && curTap - lastTap < doubleclickTime){
+		myVizManager.doubleclick(x, y);
+	}
+	lastTap = curTap;
 }
 
 //--------------------------------------------------------------

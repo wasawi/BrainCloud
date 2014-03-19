@@ -29,7 +29,7 @@ void vizManager::setup()
 	
 	// coordinates in UIs
 	uiRange	= ofVec3f(-1,1,0);
-	uiCoord	= ofVec3f(0,0,0);
+	uiCoord	= ofVec3f(0);
 		
 	// initialize Talairach coordinates
 	talOffset	= ofVec3f(-70,-102,-42);
@@ -38,9 +38,28 @@ void vizManager::setup()
 	
 	//camera
 	loadCameraPosition();
+//	cam.setDistance(1000);
+	cam.setFov(60);
+
+	
+	//intersection plane
+	rayPlane.setCenter(ofVec3f(0));
+	rayPlane.setScale(ofVec3f(1));
+	rayPlane.setNormal(ofVec3f(0.0f, 0.0f, 1.0f));
+	rayPlane.setUp(ofVec3f(0.0f, 1.0f, 0.0f));
+	rayPlane.setInfinite(false);
 	
 	//Volume
+	voxelSize	= ofVec3f(1);
+	volPos		= ofVec3f(0);
+	volSize		= ofVec3f(0);
+	volOffset	= ofVec3f(0);
+	
+	// Init Volume
 	initVolume();
+
+	// Init Slices
+	volume2D.setup(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
 
 	//setup GUIs
 	setup_guis();
@@ -52,14 +71,20 @@ void vizManager::initVolume()
 	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
 //	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
 	
+	// calculate volume size
 	volWidth	= imageSequence.getWidth();
     volHeight	= imageSequence.getHeight();
     volDepth	= imageSequence.getSequenceLength();
+	float size	= ofGetHeight();
+	ofVec3f volumeSize = voxelSize * ofVec3f(volWidth,volHeight,volDepth);
+    float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
+    volSize = volumeSize * size / maxDim;
+
 	
 	ofLogNotice("vizManager") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
     volumeData = new unsigned char[volWidth*volHeight*volDepth];
 	
-	//fill out the array pixel in white
+	//fill out the array pixel in white for easy debugging
 	for (int i=0; i<volWidth*volHeight*volDepth; i++ )
 	{
 		volumeData[i]= (unsigned char) 255;
@@ -84,29 +109,29 @@ void vizManager::initVolume()
             }
         }
     }
-	
+
 	// Init Volume
-	ofVec3f voxelSize =	ofVec3f(1);
-    myVolume.setup(volWidth, volHeight, volDepth, voxelSize,true);
+    myVolume.setup(volWidth, volHeight, volDepth, voxelSize, true, cam);
 	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
-	myVolume.setPlanes(&uiClamp);
-	
-	// Init Slices
-	volume2D.setup	(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
+	myVolume.setSlices(&uiClamp);
+	myVolume.setRayPlane(&rayPlane);
 }
 
 //--------------------------------------------------------------
 void vizManager::update()
 {
+
 	updateCoordinates();
 	update2DVolume();
 	updateVolumeCoords();
-
+	updateIntersectionPlane();
+	
 	updateTalCoords();
 	updateTalAtlasLabel();
 //	updateTalLabel();
+
 }
 
 //--------------------------------------------------------------
@@ -207,6 +232,12 @@ void vizManager::updateVolumeCoords()
 	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
 	uiClamp = uiCoord_;
 }
+//--------------------------------------------------------------
+void vizManager::updateIntersectionPlane()
+{
+//	rayPlane.setScale(volSize);
+//	rayPlane.setCenter(ofVec3f(0, 0, uiClamp.y)*-volSize);
+}
 
 //--------------------------------------------------------------
 void vizManager::draw()
@@ -216,14 +247,14 @@ void vizManager::draw()
 		// Draw Volume
 		ofSetColor(255);
 		cam.begin();
-		ofPushMatrix();									//	save the old coordinate system
-			//myVolume.drawSlices();
-			ofScale(1.0f, -1.0f);						//	flip the y axis vertically, so that it points upwards
-			myVolume.update(0,0,0, ofGetHeight(), 0);	//	draw Volume
-		ofPopMatrix();									//	restore the previous coordinate system
+//			ofScale(1.0f, -1.0f);
+//			rayPlane.draw();
+			myVolume.updateVolume(volPos, volSize, 0);	//	draw Volume
 		cam.end();
-		myVolume.draw(0, 0, ofGetWidth(), ofGetHeight());
+		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
 		cam.drawArcBall();
+
+		
 		
 		//Draw Slices "canvas"
 		ofPushView();
@@ -253,7 +284,7 @@ void vizManager::draw()
 		
 		//Draw talairach pixel value and labels
 		ofPushStyle();
-		ofSetColor(voxelValue, 255);
+//		ofSetColor(voxelValue, 255);
 //		ofRect(initX,tempY,boxH*2+dist*5,dist);
 		
 		ofSetColor(0, 255, 255);
@@ -548,6 +579,7 @@ void vizManager::keyPressed(int key ){
 	}
 }
 
+
 //--------------------------------------------------------------
 void vizManager::saveCameraPosition()
 {
@@ -612,6 +644,36 @@ void vizManager::loadCameraPosition()
 	
 	cam.setDistance(XML.getValue("distance",0.0, 0));
 	cam.setTransformMatrix(posMat);
+}
+//--------------------------------------------------------------
+void vizManager::doubleclick(int& _x, int& _y)
+{
+	// the mouse position on screen coordinates
+	ofVec3f screenMouse = ofVec3f(_x, _y,0);
+	
+	// the mouse position on world coordinates
+	ofVec3f worldMouse = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 0.0f));
+	
+	// a point right in front of the mouse (used to get mouse direction)
+	ofVec3f worldMouseEnd = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 1.0f));
+	
+	// a vector representing the mouse direction (from camera to infinity?)
+	ofVec3f worldMouseTransmissionVector = worldMouseEnd - worldMouse;
+	
+	// set attributes to the ray
+	mouseRay.s = worldMouse;
+	mouseRay.t = worldMouseTransmissionVector;
+		
+	// check for intersection
+	// all the good stuff is done here!
+	doesIntersect = rayPlane.intersect(mouseRay, intersectionPosition);
+	
+	string label;
+	int y = ofGetHeight() - 70;
+	label = doesIntersect ? "hits" : "misses";
+	label += + " at world position " + ofToString(intersectionPosition);
+	//ofDrawBitmapStringHighlight(label, 40, y);
+	cout << label<< endl;
 }
 
 

@@ -39,7 +39,10 @@ class ofApp : public ofBaseApp
     float	radius;
     int		resolution;
     ofPoint position;
-
+	
+	//double click (from easyCam)
+	unsigned long lastTap;
+	unsigned long doubleclickTime;
 };
 
 #endif

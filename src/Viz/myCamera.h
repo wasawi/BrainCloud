@@ -71,7 +71,6 @@ public:
 	float	arcBallFactor;
 	void	drawArcBall();
 	void	setArcBallFactor(float factor);
-//	of3dPrimitive::ofBoxPrimitive box;
 	
 private:
 	void setDistance(float distance, bool save);

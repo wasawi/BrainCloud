@@ -8,7 +8,7 @@
 #include "ofUtils.h"
 #include "talairachLabels.h"
 #include "ofxTalairach.h"
-
+#include "ofxRay.h"
 
 /*
  
@@ -60,6 +60,7 @@ public:
 	void draw();
 	void initVolume();
 	void keyPressed  (int key);
+	void doubleclick(int& _x, int& _y);
 	
 	//Camera
 	//	ofEasyCam cam;
@@ -101,6 +102,10 @@ private:
     unsigned char * volumeData;
     ofxImageSequencePlayer imageSequence;
 	ofFbo myfboRender;
+	ofVec3f	volPos;
+	ofVec3f	volSize;
+	ofVec3f	volOffset;
+	ofVec3f voxelSize;
 
 	// Volume Slice
 	volumeSlice	volume2D;
@@ -128,6 +133,7 @@ private:
 	void updateCoordinates();
 	void update2DVolume();
 	void updateVolumeCoords();
+	void updateIntersectionPlane();
 	
 	void updateTalCoords();
 	void updateTalAtlasLabel();
@@ -142,6 +148,12 @@ private:
 
 	ofVec3f talOffset;	// the offset of the origin (0,0,0) in Tal coordinates
 	ofVec3f talCoord;	// volume coords + offset Tal coords for Tal tables.
+
+	// ofxRay objects
+	ofPlane rayPlane;
+	ofRay mouseRay;
+	bool doesIntersect;
+	ofVec3f intersectionPosition;
 };
 
 

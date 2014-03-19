@@ -94,9 +94,10 @@ private:
 	float nResponsesX;
 	float nResponsesY;
 	float nResponsesW;
-	
-	
-	
+
+};
+
+
 // JUNK:
 //		int actualTweet;
 //		bool reloadTweet;
@@ -105,11 +106,9 @@ private:
 //		ofxTwitter3d mytwitter3d;
 //		vector<tweet3d> alltweets;
 //		vector<tweet3d> selectedTweets;
-		
+
 //		ofxXmlSettings xmltwitter;
 
 //	string screen_name;
 //	string myText;
 //	string name;
-	
-};
