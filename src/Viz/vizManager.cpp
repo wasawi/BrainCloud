@@ -38,7 +38,7 @@ void vizManager::setup()
 	
 	//camera
 	loadCameraPosition();
-//	cam.setDistance(1000);
+	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 	cam.setFov(60);
 
 	
@@ -253,8 +253,6 @@ void vizManager::draw()
 		cam.end();
 		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
 		cam.drawArcBall();
-
-		
 		
 		//Draw Slices "canvas"
 		ofPushView();
@@ -553,10 +551,10 @@ void vizManager::keyPressed(int key ){
 		case 's':
 			guiVolume->saveSettings("GUI/viz_settings.xml");
 			guiSliders->saveSettings("GUI/viz_settings_2.xml");
-			saveCameraPosition();
+			ofxSaveCamera(cam, "GUI/cameraSettings.txt");
 			break;
 		case 'l':
-			loadCameraPosition();
+			ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 			guiVolume->loadSettings("GUI/viz_settings.xml");
 			break;
 		case 'f':
@@ -579,72 +577,6 @@ void vizManager::keyPressed(int key ){
 	}
 }
 
-
-//--------------------------------------------------------------
-void vizManager::saveCameraPosition()
-{
-	posMat = cam.getGlobalTransformMatrix();
-	ofxXmlSettings *XML = new ofxXmlSettings("GUI/camera_settings.xml");
-    XML->setValue("posMat_00", posMat(0,0), 0);
-	XML->setValue("posMat_01", posMat(0,1), 0);
-	XML->setValue("posMat_02", posMat(0,2), 0);
-	XML->setValue("posMat_03", posMat(0,3), 0);
-	
-    XML->setValue("posMat_10", posMat(1,0), 0);
-	XML->setValue("posMat_11", posMat(1,1), 0);
-	XML->setValue("posMat_12", posMat(1,2), 0);
-	XML->setValue("posMat_13", posMat(1,3), 0);
-	
-	XML->setValue("posMat_20", posMat(2,0), 0);
-	XML->setValue("posMat_21", posMat(2,1), 0);
-	XML->setValue("posMat_22", posMat(2,2), 0);
-	XML->setValue("posMat_23", posMat(2,3), 0);
-    
-	XML->setValue("posMat_30", posMat(3,0), 0);
-	XML->setValue("posMat_31", posMat(3,1), 0);
-	XML->setValue("posMat_32", posMat(3,2), 0);
-	XML->setValue("posMat_33", posMat(3,3), 0);
-	
-	XML->setValue("distance", cam.getDistance(), 0);
-	XML->saveFile("GUI/camera_settings.xml");
-    delete XML;
-	message = "saved camera_settings.xml";
-	ofLog(OF_LOG_NOTICE, message);
-}
-
-//--------------------------------------------------------------
-void vizManager::loadCameraPosition()
-{
-	if( XML.loadFile("GUI/camera_settings.xml") ){
-		message = "camera_settings.xml loaded!";
-	}else{
-		message = "unable to load camera_settings.xml check data/ folder";
-	}
-	ofLog(OF_LOG_NOTICE, message);
-	
-	posMat(0,0)= XML.getValue("posMat_00",0.0, 0);
-	posMat(0,1)= XML.getValue("posMat_01",0.0, 0);
-	posMat(0,2)= XML.getValue("posMat_02",0.0, 0);
-	posMat(0,3)= XML.getValue("posMat_03",0.0, 0);
-	
-	posMat(1,0)= XML.getValue("posMat_10",0.0, 0);
-	posMat(1,1)= XML.getValue("posMat_11",0.0, 0);
-	posMat(1,2)= XML.getValue("posMat_12",0.0, 0);
-	posMat(1,3)= XML.getValue("posMat_13",0.0, 0);
-	
-	posMat(2,0)= XML.getValue("posMat_20",0.0, 0);
-	posMat(2,1)= XML.getValue("posMat_21",0.0, 0);
-	posMat(2,2)= XML.getValue("posMat_22",0.0, 0);
-	posMat(2,3)= XML.getValue("posMat_23",0.0, 0);
-	
-	posMat(3,0)= XML.getValue("posMat_30",0.0, 0);
-	posMat(3,1)= XML.getValue("posMat_31",0.0, 0);
-	posMat(3,2)= XML.getValue("posMat_32",0.0, 0);
-	posMat(3,3)= XML.getValue("posMat_33",0.0, 0);
-	
-	cam.setDistance(XML.getValue("distance",0.0, 0));
-	cam.setTransformMatrix(posMat);
-}
 //--------------------------------------------------------------
 void vizManager::doubleclick(int& _x, int& _y)
 {
@@ -675,49 +607,6 @@ void vizManager::doubleclick(int& _x, int& _y)
 	//ofDrawBitmapStringHighlight(label, 40, y);
 	cout << label<< endl;
 }
-
-
-/*
-//	THE FOLLOWING ARE NOT USED
-
-//--------------------------------------------------------------
-void vizManager::updateSliders()
-{
-	//update sliders
-	ofxUISlider *slider;
-	slider = (ofxUISlider *) guiSliders->getWidget("coronalDepth");
-	slider -> setValue(uiCoord.z);
-	slider = (ofxUISlider *) guiSliders->getWidget("sagittalDepth");
-	slider -> setValue(uiCoord.x);
-	slider = (ofxUISlider *) guiSliders->getWidget("axialDepth");
-	slider -> setValue(uiCoord.y);
-}
-
-//--------------------------------------------------------------
-void vizManager::updatePads()
-{
-	//update pads
-	ofxUI2DPad *pad;
-	pad = (ofxUI2DPad *) guiSliders->getWidget("coronalPad");
-	pad -> setValue(uiCoord);
-	pad = (ofxUI2DPad *) guiSliders->getWidget("sagittalPad");
-	pad -> setValue(uiCoord);
-	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
-	pad -> setValue(uiCoord);
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

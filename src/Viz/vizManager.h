@@ -9,6 +9,7 @@
 #include "talairachLabels.h"
 #include "ofxTalairach.h"
 #include "ofxRay.h"
+#include "ofxCameraSaveLoad.h"
 
 /*
  
