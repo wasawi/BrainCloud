@@ -185,7 +185,7 @@ void tweetManager::setupScrollCanvas()
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setWidgetSpacing(space);
 	scrollCanvas->enableScrollBar();
-	//	scrollCanvas->enableFBO();
+	scrollCanvas->enableFBO();
 }
 
 void tweetManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText)

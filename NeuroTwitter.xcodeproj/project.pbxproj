@@ -11,6 +11,8 @@
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */; };
+		08F8283618DA771300EF951B /* ofxSuperLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8282F18DA771300EF951B /* ofxSuperLog.cpp */; };
+		08F8283718DA771300EF951B /* ofxSuperLogDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8283118DA771300EF951B /* ofxSuperLogDisplay.cpp */; };
 		1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2813E36CEFD8D1C1B70E600 /* ofxUIRangeSlider.cpp */; };
 		1DAAC3FB4B98B08AE63F4687 /* ofxUISuperCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */; };
 		202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EE68D117096A7022E761A462 /* ofxTexture3d.cpp */; };
@@ -146,6 +148,10 @@
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
 		08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraSaveLoad.cpp; sourceTree = "<group>"; };
 		08F8280D18DA58A200EF951B /* ofxCameraSaveLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCameraSaveLoad.h; sourceTree = "<group>"; };
+		08F8282F18DA771300EF951B /* ofxSuperLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSuperLog.cpp; sourceTree = "<group>"; };
+		08F8283018DA771300EF951B /* ofxSuperLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSuperLog.h; sourceTree = "<group>"; };
+		08F8283118DA771300EF951B /* ofxSuperLogDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSuperLogDisplay.cpp; sourceTree = "<group>"; };
+		08F8283218DA771300EF951B /* ofxSuperLogDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxSuperLogDisplay.h; sourceTree = "<group>"; };
 		091AE9D2CADD954B5834021F /* myUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = myUtils.h; path = src/Utils/myUtils.h; sourceTree = SOURCE_ROOT; };
 		0CD3145A0F2A0E5266668B1B /* value.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = value.h; path = ../../../addons/ofxJSON/libs/jsoncpp/include/json/value.h; sourceTree = SOURCE_ROOT; };
 		0D6768C572B6CA49227C29EA /* ofxUINumberDialer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUINumberDialer.cpp; path = ../../../addons/ofxUI/src/ofxUINumberDialer.cpp; sourceTree = SOURCE_ROOT; };
@@ -411,6 +417,26 @@
 			children = (
 				08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */,
 				08F8280D18DA58A200EF951B /* ofxCameraSaveLoad.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		08F8281518DA771300EF951B /* ofxSuperLog */ = {
+			isa = PBXGroup;
+			children = (
+				08F8282E18DA771300EF951B /* src */,
+			);
+			name = ofxSuperLog;
+			path = ../../../addons/ofxSuperLog;
+			sourceTree = "<group>";
+		};
+		08F8282E18DA771300EF951B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				08F8282F18DA771300EF951B /* ofxSuperLog.cpp */,
+				08F8283018DA771300EF951B /* ofxSuperLog.h */,
+				08F8283118DA771300EF951B /* ofxSuperLogDisplay.cpp */,
+				08F8283218DA771300EF951B /* ofxSuperLogDisplay.h */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -713,6 +739,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				08F8281518DA771300EF951B /* ofxSuperLog */,
 				08F827F718DA58A200EF951B /* ofxCameraSaveLoad */,
 				A492CE86424AB8905550BFD8 /* ofxUI */,
 				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
@@ -1181,7 +1208,9 @@
 				202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */,
 				7A5DDC993979FB5561F47EFE /* ofxVolumetrics.cpp in Sources */,
 				A0C1C42F6293BEC48CA02D5D /* Base.cpp in Sources */,
+				08F8283618DA771300EF951B /* ofxSuperLog.cpp in Sources */,
 				DF2B08505F60BABD6D71FD96 /* Camera.cpp in Sources */,
+				08F8283718DA771300EF951B /* ofxSuperLogDisplay.cpp in Sources */,
 				9ABE161F13B1E8B87B7C04F9 /* Plane.cpp in Sources */,
 				DE51E964916E52B1AB50BB5F /* Projector.cpp in Sources */,
 				028A1A54F7661FB669A7DFF8 /* Ray.cpp in Sources */,

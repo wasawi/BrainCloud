@@ -3,6 +3,8 @@
 
 //----------------------------------------------
 vizManager::vizManager(){
+
+//	ofAddListener(ofEvents().mousePressed, this, &vizManager::mousePressed);
 }
 
 //----------------------------------------------
@@ -19,6 +21,7 @@ void vizManager::setup()
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
 //	talClient.setup("../../../data/brainData/talairach.jar");
 	outputLabels.resize(10);
+	bSelecting = false;
 	
 	// 2Dpad Canvas
 	initX	=0;
@@ -35,12 +38,6 @@ void vizManager::setup()
 	talOffset	= ofVec3f(-70,-102,-42);
 	talDrawX	= boxW+dist*3+sliderW;
 	talDrawY	= initY+dist;
-	
-	//camera
-	loadCameraPosition();
-	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
-	cam.setFov(60);
-
 	
 	//intersection plane
 	rayPlane.setCenter(ofVec3f(0));
@@ -63,6 +60,9 @@ void vizManager::setup()
 
 	//setup GUIs
 	setup_guis();
+
+	//camera
+	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 }
 
 //--------------------------------------------------------------
@@ -126,7 +126,6 @@ void vizManager::update()
 	updateCoordinates();
 	update2DVolume();
 	updateVolumeCoords();
-	updateIntersectionPlane();
 	
 	updateTalCoords();
 	updateTalAtlasLabel();
@@ -164,7 +163,6 @@ void vizManager::updateTalCoords()
 	// using the offstet provided in nifti headers
 	talCoord = volCoord + talOffset;
 	talCoord.x *=-1;
-
 //	ofLogVerbose("vizManager") <<	"tal.x " << ofToString(talCoord.x,2);
 //	ofLogVerbose("vizManager") <<	"tal.y " << ofToString(talCoord.y,2);
 //	ofLogVerbose("vizManager") <<	"tal.z " << ofToString(talCoord.z,2);
@@ -232,12 +230,6 @@ void vizManager::updateVolumeCoords()
 	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
 	uiClamp = uiCoord_;
 }
-//--------------------------------------------------------------
-void vizManager::updateIntersectionPlane()
-{
-//	rayPlane.setScale(volSize);
-//	rayPlane.setCenter(ofVec3f(0, 0, uiClamp.y)*-volSize);
-}
 
 //--------------------------------------------------------------
 void vizManager::draw()
@@ -247,12 +239,15 @@ void vizManager::draw()
 		// Draw Volume
 		ofSetColor(255);
 		cam.begin();
-//			ofScale(1.0f, -1.0f);
-//			rayPlane.draw();
-			myVolume.updateVolume(volPos, volSize, 0);	//	draw Volume
+			myVolume.updateVolume(volPos, volSize, 0);
+			// check collision
+			if (bSelecting && ofGetMousePressed())
+				doesIntersect = myVolume.getIntersection(intersectionPosition);
 		cam.end();
 		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
-		cam.drawArcBall();
+		
+		// Draw ArcBall
+		if (!bSelecting && ofGetMousePressed()) cam.drawArcBall();
 		
 		//Draw Slices "canvas"
 		ofPushView();
@@ -305,13 +300,13 @@ void vizManager::setup_guis()
 	allowEvent	= false;
 	// Volume UI
 	setup_guiVolume();
-	guiVolume->loadSettings("GUI/viz_settings.xml");
+	guiVolume->loadSettings("GUI/volume_settings.xml");
 	guiVolume->setDrawBack(true);
 	guiVolume->setVisible(false);
 	
 	// Sliders UI
 	setup_guiSliders();
-	guiSliders->loadSettings("GUI/viz_settings_2.xml");
+	guiSliders->loadSettings("GUI/slices_settings.xml");
 	guiSliders->setDrawBack(false);
 //	guiSliders->setAutoDraw(true);	this method does not work
 	
@@ -543,30 +538,35 @@ void vizManager::keyPressed(int key ){
     switch(key)
     {
 		case ' ':
-			cam.bRotate = !cam.bRotate;
+			bSelecting = !bSelecting;
+			if (bSelecting) cam.disableMouseInput();
 			break;
 		case 'h':
             guiVolume->toggleVisible();
 			break;
 		case 's':
-			guiVolume->saveSettings("GUI/viz_settings.xml");
-			guiSliders->saveSettings("GUI/viz_settings_2.xml");
+			guiVolume->saveSettings("GUI/volume_settings.xml");
+//			guiSliders->saveSettings("GUI/slices_settings.xml");
 			ofxSaveCamera(cam, "GUI/cameraSettings.txt");
 			break;
 		case 'l':
 			ofxLoadCamera(cam, "GUI/cameraSettings.txt");
-			guiVolume->loadSettings("GUI/viz_settings.xml");
+			guiVolume->loadSettings("GUI/volume_settings.xml");
 			break;
 		case 'f':
 			//ofSetWindowPosition(0, 0);
 			//ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
 			break;
+		case 'r':
+			cam.bRotate = !cam.bRotate;
+			break;
 		case 'F':
 			ofSetVerticalSync(true);
 			//ofSetFullscreen(true);
 			break;
 		case 't':
+			// talairach tests
 			int voxelValue = volume2D.getVoxelValue();
 			//mapping from pixel value to index value on the Talairach Atlas
 			int currentValue= ofMap(voxelValue, 0, 255, 0, 1105);
@@ -578,39 +578,11 @@ void vizManager::keyPressed(int key ){
 }
 
 //--------------------------------------------------------------
-void vizManager::doubleclick(int& _x, int& _y)
+void vizManager::mousePressed(ofMouseEventArgs& e)
 {
-	// the mouse position on screen coordinates
-	ofVec3f screenMouse = ofVec3f(_x, _y,0);
 	
-	// the mouse position on world coordinates
-	ofVec3f worldMouse = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 0.0f));
-	
-	// a point right in front of the mouse (used to get mouse direction)
-	ofVec3f worldMouseEnd = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 1.0f));
-	
-	// a vector representing the mouse direction (from camera to infinity?)
-	ofVec3f worldMouseTransmissionVector = worldMouseEnd - worldMouse;
-	
-	// set attributes to the ray
-	mouseRay.s = worldMouse;
-	mouseRay.t = worldMouseTransmissionVector;
-		
-	// check for intersection
-	// all the good stuff is done here!
-	doesIntersect = rayPlane.intersect(mouseRay, intersectionPosition);
-	
-	string label;
-	int y = ofGetHeight() - 70;
-	label = doesIntersect ? "hits" : "misses";
-	label += + " at world position " + ofToString(intersectionPosition);
-	//ofDrawBitmapStringHighlight(label, 40, y);
-	cout << label<< endl;
+//	checkRay(e.x, e.y);
 }
-
-
-
-
 
 
 

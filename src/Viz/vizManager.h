@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ofMain.h"
 #include "tweet3d.h"
 #include "ofxVolumetrics.h"
 #include "ofxUI.h"
@@ -59,21 +60,21 @@ public:
 
 	void setup();
 	void draw();
+	void mousePressed(ofMouseEventArgs& e);
 	void initVolume();
 	void keyPressed  (int key);
-	void doubleclick(int& _x, int& _y);
+	void checkRay(int _x, int _y);
 	
 	//Camera
 	//	ofEasyCam cam;
 	myCamera cam;
 	ofxUICanvas *guiVolume;
 	ofxUICanvas *guiSliders;
+	bool	bSelecting;
 	
 private:
 
 	// GUI
-	void saveCameraPosition();
-	void loadCameraPosition();
 	void guiEvent(ofxUIEventArgs &e);
 	void setup_guis();
 	void setup_guiVolume();
@@ -134,7 +135,6 @@ private:
 	void updateCoordinates();
 	void update2DVolume();
 	void updateVolumeCoords();
-	void updateIntersectionPlane();
 	
 	void updateTalCoords();
 	void updateTalAtlasLabel();
@@ -152,8 +152,8 @@ private:
 
 	// ofxRay objects
 	ofPlane rayPlane;
-	ofRay mouseRay;
-	bool doesIntersect;
+	ofRay	mouseRay;
+	bool	doesIntersect;
 	ofVec3f intersectionPosition;
 };
 

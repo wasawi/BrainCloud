@@ -9,6 +9,8 @@
 #include "guiManager.h"
 #include "tweetManager.h"
 #include "vizManager.h"
+#include "ofxSuperLog.h"
+
 
 class ofApp : public ofBaseApp
 {
@@ -31,7 +33,7 @@ class ofApp : public ofBaseApp
 	guiManager		myGUIManager;
 	tweetManager	myTwitterManager;
 	vizManager		myVizManager;
-	
+
 	bool	drawFill;
 	float	red, green, blue, alpha;
         
@@ -43,6 +45,15 @@ class ofApp : public ofBaseApp
 	//double click (from easyCam)
 	unsigned long lastTap;
 	unsigned long doubleclickTime;
+	
+	// screen Log
+	void setupLog();
+	
+	// Help message
+	ofxUICanvas*	helpMessage;
+	void 	setupHelpMessage();
+	
+	
 };
 
 #endif
