@@ -133,8 +133,9 @@ private:
 	// updates
 	void update();
 	void updateCoordinates();
-	void update2DVolume();
-	void updateVolumeCoords();
+	void updateSlicesImage();
+	void updateSlices2Volume();
+	void updateVolume2Slices();
 	
 	void updateTalCoords();
 	void updateTalAtlasLabel();

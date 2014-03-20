@@ -187,9 +187,9 @@ void ofApp::setupHelpMessage()
 	const char *text =
     "Shortcuts:                    \n\
                                    \n\
-    h         toggle help panel    \n\
-    r         rotate volume        \n\
     space     select/move          \n\
+    r         rotate volume        \n\
+    r         rotate volume        \n\
     esc       to quit              \n\
                                    \n\
     F1:      Log SILENT            \n\

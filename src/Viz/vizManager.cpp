@@ -124,8 +124,8 @@ void vizManager::update()
 {
 
 	updateCoordinates();
-	update2DVolume();
-	updateVolumeCoords();
+	updateSlicesImage();
+	updateSlices2Volume();
 	
 	updateTalCoords();
 	updateTalAtlasLabel();
@@ -193,7 +193,7 @@ void vizManager::updateCoordinates()
 }
 
 //--------------------------------------------------------------
-void vizManager::update2DVolume()
+void vizManager::updateSlicesImage()
 {
 	// update de Depth of the slices drawn by volumeSlice
 	// this uptade must only run when there is a gui event
@@ -203,7 +203,7 @@ void vizManager::update2DVolume()
 }
 
 //--------------------------------------------------------------
-void vizManager::updateVolumeCoords()
+void vizManager::updateSlices2Volume()
 {
 	//ofClamp(volCoord.z,0, volDepth-1);
 	ofVec3f uiCoord_;
@@ -232,6 +232,36 @@ void vizManager::updateVolumeCoords()
 }
 
 //--------------------------------------------------------------
+void vizManager::updateVolume2Slices()
+{
+	//ofClamp(volCoord.z,0, volDepth-1);
+	ofVec3f uiCoord_;
+	
+	// map it to pixel values;
+	float uiSize=100;
+	uiCoord_ = uiClamp*uiSize;
+	
+	//use the pixel positions that are only inside the volume
+	//(excluding areas between volume and uiPad limits)
+	// coronal
+	uiCoord_.z= ofMap(uiCoord_.z, -uiSize, uiSize, -volHeight/2, volHeight/2);
+	// sagittal
+	uiCoord_.x= ofMap(uiCoord_.x, -uiSize, uiSize, -volHeight/2, volWidth/2);
+	// axial
+	uiCoord_.y= ofMap(uiCoord_.y, -uiSize, uiSize, -volDepth/2, volDepth/2);
+	
+	//normalized again
+	uiCoord_ = uiCoord_/100;
+	
+	//clamp the mapped values
+	uiCoord_.x = ofClamp(uiCoord_.x, -1, 1);
+	uiCoord_.y = ofClamp(uiCoord_.y, -1, 1);
+	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
+	uiCoord = uiCoord_;
+}
+
+
+//--------------------------------------------------------------
 void vizManager::draw()
 {
 	if (bDraw)
@@ -240,9 +270,13 @@ void vizManager::draw()
 		ofSetColor(255);
 		cam.begin();
 			myVolume.updateVolume(volPos, volSize, 0);
-			// check collision
-			if (bSelecting && ofGetMousePressed())
-				doesIntersect = myVolume.getIntersection(intersectionPosition);
+		// check collision
+		if (bSelecting && ofGetMousePressed()){
+			doesIntersect = myVolume.getIntersection(intersectionPosition);
+			updateVolume2Slices();
+			updateCoordinates();
+			updateSlicesImage();
+		}
 		cam.end();
 		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
 		
