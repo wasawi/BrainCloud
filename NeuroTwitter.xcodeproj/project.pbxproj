@@ -224,7 +224,6 @@
 		5613D5D24B00D8AD909F7E6A /* ofxUISortableList.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUISortableList.cpp; path = ../../../addons/ofxUI/src/ofxUISortableList.cpp; sourceTree = SOURCE_ROOT; };
 		5618C888C969D754438F104C /* ftgl.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ftgl.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/ftgl.h; sourceTree = SOURCE_ROOT; };
 		568E8FD76B1735A21AA12648 /* FTGlyph.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTGlyph.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTGlyph.h; sourceTree = SOURCE_ROOT; };
-		57175EA278AC6B6AFA7BC13D /* ofxTwitterConfig.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitterConfig.h; path = ../../../addons/ofxTwitter/src/ofxTwitterConfig.h; sourceTree = SOURCE_ROOT; };
 		58F8CBF3C566F6908846E5FB /* json_writer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = json_writer.cpp; path = ../../../addons/ofxJSON/libs/jsoncpp/src/json_writer.cpp; sourceTree = SOURCE_ROOT; };
 		59C0386F68D8BD0605ED64E0 /* ofxTwitter.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitter.h; path = ../../../addons/ofxTwitter/src/ofxTwitter.h; sourceTree = SOURCE_ROOT; };
 		5AD807D1AF254F978AB20B1C /* ofxUIWidgetWithLabel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidgetWithLabel.cpp; path = ../../../addons/ofxUI/src/ofxUIWidgetWithLabel.cpp; sourceTree = SOURCE_ROOT; };
@@ -403,6 +402,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0827A3CC18DCB09E00469174 /* PubMed */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = PubMed;
+			sourceTree = "<group>";
+		};
 		08F827F718DA58A200EF951B /* ofxCameraSaveLoad */ = {
 			isa = PBXGroup;
 			children = (
@@ -491,12 +497,13 @@
 		2D0B0316D15C4E2499D6A5F5 /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				374505B6865245282826FE21 /* ofxExampleTwitterClient.h */,
+				C1B0810229C8FFF3A9199639 /* tweetManager.cpp */,
+				BE7C036126A2987823D1CA4D /* tweetManager.h */,
 				024DDBA5871B37FE4D21881E /* ofxTwitter3d.cpp */,
 				3A34BCED94C473EFF3839A95 /* ofxTwitter3d.h */,
 				3F85DCF19C282DE4049266F1 /* tweet3d.cpp */,
 				C7046300ADADCD50882670D9 /* tweet3d.h */,
-				C1B0810229C8FFF3A9199639 /* tweetManager.cpp */,
-				BE7C036126A2987823D1CA4D /* tweetManager.h */,
 			);
 			name = Twitter;
 			sourceTree = "<group>";
@@ -513,14 +520,14 @@
 		36B8F0CD90028AF47E0E03C4 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
-				7BB39463C7EE7BFC8C6F7524 /* myCamera.cpp */,
-				4CC0FA179DFCC6A1A1841056 /* myCamera.h */,
-				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
-				8D024AC6312D1AF090EE7EA3 /* talairachLabels.h */,
 				8D66DD895E835C0F19854FFF /* vizManager.cpp */,
 				640FBAA3409D36542C6F294F /* vizManager.h */,
 				4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */,
 				1848A09F5E0DC8DD02960915 /* volumeSlice.h */,
+				7BB39463C7EE7BFC8C6F7524 /* myCamera.cpp */,
+				4CC0FA179DFCC6A1A1841056 /* myCamera.h */,
+				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
+				8D024AC6312D1AF090EE7EA3 /* talairachLabels.h */,
 			);
 			name = Viz;
 			sourceTree = "<group>";
@@ -660,7 +667,7 @@
 			name = ofxRay;
 			sourceTree = "<group>";
 		};
-		9C1E03ED636188A91CB83CA1 /* GUI */ = {
+		9C1E03ED636188A91CB83CA1 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
 				6F9231C2B4F0911980CD7CA5 /* guiEvent.cpp */,
@@ -668,7 +675,7 @@
 				BD2ACB5D6839E81DE08349B7 /* guiManager.cpp */,
 				15FCE46D80D67D3661FD7433 /* guiManager.h */,
 			);
-			name = GUI;
+			name = Tabs;
 			sourceTree = "<group>";
 		};
 		A492CE86424AB8905550BFD8 /* ofxUI */ = {
@@ -684,7 +691,6 @@
 			children = (
 				F66C082F38A46DC7354B8863 /* ofxTwitter.cpp */,
 				59C0386F68D8BD0605ED64E0 /* ofxTwitter.h */,
-				57175EA278AC6B6AFA7BC13D /* ofxTwitterConfig.h */,
 				45059B570045BB913F91B079 /* ofxTwitterSearch.h */,
 				6686D93C5674C6E0E46AE0C2 /* ofxTwitterTweet.h */,
 			);
@@ -1011,11 +1017,11 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
-				9C1E03ED636188A91CB83CA1 /* GUI */,
-				374505B6865245282826FE21 /* ofxExampleTwitterClient.h */,
+				9C1E03ED636188A91CB83CA1 /* Tabs */,
+				0827A3CC18DCB09E00469174 /* PubMed */,
+				36B8F0CD90028AF47E0E03C4 /* Viz */,
 				2D0B0316D15C4E2499D6A5F5 /* Twitter */,
 				85C7093CD15404193A7664FD /* Utils */,
-				36B8F0CD90028AF47E0E03C4 /* Viz */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;

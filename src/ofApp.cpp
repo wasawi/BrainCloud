@@ -11,7 +11,6 @@ void ofApp::setup()
 	
 	// Help message
 	setupHelpMessage();
-
 	
 	// Twitter keys
 	string const CONSUMER_KEY = "zSrKv91OmRK1F2wgqXpvQ";
@@ -48,7 +47,6 @@ void ofApp::keyPressed(int key)
     {
 		case 'h':
 			helpMessage->isEnabled() ?	helpMessage->disable(): helpMessage->enable();
-			
 			break;
 		case 'l':
 			myTwitterManager.twitterClient.loadCacheFile();
@@ -62,25 +60,20 @@ void ofApp::keyPressed(int key)
 		case OF_KEY_F1:
 			ofSetLogLevel(OF_LOG_SILENT);
 			break;
-			
 		case OF_KEY_F2:
 			ofSetLogLevel(OF_LOG_VERBOSE);
 			break;
-
 		case OF_KEY_F3:
 			ofSetLogLevel(OF_LOG_NOTICE);
 			break;
-			
 		case OF_KEY_F4:
 			ofLog(OF_LOG_VERBOSE, "PubMed");
 			ofSetLogLevel("PubMed", OF_LOG_VERBOSE);
 			break;
-
 		case OF_KEY_F5:
 			ofLog(OF_LOG_VERBOSE, "Twitter");
 			ofSetLogLevel("Twitter", OF_LOG_VERBOSE);
 			break;
-			
 		case OF_KEY_F6:
 			ofLog(OF_LOG_VERBOSE, "Vis");
 			ofSetLogLevel("Vis", OF_LOG_VERBOSE);
@@ -166,14 +159,14 @@ void ofApp::dragEvent(ofDragInfo dragInfo)
 void ofApp::setupLog()
 {
 	// OF Log Level
-	//	ofSetLogLevel(OF_LOG_VERBOSE);
-	ofSetLogLevel(OF_LOG_NOTICE);
+		ofSetLogLevel(OF_LOG_VERBOSE);
+	//	ofSetLogLevel(OF_LOG_NOTICE);
 	//	ofSetLogLevel(OF_LOG_WARNING);
 	//	ofSetLogLevel(OF_LOG_ERROR);
 	
 	// Log console
 	bool logToConsole = true;
-	bool logToScreen = true;
+	bool logToScreen = false;
 	ofSetLoggerChannel(ofxSuperLog::getLogger(logToConsole, logToScreen, "logs"));
 }
 

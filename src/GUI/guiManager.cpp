@@ -29,13 +29,14 @@ void guiManager::setupTabBar()
 {
 	tabCanvas = new ofxUICanvas(tabCanvasX, tabCanvasY,tabCanvasW, tabCanvasH);
 	tabCanvas->setDrawBack(false);
-	
 	tabCanvas->setWidgetSpacing(1);
 	tabCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+
 	
 	//	(string _name, bool _value, float w, float h, float x, float y, bool _justifyLeft)
 	tabCanvas->addLabelToggle("Search", searchToggle, toggleW, toggleH, 0, 0, false);
 	tabCanvas->setWidgetSpacing(10);
+	
 	tabCanvas->addWidgetRight(new ofxUILabelToggle("Post",
 												   postToggle,
 												   toggleW,
@@ -46,7 +47,8 @@ void guiManager::setupTabBar()
 												   false));
 
 	// set properties
-	ofxUILabelToggle *w = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
+	ofxUILabelToggle *w;
+	w = (ofxUILabelToggle *)  tabCanvas->getWidget("Search");
 	ofColor back = ofColor(0,0,0,55);		// OFX_UI_COLOR_PADDED / 2
 	w->setColorFill(back);
 	w->setColorFillHighlight(back);
@@ -59,7 +61,6 @@ void guiManager::setupTabBar()
 	w->setColorBack(back);
 	w->setValue(false);						// we will use XML settings for this
 
-	
 	ofAddListener(tabCanvas->newGUIEvent,this,&guiManager::tabCanvasEvent);
 }
 
@@ -111,3 +112,7 @@ void guiManager::tabCanvasEvent(ofxUIEventArgs &e)
 		ofLogVerbose("tabCanvasEvent") << "postToggle: " << toggle->getValue();
 	}
 }
+
+
+
+

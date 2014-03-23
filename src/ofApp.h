@@ -33,7 +33,7 @@ class ofApp : public ofBaseApp
 	guiManager		myGUIManager;
 	tweetManager	myTwitterManager;
 	vizManager		myVizManager;
-
+	
 	bool	drawFill;
 	float	red, green, blue, alpha;
         
@@ -53,7 +53,7 @@ class ofApp : public ofBaseApp
 	ofxUICanvas*	helpMessage;
 	void 	setupHelpMessage();
 	
-	
+
 };
 
 #endif
