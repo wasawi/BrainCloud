@@ -24,7 +24,7 @@ public:
 private:
 	
 	// events
-	void searchQuery(string s);
+//	void searchQuery(string s);
 	void searchQuery(guiEvent &e);
 	void setOneTweetToGui(guiEvent &e);
 	void cleanImgUsers( std::vector <ofImage> & a );

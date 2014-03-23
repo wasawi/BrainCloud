@@ -47,7 +47,7 @@ tweetManager::tweetManager(){
 	postCanvasY	= searchCanvasY;
 	postCanvasW	= searchCanvasW;
 	postCanvasH	= totalHeight+tabCanvasH+searchCanvasH;
-	postFieldH	= lineHeight*2;
+	postFieldH	= lineHeight;
 	buttonW		= 100;
 	buttonH		= lineHeight;
 
@@ -87,11 +87,16 @@ void tweetManager::setup(string CONSUMER_KEY, string CONSUMER_SECRET){
 	// listen to tab
 	ofAddListener(guiEvent::tabSelected, this, &tweetManager::changeTabBar);
 
+	// start with searh open
+	static guiEvent args;
+	args.message	= "Search";
+	ofNotifyEvent(guiEvent::tabSelected, args);
 }
 
 //--------------------------------------------------------------
 void tweetManager::searchQuery(guiEvent &e) {
-	twitterClient.startQuery(e.message, e.value);
+	twitterClient.startQuery(e.message);
+	ofLogVerbose("tweetManager ") << "query = " << e.message;
 }
 
 //--------------------------------------------------------------
@@ -109,11 +114,15 @@ void tweetManager::setOneTweetToGui(guiEvent &e){
 	ofLogVerbose("tweetManager ") << "tweet.user.screen_name = " << tweet.user.screen_name;
 	ofLogVerbose("tweetManager ") << "tweet.user.name = " << tweet.user.name;
 	ofLogVerbose("tweetManager ") << "tweetText = " << tweet.text;
-	
-	if ( /* here we will check if the tweet has brain coordinates*/ true ) {
+
+	/* here we will check if the tweet has brain coordinates*/
+	if ( true ) {
 		
 		if(tweet.isProfileImageLoaded()) {
-			addTwitterContent(tweet.user.profile_image, tweet.user.name, tweet.user.screen_name, tweet.text);
+			addTwitterContent(tweet.user.profile_image,
+							  tweet.user.name,
+							  tweet.user.screen_name,
+							  tweet.text);
 
 		}		
 	}
@@ -129,14 +138,14 @@ void tweetManager::setupPostCanvas(){
 	postCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 	
 	postCanvas->addTextInput("PostField",
-							 "Type here ",
+							 "Type here",
 							 searchFieldW,
 							 postFieldH,
 							 searchFieldX,
 							 searchFieldY)->setAutoClear(true);
 	
-	postCanvas->addTextInput("URL",
-							 "URL here ",
+	postCanvas->addTextInput("URLfield",
+							 "URL here",
 							 searchFieldW,
 							 postFieldH,
 							 searchFieldX,
@@ -160,9 +169,10 @@ void tweetManager::setupTextInputCanvas(){
 	
 	textInputCanvas = new ofxUICanvas(searchCanvasX, searchCanvasY,searchCanvasW, searchCanvasH);
 	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
+	textInputCanvas->setVisible(false);
 	
 	// (string _name, string _textstring, float w, float h, float x, float y, int _size)
-	textInputCanvas->addTextInput("TEXTINPUT", "Type here ", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
+	textInputCanvas->addTextInput("searchField", "Type here", searchFieldW, searchFieldH, searchFieldX, searchFieldY)->setAutoClear(true);
 	//	textInputCanvas->setWidgetFontSize(OFX_UI_FONT_MEDIUM);
 	
 	// ofxUINumberDialer(float x, float y, float _min, float _max, float _value, int _precision, string _name, int _size)
@@ -186,6 +196,7 @@ void tweetManager::setupScrollCanvas()
 	scrollCanvas->setWidgetSpacing(space);
 	scrollCanvas->enableScrollBar();
 	scrollCanvas->enableFBO();
+	scrollCanvas->setVisible(false);
 }
 
 void tweetManager::addTwitterContent(ofImage img, string name, string user_name, std::string tweetText)
@@ -220,7 +231,7 @@ void tweetManager::addTwitterContent(ofImage img, string name, string user_name,
 	
 	scrollCanvas->addWidgetDown( new ofxUITextArea("TEXT",
 												   tweetText,
-												   WidgetW-space,					//w
+												   WidgetW-space,			//w
 												   0,						//h
 												   space,					//x
 												   lineHeight*-1.9+dim,		//y <- this has to be fixed
@@ -239,14 +250,25 @@ void tweetManager::changeTabBar(guiEvent &e)
 	if (e.message == "Search")
 	{
 		postCanvas->setVisible(false);
+        ofRemoveListener(postCanvas->newGUIEvent,this,&tweetManager::postCanvasEvent);
+		ofLogVerbose("TweetManager") << "RemoveListener: postCanvasEvent";
+
 		scrollCanvas->setVisible(true);
 		textInputCanvas->setVisible(true);
+		ofAddListener(textInputCanvas->newGUIEvent,this,&tweetManager::textInputEvent);
+		ofLogVerbose("TweetManager") << "ofAddListener: textInputEvent";
 	}
 	else if(e.message == "Post")
 	{
-		postCanvas->setVisible(true);
 		scrollCanvas->setVisible(false);
 		textInputCanvas->setVisible(false);
+        ofRemoveListener(postCanvas->newGUIEvent,this,&tweetManager::textInputEvent);
+		ofLogVerbose("TweetManager") << "RemoveListener: textInputEvent";
+
+		postCanvas->setVisible(true);
+		ofAddListener(postCanvas->newGUIEvent,this,&tweetManager::postCanvasEvent);
+		ofLogVerbose("TweetManager") << "ofAddListener: postCanvasEvent";
+		
 	}
 }
 
@@ -257,12 +279,12 @@ void tweetManager::textInputEvent(ofxUIEventArgs &e)
 	string name = e.widget->getName();
 	int kind = e.widget->getKind();
 	
-	if(name == "TEXTINPUT")
+	if(name == "searchField")
 	{
 		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
-		if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+		if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
 		{
-			ofLogVerbose("searchField") << "ON ENTER: ";
+			ofLogVerbose("TweetManager") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
 			
 			//send text to Twitter
@@ -272,35 +294,37 @@ void tweetManager::textInputEvent(ofxUIEventArgs &e)
 			ofNotifyEvent(guiEvent::newSearch, newEvent);
 			
 			//copy text to Clipboard
-			bool succeded = ofCopyText(textinput->getTextString());
+//			bool succeded = ofCopyText(textinput->getTextString());
 		}
-		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
 		{
-			ofLogVerbose("searchField") << "ON FOCUS: ";
+			ofLogVerbose("TweetManager") << "ON FOCUS: ";
 			//			textinput->
 			//			textinput->recalculateDisplayString();
 			//			ofRegisterKeyEvents((guiManager*)this);
-			textInputCanvas->hasKeyboardFocus();
+			if (textinput->getTextString()=="Type here")
 			textinput->setTextString("");
+			textInputCanvas->hasKeyboardFocus();
 		}
-		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
 		{
-			ofLogVerbose("searchField") << "ON BLUR: ";
+			ofLogVerbose("TweetManager") << "ON BLUR: ";
 			
 		}
-		else if(textinput->getTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
 		{
-			ofLogVerbose("searchField") << "ON LOAD: ";
+			ofLogVerbose("TweetManager") << "ON LOAD: ";
 		}
+		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
 		string output = textinput->getTextString();
-		cout << output << endl;
-		
+		ofLogVerbose("TweetManager") << output;
+
 	}
 	else if (name == "responses")
 	{
 		ofxUINumberDialer *numDialer = (ofxUINumberDialer *) e.widget;
 		nResponses = numDialer->getValue();
-		ofLogVerbose("searchField") << "nResponses: " << nResponses;
+		ofLogVerbose("TweetManager") << "nResponses: " << nResponses;
 	}
 }
 
@@ -309,6 +333,109 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
 	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+	
+	if(name == "PostField")
+	{
+		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
+		if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+			ofLogVerbose("TweetManager") << "ON ENTER: ";
+			//ofUnregisterKeyEvents((guiManager*)this);
+			
+			//send text to Twitter
+			static guiEvent newEvent;
+			newEvent.message =  textinput->getTextString();
+			newEvent.value	= nResponses;
+			ofNotifyEvent(guiEvent::newSearch, newEvent);
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON FOCUS: ";
+			if (textinput->getTextString()=="Type here")
+				textinput->setTextString("");
+			textInputCanvas->hasKeyboardFocus();
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON BLUR: ";
+			
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
+		{
+			ofLogVerbose("TweetManager") << "ON LOAD: ";
+		}
+		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
+		string output = textinput->getTextString();
+		ofLogVerbose("TweetManager") << output;
+		
+	}
+	else if(name == "URLfield")
+	{
+		ofxUITextInput *textinput = (ofxUITextInput *) e.widget;
+		if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+			ofLogVerbose("TweetManager") << "ON ENTER: ";
+			//ofUnregisterKeyEvents((guiManager*)this);
+			
+			//send text to Twitter
+			static guiEvent newEvent;
+			newEvent.message =  textinput->getTextString();
+			newEvent.value	= nResponses;
+//			ofNotifyEvent(guiEvent::newSearch, newEvent);
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON FOCUS: ";
+			if (textinput->getTextString()=="URL here")
+				textinput->setTextString("");
+			textInputCanvas->hasKeyboardFocus();
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON BLUR: ";
+			
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
+		{
+			ofLogVerbose("TweetManager") << "ON LOAD: ";
+		}
+		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
+		string output = textinput->getTextString();
+		ofLogVerbose("TweetManager") << output;
+		
+	}
+	else if(name == "Post")
+	{
+		ofxUILabelButton *btn = (ofxUILabelButton *) e.widget;
+/*		if(btn->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+		{
+			ofLogVerbose("TweetManager") << "ON ENTER: ";
+			//ofUnregisterKeyEvents((guiManager*)this);
+			
+			//send text to Twitter
+			static guiEvent newEvent;
+			newEvent.message =  textinput->getTextString();
+			newEvent.value	= nResponses;
+			//			ofNotifyEvent(guiEvent::newSearch, newEvent);
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON FOCUS: ";
+			if (textinput->getTextString()=="URL here")
+				textinput->setTextString("");
+			textInputCanvas->hasKeyboardFocus();
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_UNFOCUS)
+		{
+			ofLogVerbose("TweetManager") << "ON BLUR: ";
+			
+		}
+		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_LOAD)
+		{
+			ofLogVerbose("TweetManager") << "ON LOAD: ";
+		}
+*/
+	}
 	
 	
 }
