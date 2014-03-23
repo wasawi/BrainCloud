@@ -21,6 +21,7 @@ public:
 	void redraw(viewPoint vP, int depth);
 
 	int getVoxelValue();
+	int getVoxelNumber();
 	void draw(viewPoint vP);
 	
 protected:

@@ -66,6 +66,32 @@ int volumeSlice::getVoxelValue(){
 }
 
 //--------------------------------------------------------------
+int volumeSlice::getVoxelNumber(){
+	
+	int value	=0;
+	for(int z=0; z<volDepth; z++){
+		if (z==axialS){
+			for(int y=0; y<volHeight; y++){
+				if (y==coronalS) {
+					for(int x=0; x<volWidth; x++){
+						if (x==sagittalS){
+							int line = y*volWidth;
+							int page = z*volWidth*volHeight;
+							int i = x + line + page;			// the pointer position at Array
+							value= i;							// the pixel on the image
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	ofLogVerbose("volumeSlice") << "voxelNumber= " << value;
+	return value;
+}
+
+
+//--------------------------------------------------------------
 void volumeSlice::redraw(viewPoint vP, int depth)
 {
 
