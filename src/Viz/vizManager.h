@@ -113,6 +113,7 @@ private:
 	volumeSlice	volume2D;
 	int volWidth, volHeight, volDepth;
 	int voxelValue;
+	int voxelNumber;
 	
 	// Volume rendering UI vars
 	float FBOq, Zq, thresh, density, dithering;

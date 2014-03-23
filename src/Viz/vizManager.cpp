@@ -111,7 +111,7 @@ void vizManager::initVolume()
     }
 
 	// Init Volume
-    myVolume.setup(volWidth, volHeight, volDepth, voxelSize, true, cam);
+    myVolume.setup(volWidth, volHeight, volDepth, voxelSize, true);
 	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
     myVolume.setRenderSettings(FBOq, Zq, density, thresh);
 	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
@@ -147,6 +147,7 @@ void vizManager::updateTalLabel()
 void vizManager::updateTalAtlasLabel()
 {
 	voxelValue = volume2D.getVoxelValue();
+	voxelNumber = volume2D.getVoxelNumber();
 	//mapping from pixel value to index value on the Talairach Atlas
 	int mapValue= ofMap(voxelValue, 0, 255, 0, 1105);
 	outputLabels [2] = talairachAtlas.getHemisphere(mapValue);
@@ -271,11 +272,13 @@ void vizManager::draw()
 		cam.begin();
 			myVolume.updateVolume(volPos, volSize, 0);
 		// check collision
-		if (bSelecting && ofGetMousePressed()){
-			doesIntersect = myVolume.getIntersection(intersectionPosition);
-			updateVolume2Slices();
-			updateCoordinates();
-			updateSlicesImage();
+		if (bSelecting){
+			doesIntersect = myVolume.getIntersection(&cam, intersectionPosition);
+			if (doesIntersect) {
+				updateVolume2Slices();
+				updateCoordinates();
+				updateSlicesImage();
+			}
 		}
 		cam.end();
 		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
