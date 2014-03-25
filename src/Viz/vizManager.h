@@ -12,6 +12,7 @@
 #include "ofxRay.h"
 #include "ofxCameraSaveLoad.h"
 
+#include "localizationManager.h"
 /*
  
  MNI Volume
@@ -142,6 +143,8 @@ private:
 	void updateTalAtlasLabel();
 	void updateTalLabel();
 	
+	void voxelToVector(ofVec3f& voxel);
+	
 	//All Coordinates
 	ofVec3f	uiRange;	// maximum and minimum values for UIs
 	ofVec3f uiCoord;	// NORMALISED coordinates used in GUI (floats from -1 to 1)
@@ -157,6 +160,17 @@ private:
 	ofRay	mouseRay;
 	bool	doesIntersect;
 	ofVec3f intersectionPosition;
+	
+	// Particles
+	ofBuffer result;
+	ofFile resultFile;
+	string output;
+	localizationManager words;
+	vector <string> currentWords;
+	
+	void createPointCloud();
+	ofMesh points;
+	ofMesh pointsWhite;
 };
 
 

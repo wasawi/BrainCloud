@@ -19,6 +19,7 @@ void vizManager::setup()
 {
 	// Talairach Atlas
 	talairachAtlas.setup("brainData/TalairachAtlas.txt");
+	
 //	talClient.setup("../../../data/brainData/talairach.jar");
 	outputLabels.resize(10);
 	bSelecting = false;
@@ -63,6 +64,9 @@ void vizManager::setup()
 
 	//camera
 	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
+	
+	// pint cloud
+	createPointCloud();
 }
 
 //--------------------------------------------------------------
@@ -158,6 +162,69 @@ void vizManager::updateTalAtlasLabel()
 }
 
 //--------------------------------------------------------------
+void vizManager::createPointCloud()
+{
+//	words.setup("brainData/output.txt");
+	points.clear();
+	
+	ofVec3f position = ofVec3f(0.0f,0.0f,0.0f);
+	int row=0;
+	int page=0;
+	int index=0;
+	
+	for(int z=0; z<volDepth; z++){
+		for(int y=0; y<volHeight; y++){
+			for(int x=0; x<volWidth; x++){
+
+
+//				cout << position<< endl;
+				
+				row = y*volWidth;
+				page = z*volWidth*volHeight;
+				index = x + row + page;
+				
+				int _val = volumeData[index];
+				int mapValue= ofMap(_val, 0, 255, 0, 1105);
+				if (talairachAtlas.getTissueType(mapValue) == "Gray Matter" && _val<2){
+//					cout << position;
+					position = ofVec3f(x, y, z);
+					voxelToVector(position);
+//					position*=ofRandom(1.0, 1.05);
+//					position.normalize();
+//					position *= 700;
+					ofColor random (ofRandom(25),ofRandom(255),ofRandom(255),50);
+					points.addColor(random);
+					points.addVertex(position);
+					pointsWhite.addVertex(position);
+//					pointClud.push_back(position);
+				}
+			}
+		}
+	}
+}
+
+
+//--------------------------------------------------------------
+void vizManager::voxelToVector(ofVec3f& voxel)
+{
+	// transform current selected voxel coordinates
+	// to normalised vector
+	
+	ofVec3f vector;
+	/*
+	vector.x=voxel.x/volWidth;
+	vector.y=voxel.y/volHeight;
+	vector.z=voxel.z/volDepth;
+*/
+	vector.x= ofMap(voxel.x, 0, volWidth,	0, 1.0, false);
+	vector.y= ofMap(voxel.y, 0, volHeight,	0, 1.0, false);
+	vector.z= ofMap(voxel.z, 0, volDepth,	0, 1.0, false);
+	 
+	voxel = vector;
+}
+
+
+//--------------------------------------------------------------
 void vizManager::updateTalCoords()
 {
 	// transform my volume coordinates to Talairach coordinates
@@ -206,6 +273,9 @@ void vizManager::updateSlicesImage()
 //--------------------------------------------------------------
 void vizManager::updateSlices2Volume()
 {
+	// transform current selected normalised vector
+	// to voxel coordinates
+
 	//ofClamp(volCoord.z,0, volDepth-1);
 	ofVec3f uiCoord_;
 
@@ -215,6 +285,7 @@ void vizManager::updateSlices2Volume()
 
 	//use the pixel positions that are only inside the volume
 	//(excluding areas between volume and uiPad limits)
+
 	// coronal
 	uiCoord_.z= ofMap(uiCoord_.z, -volHeight/2, volHeight/2, -uiSize, uiSize);
 	// sagittal
@@ -235,6 +306,9 @@ void vizManager::updateSlices2Volume()
 //--------------------------------------------------------------
 void vizManager::updateVolume2Slices()
 {
+	// transform current selected voxel coordinates
+	// to normalised vector
+
 	//ofClamp(volCoord.z,0, volDepth-1);
 	ofVec3f uiCoord_;
 	
@@ -247,7 +321,7 @@ void vizManager::updateVolume2Slices()
 	// coronal
 	uiCoord_.z= ofMap(uiCoord_.z, -uiSize, uiSize, -volHeight/2, volHeight/2);
 	// sagittal
-	uiCoord_.x= ofMap(uiCoord_.x, -uiSize, uiSize, -volHeight/2, volWidth/2);
+	uiCoord_.x= ofMap(uiCoord_.x, -uiSize, uiSize, -volWidth/2, volWidth/2);
 	// axial
 	uiCoord_.y= ofMap(uiCoord_.y, -uiSize, uiSize, -volDepth/2, volDepth/2);
 	
@@ -260,7 +334,6 @@ void vizManager::updateVolume2Slices()
 	uiCoord_.z = ofClamp(uiCoord_.z, -1, 1);
 	uiCoord = uiCoord_;
 }
-
 
 //--------------------------------------------------------------
 void vizManager::draw()
@@ -328,6 +401,21 @@ void vizManager::draw()
 				}
 		}
 		ofPopStyle();
+		
+		cam.begin();
+		ofPushView();
+		glScalef (-1.0, 1.0, 1.0);	// draw the volume with correct map
+		ofTranslate(volPos.x - volSize.x/2, volPos.y - volSize.y/2, volPos.z - volSize.z/2);
+		ofScale(volSize.x,volSize.y,volSize.z);
+//		points
+		glPointSize(4);
+		ofSetColor(200,20);
+		points.drawVertices();
+		glPointSize(1);
+		ofSetColor(255);
+		pointsWhite.drawVertices();
+		ofPopView();
+		cam.end();
 	}
 }
 
@@ -595,6 +683,11 @@ void vizManager::keyPressed(int key ){
 			//ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
 			break;
+
+		case 'c':
+			createPointCloud();
+			break;
+
 		case 'r':
 			cam.bRotate = !cam.bRotate;
 			break;
