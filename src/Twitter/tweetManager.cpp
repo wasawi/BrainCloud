@@ -195,7 +195,7 @@ void tweetManager::setupScrollCanvas()
 	scrollCanvas = new ofxUIScrollableSliderCanvas(tweetsCanvasX, tweetsCanvasY, tweetsCanvasW, tweetsCanvasH);
 	scrollCanvas->setWidgetSpacing(space);
 	scrollCanvas->enableScrollBar();
-	scrollCanvas->enableFBO();
+//	scrollCanvas->enableFBO();
 	scrollCanvas->setVisible(false);
 }
 

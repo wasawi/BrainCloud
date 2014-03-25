@@ -52,7 +52,7 @@ class ofApp : public ofBaseApp
 	// Help message
 	ofxUICanvas*	helpMessage;
 	void 	setupHelpMessage();
-	
+
 
 };
 

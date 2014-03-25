@@ -28,7 +28,7 @@ void ofApp::update()
 void ofApp::draw()
 {
 //	ofBackground(150);
-	ofBackgroundGradient(150,20);
+	ofBackgroundGradient(100,20);
 	myVizManager.draw();
 
 }

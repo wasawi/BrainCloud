@@ -80,7 +80,7 @@ string talairachLabels::getGyrus(int index){
 string talairachLabels::getTissueType(int index){
 	int i = data[index].index;
 	string tissueType = data[index].tissueType;
-	ofLogVerbose("Talairach")<< "i= "<< i <<" "<< tissueType;
+//	ofLogVerbose("Talairach")<< "i= "<< i <<" "<< tissueType;
 	return tissueType;
 }
 

@@ -10,6 +10,7 @@
 		028A1A54F7661FB669A7DFF8 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD81C4476FF24E4A29315D /* Ray.cpp */; };
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
+		08B1B47E18DFEB2A0059F53C /* localizationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */; };
 		08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */; };
 		08F8283618DA771300EF951B /* ofxSuperLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8282F18DA771300EF951B /* ofxSuperLog.cpp */; };
 		08F8283718DA771300EF951B /* ofxSuperLogDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8283118DA771300EF951B /* ofxSuperLogDisplay.cpp */; };
@@ -146,6 +147,8 @@
 		065EBAA29F0D9C24EAC889F3 /* multi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = multi.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/multi.h; sourceTree = SOURCE_ROOT; };
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
+		08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = localizationManager.cpp; path = Viz/localizationManager.cpp; sourceTree = "<group>"; };
+		08B1B47D18DFEB2A0059F53C /* localizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = localizationManager.h; path = Viz/localizationManager.h; sourceTree = "<group>"; };
 		08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxCameraSaveLoad.cpp; sourceTree = "<group>"; };
 		08F8280D18DA58A200EF951B /* ofxCameraSaveLoad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxCameraSaveLoad.h; sourceTree = "<group>"; };
 		08F8282F18DA771300EF951B /* ofxSuperLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxSuperLog.cpp; sourceTree = "<group>"; };
@@ -520,6 +523,8 @@
 		36B8F0CD90028AF47E0E03C4 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
+				08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */,
+				08B1B47D18DFEB2A0059F53C /* localizationManager.h */,
 				8D66DD895E835C0F19854FFF /* vizManager.cpp */,
 				640FBAA3409D36542C6F294F /* vizManager.h */,
 				4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */,
@@ -1209,6 +1214,7 @@
 				AE32F1807796B1050E082651 /* json_value.cpp in Sources */,
 				9B06C5CAE570B630A97E51C3 /* json_writer.cpp in Sources */,
 				532A84E38E54C4F6B8634CD6 /* ofxTwitter.cpp in Sources */,
+				08B1B47E18DFEB2A0059F53C /* localizationManager.cpp in Sources */,
 				60025F3560DE3C8E3D75EB82 /* ofxFTGLFont.cpp in Sources */,
 				676FD24AABFA7205A11029FB /* ofxFTGLSimpleLayout.cpp in Sources */,
 				202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */,
