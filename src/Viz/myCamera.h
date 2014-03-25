@@ -64,6 +64,7 @@ public:
 	ofNode target;
 	
 	// j
+	float	speed;
 	float	rotation;
 	bool	bRotate;
 	float	getArcBallSize();

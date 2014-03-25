@@ -37,7 +37,8 @@ myCamera::myCamera(){
 
 	
 	//Rotation	j
-	rotation = .00000001;
+	speed = .5;
+	rotation = 0;
 	bRotate = false;
 	
 	//arcBall
@@ -74,9 +75,11 @@ void myCamera::begin(ofRectangle viewport){
 	this->viewport = viewport;
 	ofCamera::begin(viewport);
 	
-	ofRotateZ(rotation);
-	if (bRotate) rotation++;
-	
+
+	if (bRotate){
+		ofRotateZ(rotation);
+		rotation+=speed;
+	}
 }
 
 //----------------------------------------
