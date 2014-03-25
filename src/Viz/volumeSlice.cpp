@@ -66,6 +66,74 @@ int volumeSlice::getVoxelValue(){
 }
 
 //--------------------------------------------------------------
+ofVec3f volumeSlice::getVoxelCoordinates(int _index){
+	
+	ofVec3f value (0);
+	for(int z=0; z<volDepth; z++){
+		value.z=z;
+		if (z==axialS){
+			for(int y=0; y<volHeight; y++){
+				value.y=y;
+				if (y==coronalS) {
+					for(int x=0; x<volWidth; x++){
+						value.x=x;
+
+						int line = y*volWidth;
+						int page = z*volWidth*volHeight;
+						int i = x + line + page;
+
+						if (_index==i){
+							value= ofVec3f(x,y,z);
+							ofLogVerbose("volumeSlice") << "voxelCoordinates= " << value;
+							return value;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+//--------------------------------------------------------------
+bool volumeSlice::getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val){
+	
+	ofVec3f value(0);
+	int row=0;
+	int page=0;
+	int index=0;
+	
+	for(int z=0; z<volDepth; z++){
+		value.z=z;
+		
+		for(int y=0; y<volHeight; y++){
+			value.y=y;
+			
+			for(int x=0; x<volWidth; x++){
+				value.x=x;
+				
+				row = y*volWidth;
+				page = z*volWidth*volHeight;
+				index = x + row + page;
+				
+				if (_index==index){
+					value= ofVec3f(x,y,z);
+
+					_coord= value;
+					_val= myData[index];
+//					ofLogVerbose("volumeSlice") << "voxelCoord= " << _coord;
+//					ofLogVerbose("volumeSlice") << "voxelVal= " << _val;
+					return true;
+				}
+			}
+		}
+	}
+	//not found
+	return false;
+}
+
+
+//--------------------------------------------------------------
 int volumeSlice::getVoxelNumber(){
 	
 	int value	=0;
@@ -229,7 +297,7 @@ void volumeSlice::redrawAxial()
 			}
 		}
     }
-
+	
 	//draw image
 	axial.setFromPixels(axialPixels.getPixels(), volWidth, volHeight, OF_IMAGE_GRAYSCALE);
 }

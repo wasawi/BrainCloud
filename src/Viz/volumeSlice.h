@@ -22,6 +22,9 @@ public:
 
 	int getVoxelValue();
 	int getVoxelNumber();
+	ofVec3f getVoxelCoordinates(int _index);
+	bool getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val);
+	
 	void draw(viewPoint vP);
 	
 protected:
