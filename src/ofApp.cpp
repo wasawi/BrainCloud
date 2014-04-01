@@ -90,23 +90,25 @@ void ofApp::keyReleased(int key)
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y )
 {
-	
 	if (
 		myVizManager.guiSliders->isHit(x, y)	||
 		myVizManager.guiVolume->isHit(x, y)		||
 		myGUIManager.tabCanvas->isHit(x, y)		||
 		myTwitterManager.postCanvas->isHit(x, y)	||
 		myTwitterManager.textInputCanvas->isHit(x, y)||
-		myTwitterManager.scrollCanvas->isHit(x, y)
+		myTwitterManager.scrollCanvas->isHit(x, y) ||
+		!ofGetWindowRect().inside(ofGetMouseX(), ofGetMouseY())
 		)
 	{
 		myVizManager.cam.disableMouseInput();
-		myVizManager.bSelecting=false;
+		myVizManager.bMovingCursor = false;
+		myVizManager.bActive=false;
 	}
 	else
 	{
-		if (!myVizManager.bSelecting)
+		if (!myVizManager.bMovingCursor)
 		myVizManager.cam.enableMouseInput();
+		myVizManager.bActive=true;
 	}
 
 }
@@ -114,13 +116,22 @@ void ofApp::mouseMoved(int x, int y )
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button)
 {
-	
+	if (myVizManager.bSelecting){
+		myVizManager.select();
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button)
 {
-	/*
+
+	if (myVizManager.bMovingCursor){
+		myVizManager.bActive=false;
+		myVizManager.bMovingCursor= false;
+		myVizManager.bSelecting= true;
+	}
+	
+	/* DoubleClick
 	// this is the default on windows os
 	doubleclickTime = 200;
 	unsigned long curTap = ofGetElapsedTimeMillis();
@@ -134,6 +145,12 @@ void ofApp::mousePressed(int x, int y, int button)
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button)
 {
+	ofLogVerbose()<<"mouseReleased";
+	if (myVizManager.bSelecting){
+		myVizManager.bActive=true;
+		myVizManager.bMovingCursor= false;
+		myVizManager.bSelecting= false;
+	}
 
 }
 

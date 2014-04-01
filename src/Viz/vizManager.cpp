@@ -22,7 +22,10 @@ void vizManager::setup()
 	
 //	talClient.setup("../../../data/brainData/talairach.jar");
 	outputLabels.resize(10);
-	bSelecting = false;
+
+	//states
+	bMovingCursor = false;
+	bActive = true;
 	
 	// 2Dpad Canvas
 	initX	=0;
@@ -65,8 +68,9 @@ void vizManager::setup()
 	//camera
 	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 	
-	// pint cloud
+	// point cloud
 	createPointCloud();
+
 }
 
 //--------------------------------------------------------------
@@ -165,9 +169,10 @@ void vizManager::updateTalAtlasLabel()
 void vizManager::createPointCloud()
 {
 //	words.setup("brainData/output.txt");
-	points.clear();
+	mesh.clear();
 	
-	ofVec3f position = ofVec3f(0.0f,0.0f,0.0f);
+	ofVec3f point = ofVec3f(0.0f,0.0f,0.0f);
+	ofVec3f	translation = ofVec3f(volPos.x - volSize.x/2, volPos.y - volSize.y/2, volPos.z - volSize.z/2);
 	int row=0;
 	int page=0;
 	int index=0;
@@ -187,16 +192,17 @@ void vizManager::createPointCloud()
 				int mapValue= ofMap(_val, 0, 255, 0, 1105);
 				if (talairachAtlas.getTissueType(mapValue) == "Gray Matter" && _val<2){
 //					cout << position;
-					position = ofVec3f(x, y, z);
-					voxelToVector(position);
-//					position*=ofRandom(1.0, 1.05);
-//					position.normalize();
-//					position *= 700;
+					point = ofVec3f(x, y, z);
+					voxelToVector(point);
+
+					point *= volSize;
+					point += translation;
+					point.x *= -1;	// draw the volume with correct map
+					
 					ofColor random (ofRandom(25),ofRandom(255),ofRandom(255),50);
-					points.addColor(random);
-					points.addVertex(position);
-					pointsWhite.addVertex(position);
-//					pointClud.push_back(position);
+					mesh.addColor(random);
+					mesh.addVertex(point);
+					meshWhite.addVertex(point);
 				}
 			}
 		}
@@ -211,11 +217,6 @@ void vizManager::voxelToVector(ofVec3f& voxel)
 	// to normalised vector
 	
 	ofVec3f vector;
-	/*
-	vector.x=voxel.x/volWidth;
-	vector.y=voxel.y/volHeight;
-	vector.z=voxel.z/volDepth;
-*/
 	vector.x= ofMap(voxel.x, 0, volWidth,	0, 1.0, false);
 	vector.y= ofMap(voxel.y, 0, volHeight,	0, 1.0, false);
 	vector.z= ofMap(voxel.z, 0, volDepth,	0, 1.0, false);
@@ -340,83 +341,170 @@ void vizManager::draw()
 {
 	if (bDraw)
 	{
-		// Draw Volume
-		ofSetColor(255);
-		cam.begin();
-			myVolume.updateVolume(volPos, volSize, 0);
+		drawVolume();
+		
 		// check collision
-		if (bSelecting){
-			doesIntersect = myVolume.getIntersection(&cam, intersectionPosition);
-			if (doesIntersect) {
-				updateVolume2Slices();
-				updateCoordinates();
-				updateSlicesImage();
-			}
-		}
-		cam.end();
-		myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
-		
+		if (bMovingCursor) moveCursor();
 		// Draw ArcBall
-		if (!bSelecting && ofGetMousePressed()) cam.drawArcBall();
+		if (!bMovingCursor && ofGetMousePressed()) cam.drawArcBall();
 		
-		//Draw Slices "canvas"
-		ofPushView();
-		ofTranslate(initX, initY);
-		ofPushStyle();
-			ofSetColor(OFX_UI_COLOR_BACK);
-			ofRect(0, 0, boxW+dist*3, (boxW+dist)*3+dist);
-		ofPopStyle();
+		drawSelection();
 		
-		//Draw Slices
-		ofPushView();
+		drawSlices();
+
+		drawTalairach();
+
+		drawMesh();
+		
+		// draz neares point
+		if (!bMovingCursor && bActive) drawNearestPoint();
+	}
+}
+
+//--------------------------------------------------------------
+void vizManager::drawSelection()
+{
+	ofSetCircleResolution(60);
+	/*
+	cam.begin();
+
+	ofPushView();
+		ofSetColor(200);	
+		//draw sphere
+		ofScale(volSize.x,volSize.y,volSize.z);
+		ofTranslate(selectionSphere.getPosition());
+//		drawSelectionSphere(selectionSphere.getRadius(), 1);
+	ofPopView();
+	ofPopStyle();
+	cam.end();
+	*/
+	
+	ofVec3f pos =cam.worldToScreen(selectionSphere.getPosition()*volSize);
+	float r = selectionSphere.getRadius();
+
+	ofPushStyle();
+	ofSetColor(255,50);
+	ofCircle(pos, r * volSize.x);
+	ofSetColor(ofColor::white);
+	ofNoFill();
+	ofCircle(pos, r * volSize.x);
+	ofPopStyle();
+}
+
+//--------------------------------------------------------------
+void vizManager::drawTalairach()
+{
+	//Draw talairach pixel value and labels
+	ofPushStyle();
+	//		ofSetColor(voxelValue, 255);
+	//		ofRect(initX,tempY,boxH*2+dist*5,dist);
+	
+	ofSetColor(0, 255, 255);
+	ofDrawBitmapString("Talairarch coordinate :", talDrawX, talDrawY);
+	string str= "x= "+ ofToString(talCoord.x)+" y= "+ ofToString(talCoord.y)+" z= "+ ofToString(talCoord.z);
+	ofDrawBitmapString(str, talDrawX, talDrawY+dist);
+	for (int i=0; i<outputLabels.size()-2; i++) {
+		vector<string> items = ofSplitString(outputLabels[i+2], ",");
+		for (int j=0; j<items.size(); j++) {
+			ofDrawBitmapString(items[j], talDrawX, talDrawY+i*dist+j*dist+(dist*2));
+		}
+	}
+	ofPopStyle();
+}
+
+//--------------------------------------------------------------
+void vizManager::drawVolume()
+{
+	// Draw Volume
+	ofSetColor(255);
+	cam.begin();
+	myVolume.updateVolume(volPos, volSize, 0);
+	cam.end();
+	
+	myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
+}
+//--------------------------------------------------------------
+void vizManager::drawSlices()
+{
+	
+	ofPushView();
+	ofTranslate(initX, initY);
+	
+	//Draw Slices "canvas"
+	ofPushStyle();
+		ofSetColor(OFX_UI_COLOR_BACK);
+		ofRect(0, 0, boxW+dist*3, (boxW+dist)*3+dist);
+	ofPopStyle();
+	
+	//Draw Slices
+	ofPushView();
 		ofTranslate(dist, dist);
 		volume2D.draw(CORONAL);
-		
-		ofPushView();
+	
+	ofPushView();
 		ofTranslate( 0, boxH+ dist);
 		volume2D.draw(SAGITTAL);
-		
-		ofPushView();
+	
+	ofPushView();
 		ofTranslate( 0, boxH+ dist);
 		volume2D.draw(AXIAL);
-		
-		ofPopView();
-		ofPopView();
-		ofPopView();
-		ofPopView();
-		
-		//Draw talairach pixel value and labels
-		ofPushStyle();
-//		ofSetColor(voxelValue, 255);
-//		ofRect(initX,tempY,boxH*2+dist*5,dist);
-		
-		ofSetColor(0, 255, 255);
-		ofDrawBitmapString("Talairarch coordinate :", talDrawX, talDrawY);
-		string str= "x= "+ ofToString(talCoord.x)+" y= "+ ofToString(talCoord.y)+" z= "+ ofToString(talCoord.z);
-		ofDrawBitmapString(str, talDrawX, talDrawY+dist);
-		for (int i=0; i<outputLabels.size()-2; i++) {
-			vector<string> items = ofSplitString(outputLabels[i+2], ",");
-				for (int j=0; j<items.size(); j++) {
-					ofDrawBitmapString(items[j], talDrawX, talDrawY+i*dist+j*dist+(dist*2));
-				}
+	
+	ofPopView();
+	ofPopView();
+	ofPopView();
+	ofPopView();
+
+}
+
+//--------------------------------------------------------------
+void vizManager::drawMesh()
+{
+	cam.begin();
+	ofPushView();
+	
+	glPointSize(4);
+	ofSetColor(200,20);
+	mesh.drawVertices();
+
+	glPointSize(1);
+	ofSetColor(255);
+	meshWhite.drawVertices();
+
+	ofPopView();
+	cam.end();
+}
+
+//--------------------------------------------------------------
+void vizManager::drawNearestPoint()
+{
+	int n = mesh.getNumVertices();
+	float nearestDistance = 0;
+	ofVec2f nearestVertex;
+	int nearestIndex = 0;
+	ofVec2f mouse(ofGetMouseX(), ofGetMouseY());
+	for(int i = 0; i < n; i++) {
+		ofVec3f cur = cam.worldToScreen(mesh.getVertex(i));
+		float distance = cur.distance(mouse);
+		if(i == 0 || distance < nearestDistance) {
+			nearestDistance = distance;
+			nearestVertex = cur;
+			nearestIndex = i;
 		}
-		ofPopStyle();
-		
-		cam.begin();
-		ofPushView();
-		glScalef (-1.0, 1.0, 1.0);	// draw the volume with correct map
-		ofTranslate(volPos.x - volSize.x/2, volPos.y - volSize.y/2, volPos.z - volSize.z/2);
-		ofScale(volSize.x,volSize.y,volSize.z);
-//		points
-		glPointSize(4);
-		ofSetColor(200,20);
-		points.drawVertices();
-		glPointSize(1);
-		ofSetColor(255);
-		pointsWhite.drawVertices();
-		ofPopView();
-		cam.end();
 	}
+	
+	ofPushStyle();
+		ofSetColor(ofColor::gray);
+		ofLine(nearestVertex, mouse);
+		
+		ofNoFill();
+		ofSetColor(ofColor::yellow);
+		ofSetLineWidth(2);
+		ofCircle(nearestVertex, 4);
+		ofSetLineWidth(1);
+	ofPopStyle();
+	
+	ofVec2f offset(10, -10);
+	ofDrawBitmapStringHighlight(ofToString(nearestIndex), mouse + offset);
 }
 
 //--------------------------------------------------------------
@@ -663,8 +751,8 @@ void vizManager::keyPressed(int key ){
     switch(key)
     {
 		case ' ':
-			bSelecting = !bSelecting;
-			if (bSelecting) cam.disableMouseInput();
+			bMovingCursor = !bMovingCursor;
+			if (bMovingCursor) cam.disableMouseInput();
 			break;
 		case 'h':
             guiVolume->toggleVisible();
@@ -711,12 +799,99 @@ void vizManager::keyPressed(int key ){
 void vizManager::mousePressed(ofMouseEventArgs& e)
 {
 	
-//	checkRay(e.x, e.y);
 }
 
+//--------------------------------------------------------------
+void vizManager::select()
+{
+	selectionSphere.setPosition(intersectionPosition/2);
+	cout << "ip = "<< intersectionPosition<< endl;
+	
+	cam.begin();
+	ofVec3f farPoint;
+	float radius;
+	ofVec3f screenMouse = ofVec3f(ofGetMouseX(), ofGetMouseY(),0);
+	ofVec3f worldMouse = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 0.0f));
+	ofVec3f worldMouseEnd = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 1.0f));
+	ofVec3f worldMouseTransmissionVector = worldMouseEnd - worldMouse;
+	mouseRay.s = worldMouse;
+	mouseRay.t = worldMouseTransmissionVector;
+	
+	// check for intersection
+	rayPlane.intersect(mouseRay, farPoint);
+	farPoint /= volSize * .5;
+	cam.end();
+	
+	radius = intersectionPosition.distance(farPoint)/2;
+//	radius *= volSize.x * .5;
+	selectionSphere.setRadius(radius);
 
+}
 
+//--------------------------------------------------------------
+void vizManager::moveCursor()
+{
+	cam.begin();
+	doesIntersect = myVolume.getIntersection(&cam, intersectionPosition);
+	if (doesIntersect) {
+		updateVolume2Slices();
+		updateCoordinates();
+		updateSlicesImage();
+	}
+	cam.end();
+}
 
+//--------------------------------------------------------------
+void vizManager::drawSelectionSphere(float radius, float stripWidth, int circleRes){
+
+//	selectionSphere.draw(OF_MESH_WIREFRAME);
+//	ofRotate
+//	cam.get
+//	ofCircle(0, 0, 0, radius);
+	
+//	cam.get
+/*	ofPushView();
+	ofVec3f rotation = cam.getOrientationEuler();
+//	ofVec3f rotation = cam.getGlobalOrientation();
+	ofRotate(rotation.x, 1, 0, 0);
+	ofRotate(rotation.y, 0, 1, 0);
+	ofRotate(rotation.z, 0, 0, 1);
+	ofSetColor(ofColor::pink);
+	ofCircle(0, 0, 0, radius);
+	ofPopView();
+*/
+	ofPushStyle();
+	ofNoFill();
+
+	// daw cirles
+	ofPushView();
+	// draw x axis
+	ofSetColor(ofColor::red);
+	ofCircle(0, 0, 0, radius);
+	// draw y axis
+	ofRotateY(90);
+	ofSetColor(ofColor::green);
+	ofCircle(0, 0, 0, radius);
+	// draw z axis
+	ofRotateX(90);
+	ofSetColor(ofColor::blue);
+	ofCircle(0, 0, 0, radius);
+	ofPopView();
+	
+	
+//	ofRotateY(90);
+	// draw x axis
+	ofSetColor(ofColor::red);
+	ofLine(0, 0, 0, radius, 0, 0);
+	// draw y axis
+	ofSetColor(ofColor::green);
+	ofLine(0, 0, 0, 0, radius, 0);
+	// draw z axis
+	ofSetColor(ofColor::blue);
+	ofLine(0, 0, 0, 0, 0, radius);
+	ofPopStyle();
+	
+	}
 
 
 

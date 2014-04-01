@@ -64,14 +64,19 @@ public:
 	void mousePressed(ofMouseEventArgs& e);
 	void initVolume();
 	void keyPressed  (int key);
-	void checkRay(int _x, int _y);
+	void select();
+	void moveCursor();
 	
 	//Camera
 	//	ofEasyCam cam;
 	myCamera cam;
 	ofxUICanvas *guiVolume;
 	ofxUICanvas *guiSliders;
+	
+	//states
+	bool	bMovingCursor;
 	bool	bSelecting;
+	bool	bActive;
 	
 private:
 
@@ -80,7 +85,28 @@ private:
 	void setup_guis();
 	void setup_guiVolume();
 	void setup_guiSliders();
-			
+
+	// updates
+	void update();
+	void updateCoordinates();
+	void updateSlicesImage();
+	void updateSlices2Volume();
+	void updateVolume2Slices();
+	
+	void updateTalCoords();
+	void updateTalAtlasLabel();
+	void updateTalLabel();
+	
+	void voxelToVector(ofVec3f& voxel);
+
+	//	draws
+	void drawVolume();
+	void drawSlices();
+	void drawTalairach();
+	void drawMesh();
+	void drawNearestPoint();
+	void drawSelection();
+	
 	// GUI vars
 	bool	bDraw;
 	float	initX, initY;
@@ -132,18 +158,6 @@ private:
 	ofxTalairach talClient;
 	vector <string> outputLabels;
 	
-	// updates
-	void update();
-	void updateCoordinates();
-	void updateSlicesImage();
-	void updateSlices2Volume();
-	void updateVolume2Slices();
-	
-	void updateTalCoords();
-	void updateTalAtlasLabel();
-	void updateTalLabel();
-	
-	void voxelToVector(ofVec3f& voxel);
 	
 	//All Coordinates
 	ofVec3f	uiRange;	// maximum and minimum values for UIs
@@ -161,7 +175,7 @@ private:
 	bool	doesIntersect;
 	ofVec3f intersectionPosition;
 	
-	// Particles
+	// Mesh
 	ofBuffer result;
 	ofFile resultFile;
 	string output;
@@ -169,8 +183,12 @@ private:
 	vector <string> currentWords;
 	
 	void createPointCloud();
-	ofMesh points;
-	ofMesh pointsWhite;
+	ofMesh mesh;
+	ofMesh meshWhite;
+	
+	//selection
+	ofSpherePrimitive selectionSphere;
+	void drawSelectionSphere(float radius, float stripWidth = 10, int circleRes = 60);
 };
 
 
