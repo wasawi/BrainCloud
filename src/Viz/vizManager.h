@@ -4,7 +4,7 @@
 #include "tweet3d.h"
 #include "ofxVolumetrics.h"
 #include "ofxUI.h"
-#include "volumeSlice.h"
+#include "volume.h"
 #include "myCamera.h"
 #include "ofUtils.h"
 #include "talairachLabels.h"
@@ -64,8 +64,8 @@ public:
 	void setup();
 	void draw();
 	void mousePressed(ofMouseEventArgs& e);
-	void initVolume();
 	void keyPressed  (int key);
+
 	void select();
 	void moveCursor();
 	void addSelection();
@@ -73,6 +73,8 @@ public:
 	//Camera
 	//	ofEasyCam cam;
 	myCamera cam;
+	
+	// guis
 	ofxUICanvas *guiVolume;
 	ofxUICanvas *guiSliders;
 	
@@ -80,12 +82,19 @@ public:
 	bool	bMovingCursor;
 	bool	bSelecting;
 	bool	bActive;
+	bool	bDraw;
 	
 private:
 
+	// inits
+	void initGui();
+	void initVolume();
+	void initVolumeRendering();
+	void initRayPlane();
+	void initTalairach();
+	
 	// GUI
 	void guiEvent(ofxUIEventArgs &e);
-	void setup_guis();
 	void setup_guiVolume();
 	void setup_guiSliders();
 
@@ -111,7 +120,6 @@ private:
 	void drawSelection();
 	
 	// GUI vars
-	bool	bDraw;
 	float	initX, initY;
 	float	sliderW;
     float	length;
@@ -126,24 +134,19 @@ private:
 	string message;
 	
 	//Camera
-	ofMatrix4x4 posMat;
-	float latitude;
+//	ofMatrix4x4 posMat;
+//	float latitude;
+	int	bCamLoaded;
 
 	// Volume Rendering
     ofxVolumetrics myVolume;
-    unsigned char * volumeData;
-    ofxImageSequencePlayer imageSequence;
 	ofFbo myfboRender;
-	ofVec3f	volPos;
-	ofVec3f	volSize;
-	ofVec3f	volOffset;
-	ofVec3f voxelSize;
+	ofVec3f cubeSize;
 
 	// Volume Slice
-	volumeSlice	volume2D;
+	volume	volume2D;
 	int volWidth, volHeight, volDepth;
-	int voxelValue;
-	int voxelNumber;
+	ofVec3f volSize;
 	
 	// Volume rendering UI vars
 	float FBOq, Zq, thresh, density, dithering;

@@ -17,126 +17,123 @@ vizManager::~vizManager()
 //--------------------------------------------------------------
 void vizManager::setup()
 {
+	//setup GUIs
+	initGui();
+
 	// Talairach Atlas
-	talairachAtlas.setup("brainData/TalairachAtlas.txt");
+	initTalairach();
 	
-//	talClient.setup("../../../data/brainData/talairach.jar");
-	outputLabels.resize(10);
+	//intersection plane
+	initRayPlane();
+	
+	// Init Volume
+	initVolume();
+	
+	// Volume rendering
+	initVolumeRendering();
+		
+	// point cloud
+	createPointCloud();
 
 	//states
-	bMovingCursor = false;
-	bActive = true;
+	bSelecting		= false;
+	bMovingCursor	= false;
+	bActive			= true;
+	bDraw			= true;
+	bCamLoaded		= 0;
 	
+	update();
+}
+
+//--------------------------------------------------------------
+void vizManager::initVolume()
+{
+	// Init Volume
+	volume2D.load("volumes/Colin27T1_tight/");
+	//	volume2D.load("volumes/talairach_nii/");
+	volume2D.setup(boxW, boxH);
+
+	volSize		= volume2D.getVolSize();
+	volWidth	= volSize.x;
+	volHeight	= volSize.y;
+	volDepth	= volSize.z;
+}
+
+
+//--------------------------------------------------------------
+void vizManager::initVolumeRendering()
+{
+	// Init Volume Rendering
+    myVolume.setup(volume2D.getVolSize(), true);
+	myVolume.setVolume(volume2D.getVoxels());
+    myVolume.setRenderSettings(FBOq, Zq, density, thresh);
+	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
+	myVolume.setSlices(&uiClamp);
+	myVolume.setRayPlane(&rayPlane);
+	
+	cubeSize	= myVolume.getCubeSize();
+}
+
+//--------------------------------------------------------------
+void vizManager::initRayPlane()
+{
+	// Init Ray Plane
+	rayPlane.setCenter(ofVec3f(0));
+	rayPlane.setScale(ofVec3f(1));
+	rayPlane.setNormal(ofVec3f(0.0f, 0.0f, 1.0f));
+	rayPlane.setUp(ofVec3f(0.0f, 1.0f, 0.0f));
+	rayPlane.setInfinite(false);
+}
+
+//--------------------------------------------------------------
+void vizManager::initTalairach()
+{
+	// Talairach Atlas
+	outputLabels.resize(10);
+	talOffset	= ofVec3f(-70,-102,-42);
+	talDrawX	= boxW+dist*3+sliderW;
+	talDrawY	= initY+dist;
+	talairachAtlas.setup("brainData/TalairachAtlas.txt");
+	//	talClient.setup("../../../data/brainData/talairach.jar");
+}
+
+//--------------------------------------------------------------
+void vizManager::initGui()
+{
 	// 2Dpad Canvas
 	initX	=0;
 	initY	=50;
 	sliderW = 20;
 	dist	= 20;
 	boxW	= boxH = 200;
-	
-	// coordinates in UIs
 	uiRange	= ofVec3f(-1,1,0);
 	uiCoord	= ofVec3f(0);
+//	allowEvent	= false;
+	
+	// Sliders UI
+	setup_guiSliders();
+	guiSliders->loadSettings("GUI/slices_settings.xml");
+	guiSliders->setDrawBack(false);
+	//	guiSliders->setAutoDraw(true);	this method does not work
+	
+	// Volume UI
+	setup_guiVolume();
+	guiVolume->loadSettings("GUI/volume_settings.xml");
+	guiVolume->setDrawBack(true);
+	guiVolume->setVisible(false);
 		
-	// initialize Talairach coordinates
-	talOffset	= ofVec3f(-70,-102,-42);
-	talDrawX	= boxW+dist*3+sliderW;
-	talDrawY	= initY+dist;
-	
-	//intersection plane
-	rayPlane.setCenter(ofVec3f(0));
-	rayPlane.setScale(ofVec3f(1));
-	rayPlane.setNormal(ofVec3f(0.0f, 0.0f, 1.0f));
-	rayPlane.setUp(ofVec3f(0.0f, 1.0f, 0.0f));
-	rayPlane.setInfinite(false);
-	
-	//Volume
-	voxelSize	= ofVec3f(1);
-	volPos		= ofVec3f(0);
-	volSize		= ofVec3f(0);
-	volOffset	= ofVec3f(0);
-	
-	// Init Volume
-	initVolume();
-
-	// Init Slices
-	volume2D.setup(volumeData, volWidth, volHeight, volDepth, boxW, boxH);
-
-	//setup GUIs
-	setup_guis();
-
-	//camera
-	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
-	
-	// point cloud
-	createPointCloud();
-
-}
-
-//--------------------------------------------------------------
-void vizManager::initVolume()
-{
-	imageSequence.init("volumes/Colin27T1_tight/IM-0001-0",3,".tif", 0);
-//	imageSequence.init("volumes/talairach_nii/IM-0001-0",3,".tif", 0);
-	
-	// calculate volume size
-	volWidth	= imageSequence.getWidth();
-    volHeight	= imageSequence.getHeight();
-    volDepth	= imageSequence.getSequenceLength();
-	float size	= ofGetHeight();
-	ofVec3f volumeSize = voxelSize * ofVec3f(volWidth,volHeight,volDepth);
-    float maxDim = max(max(volumeSize.x, volumeSize.y), volumeSize.z);
-    volSize = volumeSize * size / maxDim;
-
-	
-	ofLogNotice("vizManager") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
-    volumeData = new unsigned char[volWidth*volHeight*volDepth];
-	
-	//fill out the array pixel in white for easy debugging
-	for (int i=0; i<volWidth*volHeight*volDepth; i++ )
-	{
-		volumeData[i]= (unsigned char) 255;
-	}
-	
-	// fill my array with pixels
-    for(int z=0; z<volDepth; z++)
-    {
-        imageSequence.loadFrame(z);
-		int gradient = 0;
-		for(int y=0; y<volHeight; y++)
-        {
-			for(int x=0; x<volWidth; x++)
-			{
-				if (x<volWidth && y<volHeight)
-				{																// get values from image
-					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
-					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
-					volumeData[i] = sample;
-//					ofLogVerbose("vizManager") << sample << " ";
-				}
-            }
-        }
-    }
-
-	// Init Volume
-    myVolume.setup(volWidth, volHeight, volDepth, voxelSize, true);
-	myVolume.updateVolumeData(volumeData, volWidth, volHeight, volDepth, 0, 0, 0);
-    myVolume.setRenderSettings(FBOq, Zq, density, thresh);
-	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
-	myVolume.setSlices(&uiClamp);
-	myVolume.setRayPlane(&rayPlane);
+//	allowEvent	= true;
 }
 
 //--------------------------------------------------------------
 void vizManager::update()
 {
-
 	updateCoordinates();
 	updateSlicesImage();
 	updateSlices2Volume();
 	
 	updateTalCoords();
-	updateTalAtlasLabel();
+//	updateTalAtlasLabel();
 //	updateTalLabel();
 
 }
@@ -154,10 +151,10 @@ void vizManager::updateTalLabel()
 //--------------------------------------------------------------
 void vizManager::updateTalAtlasLabel()
 {
-	voxelValue = volume2D.getVoxelValue();
-	voxelNumber = volume2D.getVoxelNumber();
+//	voxelValue = volume2D.getVoxelValue();
+//	voxelNumber = volume2D.getVoxelNumber();
 	//mapping from pixel value to index value on the Talairach Atlas
-	int mapValue= ofMap(voxelValue, 0, 255, 0, 1105);
+	int mapValue= ofMap(volume2D.getVoxelValue(), 0, 255, 0, 1105);
 	outputLabels [2] = talairachAtlas.getHemisphere(mapValue);
 	outputLabels [3] = talairachAtlas.getLobe(mapValue);
 	outputLabels [4] = talairachAtlas.getGyrus(mapValue);
@@ -168,11 +165,10 @@ void vizManager::updateTalAtlasLabel()
 //--------------------------------------------------------------
 void vizManager::createPointCloud()
 {
-//	words.setup("brainData/output.txt");
 	mesh.clear();
 	
 	ofVec3f point = ofVec3f(0.0f,0.0f,0.0f);
-	ofVec3f	translation = ofVec3f(volPos.x - volSize.x/2, volPos.y - volSize.y/2, volPos.z - volSize.z/2);
+	ofVec3f	translation = ofVec3f(-cubeSize.x/2, -cubeSize.y/2, -cubeSize.z/2);
 	int row=0;
 	int page=0;
 	int index=0;
@@ -181,23 +177,23 @@ void vizManager::createPointCloud()
 		for(int y=0; y<volHeight; y++){
 			for(int x=0; x<volWidth; x++){
 
-
-//				cout << position<< endl;
-				
 				row = y*volWidth;
 				page = z*volWidth*volHeight;
 				index = x + row + page;
 				
-				int _val = volumeData[index];
+				int _val = volume2D.getVoxels()[index];
 				int mapValue= ofMap(_val, 0, 255, 0, 1105);
-				if (talairachAtlas.getTissueType(mapValue) == "Gray Matter" && _val<2){
-//					cout << position;
-					point = ofVec3f(x, y, z);
-					voxelToVector(point);
 
-					point *= volSize;
+				if (talairachAtlas.getTissueType(mapValue) == "Gray Matter" && _val<2){
+					point = ofVec3f(x, y, z);
+					// "normalize" voxel position
+					voxelToVector(point);
+					// scale points to fix volume render size
+					point *= cubeSize;
+					// move the points to the center of the world
 					point += translation;
-					point.x *= -1;	// draw the volume with correct map
+					// draw the volume with correct map
+					point.x *= -1;
 					
 					ofColor random (ofRandom(25),ofRandom(255),ofRandom(255),50);
 					mesh.addColor(random);
@@ -208,7 +204,6 @@ void vizManager::createPointCloud()
 		}
 	}
 }
-
 
 //--------------------------------------------------------------
 void vizManager::voxelToVector(ofVec3f& voxel)
@@ -352,12 +347,21 @@ void vizManager::draw()
 		
 		drawSlices();
 
-		drawTalairach();
+//		drawTalairach();
 
 		drawMesh();
 		
 		// draz neares point
 		if (!bMovingCursor && bActive) drawNearestPoint();
+	}
+	
+	
+	// this is really ugly.. needs a fix
+	if(bCamLoaded<3){
+		// camera
+		ofxLoadCamera(cam, "GUI/cameraSettings.txt");
+		cout << "camLoaded"<< endl;
+		bCamLoaded++;
 	}
 }
 
@@ -399,7 +403,7 @@ void vizManager::drawVolume()
 	// Draw Volume
 	ofSetColor(255);
 	cam.begin();
-	myVolume.updateVolume(volPos, volSize, 0);
+	myVolume.updateVolume();
 	cam.end();
 	
 	myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
@@ -486,27 +490,6 @@ void vizManager::drawNearestPoint()
 	
 	ofVec2f offset(10, -10);
 	ofDrawBitmapStringHighlight(ofToString(nearestIndex), mouse + offset);
-}
-
-//--------------------------------------------------------------
-void vizManager::setup_guis()
-{
-	allowEvent	= false;
-	// Volume UI
-	setup_guiVolume();
-	guiVolume->loadSettings("GUI/volume_settings.xml");
-	guiVolume->setDrawBack(true);
-	guiVolume->setVisible(false);
-	
-	// Sliders UI
-	setup_guiSliders();
-	guiSliders->loadSettings("GUI/slices_settings.xml");
-	guiSliders->setDrawBack(false);
-//	guiSliders->setAutoDraw(true);	this method does not work
-	
-	bDraw		= true;
-	allowEvent	= true;
-	update();
 }
 
 //--------------------------------------------------------------
@@ -632,7 +615,6 @@ void vizManager::setup_guiSliders()
 	pad = (ofxUI2DPad *) guiSliders->getWidget("axialPad");
 	pad->setLabelVisible(false);
 	pad->setColorBack(transparent);
-
 }
 
 //--------------------------------------------------------------
@@ -718,13 +700,15 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 		ofLogVerbose() <<	"axialPad.x = " << uiCoord.x;
 		ofLogVerbose() <<	"axialPad.y = " << uiCoord.z;
 	}
+	/*
 	else if(name == "latitude")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		latitude = floor(slider->getScaledValue());
 		ofLogVerbose() <<	"latitude " << latitude;
-	}
-	if (allowEvent)update();
+	}*/
+//	if (allowEvent)
+		update();
 }
 
 //--------------------------------------------------------------
@@ -739,13 +723,12 @@ void vizManager::keyPressed(int key ){
             guiVolume->toggleVisible();
 			break;
 		case 's':
-			guiVolume->saveSettings("GUI/volume_settings.xml");
-//			guiSliders->saveSettings("GUI/slices_settings.xml");
 			ofxSaveCamera(cam, "GUI/cameraSettings.txt");
+			guiVolume->saveSettings("GUI/volume_settings.xml");
 			break;
 		case 'l':
 			ofxLoadCamera(cam, "GUI/cameraSettings.txt");
-			guiVolume->loadSettings("GUI/volume_settings.xml");
+//			guiVolume->loadSettings("GUI/volume_settings.xml");
 			break;
 		case 'f':
 			//ofSetWindowPosition(0, 0);
@@ -796,12 +779,11 @@ void vizManager::select()
 	
 	// check for intersection
 	rayPlane.intersect(mouseRay, farPoint);
-	farPoint /= volSize * .5;
+	farPoint /= cubeSize/2;
 	radius = intersectionPosition.distance(farPoint)/2;
-	radius *= volSize.y;
-	ofVec3f position = intersectionPosition*volSize/2;
-	
-//	cout << "ip = "<< position<< endl;
+	radius *= cubeSize.y;
+	ofVec3f position = intersectionPosition*cubeSize/2;
+
 	selection.select(position, radius);
 }
 

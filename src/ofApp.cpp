@@ -49,7 +49,7 @@ void ofApp::keyPressed(int key)
 			helpMessage->isEnabled() ?	helpMessage->disable(): helpMessage->enable();
 			break;
 		case 'l':
-			myTwitterManager.twitterClient.loadCacheFile();
+//			myTwitterManager.twitterClient.loadCacheFile();
 			break;
 		case 'f':
 			myTwitterManager.scrollCanvas->toggleFBO();

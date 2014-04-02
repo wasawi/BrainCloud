@@ -1,8 +1,9 @@
-/*  VolumeSlice - draw volumetric data on a 2d plane
+/*  volume - draw volumetric data on a 2d plane
  */
 
 #pragma once
-#include "ofxTexture3d.h"
+//#include "ofxTexture3d.h"
+#include "ofxImageSequencePlayer.h"
 
 //Volume Cutting Viepoint
 enum viewPoint
@@ -12,14 +13,22 @@ enum viewPoint
 	AXIAL		//	diadema
 };
 
-class volumeSlice : public  ofxTexture3d, ofTexture{
+class volume{
 public:
 	
-	volumeSlice();
-    virtual ~volumeSlice();
-	void setup(unsigned char * data, int w, int h, int d, float bW, float bH);
+	volume();
+    virtual ~volume();
+
+	void load(string path="");
+	void setup(float bW, float bH);
 	void redraw(viewPoint vP, int depth);
 
+	
+	// Getters
+	unsigned char* getVoxels();
+	ofVec3f getVolSize();
+	ofVec3f getVolPos();
+	
 	int getVoxelValue();
 	int getVoxelNumber();
 	ofVec3f getVoxelCoordinates(int _index);
@@ -34,11 +43,22 @@ private:
 	void redrawAxial();
 	void redrawCoronal();
 
-	unsigned char * myData;
+    ofxImageSequencePlayer imageSequence;
+
+	unsigned char * voxels;
 	ofPixels myPixels;
-//	viewPoint myViewPoint;
+
 	int volWidth, volHeight, volDepth;
+	ofVec3f	volSize;
+	ofVec3f	volPos;
+
 	int renderWidth, renderHeight;
+	
+	/*
+	int volWidth, volHeight, volDepth;
+	int voxelValue;
+	int voxelNumber;
+	*/
 	
 	int halfH;
 	int halfW;
@@ -67,6 +87,10 @@ private:
 	bool insideCoronal;
 	bool insideSagittal;
 	bool insideAxial;
+	
+	
+	
+	
 	
 	//	void drawSagittal(float x, float y, float z);
 	//	void drawAxial(float x, float y, float z);

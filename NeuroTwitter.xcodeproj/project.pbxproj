@@ -53,7 +53,7 @@
 		9B06C5CAE570B630A97E51C3 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58F8CBF3C566F6908846E5FB /* json_writer.cpp */; };
 		9BE4AE0AA2B8C436BDFE9D4D /* ofxUIDragableLabelButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFD5D3C9D38E29DB72B32254 /* ofxUIDragableLabelButton.cpp */; };
 		9C5E559D688144C1BDD6115B /* guiEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F9231C2B4F0911980CD7CA5 /* guiEvent.cpp */; };
-		9CCB7536CDBD99DE6594FFB1 /* volumeSlice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */; };
+		9CCB7536CDBD99DE6594FFB1 /* volume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC83F774B9EF5F85A8DD75E /* volume.cpp */; };
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
 		9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */; };
 		A0C1C42F6293BEC48CA02D5D /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F822BE6973957EF1D983414B /* Base.cpp */; };
@@ -171,7 +171,7 @@
 		15C99204FF4D8D72AD034B63 /* ofxUINumberDialer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUINumberDialer.h; path = ../../../addons/ofxUI/src/ofxUINumberDialer.h; sourceTree = SOURCE_ROOT; };
 		15FCE46D80D67D3661FD7433 /* guiManager.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = guiManager.h; path = src/GUI/guiManager.h; sourceTree = SOURCE_ROOT; };
 		17E06821FB98542FDB806E50 /* ofxUIMultiImageButton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIMultiImageButton.cpp; path = ../../../addons/ofxUI/src/ofxUIMultiImageButton.cpp; sourceTree = SOURCE_ROOT; };
-		1848A09F5E0DC8DD02960915 /* volumeSlice.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = volumeSlice.h; path = src/Viz/volumeSlice.h; sourceTree = SOURCE_ROOT; };
+		1848A09F5E0DC8DD02960915 /* volume.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = volume.h; path = src/Viz/volume.h; sourceTree = SOURCE_ROOT; };
 		1902452F5E510A2DBC1E5BD6 /* ofxUIMultiImageToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIMultiImageToggle.h; path = ../../../addons/ofxUI/src/ofxUIMultiImageToggle.h; sourceTree = SOURCE_ROOT; };
 		19ADE7F5C5EDF826406FC4CC /* FTBBox.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTBBox.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTBBox.h; sourceTree = SOURCE_ROOT; };
 		1ACFA260BE58B7A36EEA1448 /* ofxFTGLFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxFTGLFont.h; path = ../../../addons/ofxFTGL/src/ofxFTGLFont.h; sourceTree = SOURCE_ROOT; };
@@ -218,7 +218,7 @@
 		4AEA0D08C3B0323FEDC8D974 /* ofxUIImageSampler.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImageSampler.h; path = ../../../addons/ofxUI/src/ofxUIImageSampler.h; sourceTree = SOURCE_ROOT; };
 		4C9B919B991B4E45BC5DC0DB /* ofxUIRadio.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIRadio.h; path = ../../../addons/ofxUI/src/ofxUIRadio.h; sourceTree = SOURCE_ROOT; };
 		4CC0FA179DFCC6A1A1841056 /* myCamera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = myCamera.h; path = src/Viz/myCamera.h; sourceTree = SOURCE_ROOT; };
-		4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = volumeSlice.cpp; path = src/Viz/volumeSlice.cpp; sourceTree = SOURCE_ROOT; };
+		4CC83F774B9EF5F85A8DD75E /* volume.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = volume.cpp; path = src/Viz/volume.cpp; sourceTree = SOURCE_ROOT; };
 		4D902D60E5CCFA9F2554BC7C /* ofxUIValuePlotter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIValuePlotter.cpp; path = ../../../addons/ofxUI/src/ofxUIValuePlotter.cpp; sourceTree = SOURCE_ROOT; };
 		4E49BEFE99E0E9ADA3F82118 /* oauth.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = oauth.h; path = ../../../addons/ofxOAuth/libs/liboauth/include/oauth.h; sourceTree = SOURCE_ROOT; };
 		4ED7BC3AF72F6BE8F0917A30 /* ofxUIImage.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIImage.h; path = ../../../addons/ofxUI/src/ofxUIImage.h; sourceTree = SOURCE_ROOT; };
@@ -530,8 +530,8 @@
 				08B1B47D18DFEB2A0059F53C /* localizationManager.h */,
 				8D66DD895E835C0F19854FFF /* vizManager.cpp */,
 				640FBAA3409D36542C6F294F /* vizManager.h */,
-				4CC83F774B9EF5F85A8DD75E /* volumeSlice.cpp */,
-				1848A09F5E0DC8DD02960915 /* volumeSlice.h */,
+				4CC83F774B9EF5F85A8DD75E /* volume.cpp */,
+				1848A09F5E0DC8DD02960915 /* volume.h */,
 				7BB39463C7EE7BFC8C6F7524 /* myCamera.cpp */,
 				4CC0FA179DFCC6A1A1841056 /* myCamera.h */,
 				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
@@ -1161,7 +1161,7 @@
 				BF552113415B14A9A99ED836 /* myCamera.cpp in Sources */,
 				E64DE23EAB53E7CA180EE0B5 /* talairachLabels.cpp in Sources */,
 				E7EE453774ADEC60378C89FF /* vizManager.cpp in Sources */,
-				9CCB7536CDBD99DE6594FFB1 /* volumeSlice.cpp in Sources */,
+				9CCB7536CDBD99DE6594FFB1 /* volume.cpp in Sources */,
 				9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */,
 				4B3ED367CA852D522E2EE996 /* ofxUI2DPad.cpp in Sources */,
 				BB103377011B50FCE49206EE /* ofxUI3DPad.cpp in Sources */,

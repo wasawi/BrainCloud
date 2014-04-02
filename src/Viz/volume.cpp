@@ -1,23 +1,65 @@
-#include "volumeSlice.h"
+#include "volume.h"
 
-volumeSlice::volumeSlice()
+volume::volume()
 {
-    volWidth = 0;
-    volHeight = 0;
-    volDepth = 0;
+	//Volume
+	volPos		= ofVec3f(0);
+	volSize		= ofVec3f(0);
+	
+    volWidth	= 0;
+    volHeight	= 0;
+    volDepth	= 0;
 }
 //--------------------------------------------------------------
-volumeSlice::~volumeSlice()
+volume::~volume()
 {
+
+}
+
+void volume::load(string path)
+{
+	imageSequence.init(path + "IM-0001-0", 3, ".tif", 0);
+	
+	// calculate volume size
+	volWidth	= imageSequence.getWidth();
+    volHeight	= imageSequence.getHeight();
+    volDepth	= imageSequence.getSequenceLength();
+	volSize		= ofVec3f(volWidth, volHeight, volDepth);
+	
+	ofLogNotice("vizManager") << "setting up volume data buffer at " << volWidth << "x" << volHeight << "x" << volDepth;
+    voxels = new unsigned char[volWidth*volHeight*volDepth];
+	
+	//fill out the array pixel in white for easy debugging
+	for (int i=0; i<volWidth*volHeight*volDepth; i++ )
+	{
+		voxels[i]= (unsigned char) 255;
+	}
+	
+	// fill my array with pixels
+    for(int z=0; z<volDepth; z++)
+    {
+        imageSequence.loadFrame(z);
+		int gradient = 0;
+		for(int y=0; y<volHeight; y++)
+        {
+			for(int x=0; x<volWidth; x++)
+			{
+				if (x<volWidth && y<volHeight)
+				{																// get values from image
+					int i = ((x + volWidth*y) + z*volWidth*volHeight);			// the pointer position at Array
+					int sample = imageSequence.getPixels()[x+y*volWidth];		// the pixel on the image
+					voxels[i] = sample;
+					//					ofLogVerbose("vizManager") << sample << " ";
+				}
+            }
+        }
+    }
+
 }
 
 //--------------------------------------------------------------
-void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, float bH)
+void volume::setup(float bW, float bH)
 {
-    volWidth	= w;
-    volHeight	= h;
-    volDepth	= d;
-	myData		= data;
 	boxW		= bW;
 	boxH		= bH;
 	
@@ -28,7 +70,7 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 	halfW = (boxW - volWidth) /2;
 	halfD = (boxW - volDepth) /2;
 	
-	//allocate my pixls size of the resulting image
+	//allocate my pixls type of the image slices
 	coronalPixels.allocate(volWidth, volDepth, OF_IMAGE_GRAYSCALE);
 	coronalPixels.set(255);
 	sagittalPixels.allocate(volDepth, volHeight, OF_IMAGE_GRAYSCALE);
@@ -38,7 +80,7 @@ void volumeSlice::setup(unsigned char * data, int w, int h, int d, float bW, flo
 }
 
 //--------------------------------------------------------------
-int volumeSlice::getVoxelValue(){
+int volume::getVoxelValue(){
 	
 	int value	=0;
 	for(int z=0; z<volDepth; z++){
@@ -50,7 +92,7 @@ int volumeSlice::getVoxelValue(){
 							int line = y*volWidth;
 							int page = z*volWidth*volHeight;
 							int i = x + line + page;					// the pointer position at Array
-							value= myData[i];							// the pixel on the image
+							value= voxels[i];							// the pixel on the image
 						}
 					}
 				}
@@ -58,15 +100,15 @@ int volumeSlice::getVoxelValue(){
 		}
 	}
 
-	ofLogVerbose("volumeSlice") << "sagittalS= " << sagittalS;
-	ofLogVerbose("volumeSlice") << "coronalS= " << coronalS;
-	ofLogVerbose("volumeSlice") << "axialS= " << axialS;
-	ofLogVerbose("volumeSlice") << "voxelValue= " << value;
+	ofLogVerbose("volume") << "sagittalS= " << sagittalS;
+	ofLogVerbose("volume") << "coronalS= " << coronalS;
+	ofLogVerbose("volume") << "axialS= " << axialS;
+	ofLogVerbose("volume") << "voxelValue= " << value;
 	return value;
 }
 
 //--------------------------------------------------------------
-ofVec3f volumeSlice::getVoxelCoordinates(int _index){
+ofVec3f volume::getVoxelCoordinates(int _index){
 	
 	ofVec3f value (0);
 	for(int z=0; z<volDepth; z++){
@@ -84,7 +126,7 @@ ofVec3f volumeSlice::getVoxelCoordinates(int _index){
 
 						if (_index==i){
 							value= ofVec3f(x,y,z);
-							ofLogVerbose("volumeSlice") << "voxelCoordinates= " << value;
+							ofLogVerbose("volume") << "voxelCoordinates= " << value;
 							return value;
 						}
 					}
@@ -96,7 +138,7 @@ ofVec3f volumeSlice::getVoxelCoordinates(int _index){
 }
 
 //--------------------------------------------------------------
-bool volumeSlice::getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val){
+bool volume::getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val){
 	
 	ofVec3f value(0);
 	int row=0;
@@ -120,9 +162,9 @@ bool volumeSlice::getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val){
 					value= ofVec3f(x,y,z);
 
 					_coord= value;
-					_val= myData[index];
-//					ofLogVerbose("volumeSlice") << "voxelCoord= " << _coord;
-//					ofLogVerbose("volumeSlice") << "voxelVal= " << _val;
+					_val= voxels[index];
+//					ofLogVerbose("volume") << "voxelCoord= " << _coord;
+//					ofLogVerbose("volume") << "voxelVal= " << _val;
 					return true;
 				}
 			}
@@ -134,7 +176,7 @@ bool volumeSlice::getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val){
 
 
 //--------------------------------------------------------------
-int volumeSlice::getVoxelNumber(){
+int volume::getVoxelNumber(){
 	
 	int value	=0;
 	for(int z=0; z<volDepth; z++){
@@ -154,13 +196,13 @@ int volumeSlice::getVoxelNumber(){
 		}
 	}
 	
-	ofLogVerbose("volumeSlice") << "voxelNumber= " << value;
+	ofLogVerbose("volume") << "voxelNumber= " << value;
 	return value;
 }
 
 
 //--------------------------------------------------------------
-void volumeSlice::redraw(viewPoint vP, int depth)
+void volume::redraw(viewPoint vP, int depth)
 {
 
 	// try clamp the value like this out = MIN(volHeight, MAX(in, 0));
@@ -204,7 +246,7 @@ void volumeSlice::redraw(viewPoint vP, int depth)
 }
 
 //--------------------------------------------------------------
-void volumeSlice::draw(viewPoint vP)
+void volume::draw(viewPoint vP)
 {
 	drawBox();
 	if(vP==CORONAL)
@@ -221,7 +263,7 @@ void volumeSlice::draw(viewPoint vP)
 	}
 }
 //--------------------------------------------------------------
-void volumeSlice::drawBox()
+void volume::drawBox()
 {
 	// Draw Box
 	ofPushStyle();
@@ -232,7 +274,7 @@ void volumeSlice::drawBox()
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawCoronal()
+void volume::redrawCoronal()
 {
 	for(int z=0; z<volDepth; z++)
 	{
@@ -244,7 +286,7 @@ void volumeSlice::redrawCoronal()
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
 					int i = x + line + page;					// the position at the pixel array
-					coronalPixels[x+(z*volWidth)] = myData[i];	// get the correct voxel and put it to the pixel array
+					coronalPixels[x+(z*volWidth)] = voxels[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
@@ -256,7 +298,7 @@ void volumeSlice::redrawCoronal()
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawSagittal()
+void volume::redrawSagittal()
 {
 	for(int z=0; z<volDepth; z++)
     {
@@ -268,7 +310,7 @@ void volumeSlice::redrawSagittal()
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
 					int i = x + line + page;					// the position at the pixel array
-					sagittalPixels[z+(y*volDepth)] = myData[i];	// get the correct voxel and put it to the pixel array
+					sagittalPixels[z+(y*volDepth)] = voxels[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
@@ -280,7 +322,7 @@ void volumeSlice::redrawSagittal()
 }
 
 //--------------------------------------------------------------
-void volumeSlice::redrawAxial()
+void volume::redrawAxial()
 {
 	for(int z=0; z<volDepth; z++)
     {
@@ -292,7 +334,7 @@ void volumeSlice::redrawAxial()
 					int line = y*volWidth;
 					int page = z*volWidth*volHeight;
 					int i = x + line + page;			// the position at the pixel array
-					axialPixels[x+line] = myData[i];	// get the correct voxel and put it to the pixel array
+					axialPixels[x+line] = voxels[i];	// get the correct voxel and put it to the pixel array
 				}
 			}
 		}
@@ -303,10 +345,23 @@ void volumeSlice::redrawAxial()
 }
 
 
+//--------------------------------------------------------------
+ofVec3f volume::getVolSize(){
+	return volSize;
+}
+//--------------------------------------------------------------
+ofVec3f volume::getVolPos(){
+	return volPos;
+}
+
+//--------------------------------------------------------------
+unsigned char* volume::getVoxels(){
+	return voxels;
+}
 
 /*
  //--------------------------------------------------------------
- void volumeSlice::drawCoronal(float x, float y, float z)
+ void volume::drawCoronal(float x, float y, float z)
  {
  // this will test if z is within the limits and then draw the image
  // otherwise set to black (do not draw).
@@ -317,7 +372,7 @@ void volumeSlice::redrawAxial()
  }
  
  //--------------------------------------------------------------
- void volumeSlice::drawSagittal(float x, float y, float z)
+ void volume::drawSagittal(float x, float y, float z)
  {
  drawBox();
  if(z>-1&&z<volWidth){
@@ -326,7 +381,7 @@ void volumeSlice::redrawAxial()
  }
  
  //--------------------------------------------------------------
- void volumeSlice::drawAxial(float x, float y, float z)
+ void volume::drawAxial(float x, float y, float z)
  {
  drawBox();
  if(z>-1&&z<volDepth){
