@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		028A1A54F7661FB669A7DFF8 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD81C4476FF24E4A29315D /* Ray.cpp */; };
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
+		082001AD18EB0C8E00E5C389 /* selectionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082001AB18EB0C8E00E5C389 /* selectionManager.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		08B1B47E18DFEB2A0059F53C /* localizationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */; };
 		08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */; };
@@ -146,6 +147,8 @@
 		02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUI2DGraph.cpp; path = ../../../addons/ofxUI/src/ofxUI2DGraph.cpp; sourceTree = SOURCE_ROOT; };
 		065EBAA29F0D9C24EAC889F3 /* multi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = multi.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/multi.h; sourceTree = SOURCE_ROOT; };
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
+		082001AB18EB0C8E00E5C389 /* selectionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = selectionManager.cpp; path = Viz/selectionManager.cpp; sourceTree = "<group>"; };
+		082001AC18EB0C8E00E5C389 /* selectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = selectionManager.h; path = Viz/selectionManager.h; sourceTree = "<group>"; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
 		08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = localizationManager.cpp; path = Viz/localizationManager.cpp; sourceTree = "<group>"; };
 		08B1B47D18DFEB2A0059F53C /* localizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = localizationManager.h; path = Viz/localizationManager.h; sourceTree = "<group>"; };
@@ -533,6 +536,8 @@
 				4CC0FA179DFCC6A1A1841056 /* myCamera.h */,
 				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
 				8D024AC6312D1AF090EE7EA3 /* talairachLabels.h */,
+				082001AB18EB0C8E00E5C389 /* selectionManager.cpp */,
+				082001AC18EB0C8E00E5C389 /* selectionManager.h */,
 			);
 			name = Viz;
 			sourceTree = "<group>";
@@ -1150,6 +1155,7 @@
 				D999941B6F2BDE0A87EEE06A /* guiManager.cpp in Sources */,
 				2E592F90ED46A225F36431CF /* ofxTwitter3d.cpp in Sources */,
 				A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */,
+				082001AD18EB0C8E00E5C389 /* selectionManager.cpp in Sources */,
 				8913F0EFD789AED0AA86CA0D /* tweetManager.cpp in Sources */,
 				E6131276F1083D191F872A06 /* myUtils.cpp in Sources */,
 				BF552113415B14A9A99ED836 /* myCamera.cpp in Sources */,

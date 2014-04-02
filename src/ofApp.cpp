@@ -150,6 +150,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 		myVizManager.bActive=true;
 		myVizManager.bMovingCursor= false;
 		myVizManager.bSelecting= false;
+		myVizManager.addSelection();
 	}
 
 }

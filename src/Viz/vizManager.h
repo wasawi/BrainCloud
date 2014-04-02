@@ -11,8 +11,10 @@
 #include "ofxTalairach.h"
 #include "ofxRay.h"
 #include "ofxCameraSaveLoad.h"
+#include "selectionManager.h"
 
-#include "localizationManager.h"
+//#include "localizationManager.h"
+
 /*
  
  MNI Volume
@@ -66,6 +68,7 @@ public:
 	void keyPressed  (int key);
 	void select();
 	void moveCursor();
+	void addSelection();
 	
 	//Camera
 	//	ofEasyCam cam;
@@ -176,19 +179,18 @@ private:
 	ofVec3f intersectionPosition;
 	
 	// Mesh
-	ofBuffer result;
-	ofFile resultFile;
-	string output;
-	localizationManager words;
-	vector <string> currentWords;
-	
 	void createPointCloud();
 	ofMesh mesh;
 	ofMesh meshWhite;
-	
-	//selection
-	ofSpherePrimitive selectionSphere;
-	void drawSelectionSphere(float radius, float stripWidth = 10, int circleRes = 60);
+		
+	//	localizationManager words;
+	vector <string> currentWords;
+	ofBuffer result;
+	ofFile resultFile;
+	string output;
+
+	// selection
+	selectionManager selection;
 };
 
 

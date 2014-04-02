@@ -364,31 +364,12 @@ void vizManager::draw()
 //--------------------------------------------------------------
 void vizManager::drawSelection()
 {
-	ofSetCircleResolution(60);
-	/*
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	cam.begin();
-
-	ofPushView();
-		ofSetColor(200);	
-		//draw sphere
-		ofScale(volSize.x,volSize.y,volSize.z);
-		ofTranslate(selectionSphere.getPosition());
-//		drawSelectionSphere(selectionSphere.getRadius(), 1);
-	ofPopView();
-	ofPopStyle();
+	if(bSelecting) selection.drawSphereAxis(cam);
+	selection.draw(cam);
 	cam.end();
-	*/
-	
-	ofVec3f pos =cam.worldToScreen(selectionSphere.getPosition()*volSize);
-	float r = selectionSphere.getRadius();
-
-	ofPushStyle();
-	ofSetColor(255,50);
-	ofCircle(pos, r * volSize.x);
-	ofSetColor(ofColor::white);
-	ofNoFill();
-	ofCircle(pos, r * volSize.x);
-	ofPopStyle();
+//	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 }
 
 //--------------------------------------------------------------
@@ -773,7 +754,7 @@ void vizManager::keyPressed(int key ){
 			break;
 
 		case 'c':
-			createPointCloud();
+			selection.clear();
 			break;
 
 		case 'r':
@@ -804,10 +785,6 @@ void vizManager::mousePressed(ofMouseEventArgs& e)
 //--------------------------------------------------------------
 void vizManager::select()
 {
-	selectionSphere.setPosition(intersectionPosition/2);
-	cout << "ip = "<< intersectionPosition<< endl;
-	
-	cam.begin();
 	ofVec3f farPoint;
 	float radius;
 	ofVec3f screenMouse = ofVec3f(ofGetMouseX(), ofGetMouseY(),0);
@@ -820,12 +797,18 @@ void vizManager::select()
 	// check for intersection
 	rayPlane.intersect(mouseRay, farPoint);
 	farPoint /= volSize * .5;
-	cam.end();
-	
 	radius = intersectionPosition.distance(farPoint)/2;
-//	radius *= volSize.x * .5;
-	selectionSphere.setRadius(radius);
+	radius *= volSize.y;
+	ofVec3f position = intersectionPosition*volSize/2;
+	
+//	cout << "ip = "<< position<< endl;
+	selection.select(position, radius);
+}
 
+//--------------------------------------------------------------
+void vizManager::addSelection()
+{
+	selection.add();
 }
 
 //--------------------------------------------------------------
@@ -841,57 +824,6 @@ void vizManager::moveCursor()
 	cam.end();
 }
 
-//--------------------------------------------------------------
-void vizManager::drawSelectionSphere(float radius, float stripWidth, int circleRes){
-
-//	selectionSphere.draw(OF_MESH_WIREFRAME);
-//	ofRotate
-//	cam.get
-//	ofCircle(0, 0, 0, radius);
-	
-//	cam.get
-/*	ofPushView();
-	ofVec3f rotation = cam.getOrientationEuler();
-//	ofVec3f rotation = cam.getGlobalOrientation();
-	ofRotate(rotation.x, 1, 0, 0);
-	ofRotate(rotation.y, 0, 1, 0);
-	ofRotate(rotation.z, 0, 0, 1);
-	ofSetColor(ofColor::pink);
-	ofCircle(0, 0, 0, radius);
-	ofPopView();
-*/
-	ofPushStyle();
-	ofNoFill();
-
-	// daw cirles
-	ofPushView();
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofCircle(0, 0, 0, radius);
-	// draw y axis
-	ofRotateY(90);
-	ofSetColor(ofColor::green);
-	ofCircle(0, 0, 0, radius);
-	// draw z axis
-	ofRotateX(90);
-	ofSetColor(ofColor::blue);
-	ofCircle(0, 0, 0, radius);
-	ofPopView();
-	
-	
-//	ofRotateY(90);
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofLine(0, 0, 0, radius, 0, 0);
-	// draw y axis
-	ofSetColor(ofColor::green);
-	ofLine(0, 0, 0, 0, radius, 0);
-	// draw z axis
-	ofSetColor(ofColor::blue);
-	ofLine(0, 0, 0, 0, 0, radius);
-	ofPopStyle();
-	
-	}
 
 
 
