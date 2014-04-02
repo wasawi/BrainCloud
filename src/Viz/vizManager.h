@@ -182,13 +182,9 @@ private:
 	void createPointCloud();
 	ofMesh mesh;
 	ofMesh meshWhite;
-		
-	//	localizationManager words;
-	vector <string> currentWords;
-	ofBuffer result;
-	ofFile resultFile;
-	string output;
 
+	//	localizationManager words;
+	
 	// selection
 	selectionManager selection;
 };

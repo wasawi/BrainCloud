@@ -366,7 +366,7 @@ void vizManager::drawSelection()
 {
 //	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	cam.begin();
-	if(bSelecting) selection.drawSphereAxis(cam);
+	if(bSelecting) selection.drawSphereAxis();
 	selection.draw(cam);
 	cam.end();
 //	ofEnableBlendMode(OF_BLENDMODE_ALPHA);

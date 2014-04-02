@@ -77,7 +77,7 @@ void selectionManager::add(){
 
 	sphereCopy=selectionSphere;
 	
-	sphereAttr sphere;
+	sphereSelection sphere;
 	sphere.position=selectionSphere.getPosition();
 	sphere.radius=selectionSphere.getRadius();
 	
@@ -105,7 +105,7 @@ void selectionManager::clear(){
 
 
 //--------------------------------------------------------------
-void selectionManager::drawSphereAxis(ofCamera& cam, ofVec3f position, float radius, float stripWidth, int circleRes){
+void selectionManager::drawSphereAxis(ofVec3f position, float radius, float stripWidth, int circleRes){
 	
 	position=selectionSphere.getPosition();
 	radius=selectionSphere.getRadius();
@@ -148,6 +148,11 @@ void selectionManager::drawSphereAxis(ofCamera& cam, ofVec3f position, float rad
 	ofPopMatrix();
 }
 
+//--------------------------------------------------------------
+vector<sphereSelection> selectionManager::getSelection(){
+
+	return spheres;
+}
 
 
 

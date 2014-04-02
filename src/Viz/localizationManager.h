@@ -48,4 +48,9 @@ private:
 	string myFilePath;
 	vector<voxel> data;
 
+	vector <string> currentWords;
+	ofBuffer result;
+	ofFile resultFile;
+	string output;
+	
 };
