@@ -26,42 +26,31 @@ void selectionManager::draw(ofCamera& cam){
 	ofSetCircleResolution(60);
 
 	for( int i = 0; i < spheres.size(); i++){
-//		ofTranslate(selection[i].getPosition());
-		ofSetColor(255,40);
-		ofSpherePrimitive sphere;
+		ofNode posNode;
+        posNode.setGlobalPosition(spheres[i].position);
+        posNode.lookAt(cam.getGlobalPosition(), cam.getUpDir());
+		//        posNode.lookAt(cam.getPosition()); this will do, but the object will rotate ugly.
+        ofQuaternion posQuat = posNode.getGlobalOrientation();
 		
-		sphere.setPosition(spheres[i].position);
-		sphere.setRadius(spheres[i].radius);
-		sphere.draw();
-//		cout <<"pos "<< selection[i].getPosition()<< endl;
+        float ang = 0;
+        ofPoint vec;
+        posQuat.getRotate(ang, vec);
+
+        ofPushMatrix();
+		ofTranslate(spheres[i].position);
+		ofRotate(ang, vec.x, vec.y, vec.z);
+
+        ofPushStyle();
+		ofSetColor(255,50);
+		ofCircle(0,0,0,spheres[i].radius);
+
+		ofSetColor(255);
+		ofNoFill();
+		ofCircle(0,0,0,spheres[i].radius);
+        ofPopStyle();
 		
-		
-/*		ofCylinderPrimitive cylinder;
-		cylinder.setResolution(60, 1);
-		ofVec3f	camPos		= cam.getPosition();
-		cylinder.lookAt(camPos);
-		ofSetColor(ofColor::white);
-		cylinder.setPosition(spheres[i].position);
-		cylinder.setRadius(spheres[i].radius);
-		cylinder.draw(OF_MESH_WIREFRAME);
-*/
+		ofPopMatrix();
 	}
-	
-	
-	//cout <<"pos"<< selectionSphere.getPosition()<< endl;
-	
-	/*
-	ofVec3f pos =cam.worldToScreen(selectionSphere.getPosition()*volSize);
-	float r = selectionSphere.getRadius();
-	
-	ofPushStyle();
-	ofSetColor(255,50);
-	ofCircle(pos, r * volSize.x);
-	ofSetColor(ofColor::white);
-	ofNoFill();
-	ofCircle(pos, r * volSize.x);
-	ofPopStyle();
-	 */
 }
 
 //----------------------------------------------
@@ -118,24 +107,6 @@ void selectionManager::clear(){
 //--------------------------------------------------------------
 void selectionManager::drawSphereAxis(ofCamera& cam, ofVec3f position, float radius, float stripWidth, int circleRes){
 	
-//	selectionSphere.draw(OF_MESH_WIREFRAME);
-	
-	//	ofRotate
-	//	cam.get
-	//	ofCircle(0, 0, 0, radius);
-	
-	ofPushMatrix();
-//		ofVec3f camOrientation = cam.getOrientationEuler();
-		ofVec3f	camPos		= cam.getPosition();
-//		ofVec3f camupDir	= cam.getUpDir();
-
-		ofSetColor(ofColor::white);
-		ofCircle(0, 0, 0, radius);
-	ofPopMatrix();
-	 
-
-
-
 	position=selectionSphere.getPosition();
 	radius=selectionSphere.getRadius();
 
