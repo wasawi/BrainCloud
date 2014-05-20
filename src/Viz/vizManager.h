@@ -69,6 +69,7 @@ public:
 	void select();
 	void moveCursor();
 	void addSelection();
+	void selectVoxels();
 	
 	//Camera
 	//	ofEasyCam cam;

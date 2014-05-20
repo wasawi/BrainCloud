@@ -35,6 +35,8 @@ public:
 	bool getVoxelCoordAndVal(int _index, ofVec3f& _coord, int& _val);
 	
 	void draw(viewPoint vP);
+	vector<unsigned char> selectVoxels(vector <ofVec3f>& _coord, vector <float> radius);
+
 	
 protected:
 private:
@@ -90,9 +92,6 @@ private:
 	
 	
 	
-	
-	
-	//	void drawSagittal(float x, float y, float z);
-	//	void drawAxial(float x, float y, float z);
-	//	void drawCoronal(float x, float y, float z);
+	// quick ways of checking if inside radius:
+	// http://stackoverflow.com/questions/481144/equation-for-testing-if-a-point-is-inside-a-circle
 };

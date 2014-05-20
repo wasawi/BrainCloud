@@ -10,7 +10,7 @@
 #include "tweetManager.h"
 #include "vizManager.h"
 #include "ofxSuperLog.h"
-
+#include "ofxStats.h"
 
 class ofApp : public ofBaseApp
 {
@@ -52,8 +52,10 @@ class ofApp : public ofBaseApp
 	// Help message
 	ofxUICanvas*	helpMessage;
 	void 	setupHelpMessage();
-
-
+	
+    // ofxStats
+    ofxStats* stats;
+	void	setupStats();
 };
 
 #endif

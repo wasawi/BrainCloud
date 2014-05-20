@@ -54,7 +54,6 @@ void volume::load(string path)
             }
         }
     }
-
 }
 
 //--------------------------------------------------------------
@@ -216,7 +215,6 @@ void volume::redraw(viewPoint vP, int depth)
 		}else{
 			insideCoronal=false;
 //			coronalS = MIN(volHeight, MAX(depth, 0));
-
 		}
 	}
 	else if(vP==SAGITTAL)
@@ -359,33 +357,74 @@ unsigned char* volume::getVoxels(){
 	return voxels;
 }
 
-/*
- //--------------------------------------------------------------
- void volume::drawCoronal(float x, float y, float z)
- {
- // this will test if z is within the limits and then draw the image
- // otherwise set to black (do not draw).
- drawBox();
- if(z>-1&&z<volHeight){					//this has to be erased and function drawCoronal must have no params
- coronal.draw(halfW, halfD);
- }
- }
- 
- //--------------------------------------------------------------
- void volume::drawSagittal(float x, float y, float z)
- {
- drawBox();
- if(z>-1&&z<volWidth){
- sagittal.draw(halfH, halfD);
- }
- }
- 
- //--------------------------------------------------------------
- void volume::drawAxial(float x, float y, float z)
- {
- drawBox();
- if(z>-1&&z<volDepth){
- axial.draw(halfW, halfH);
- }
- }
- */
+
+//--------------------------------------------------------------
+vector<unsigned char> volume::selectVoxels(vector <ofVec3f>& _coord, vector <float> _radius){
+	
+	vector<ofPixels> selectedVoxels;
+	selectedVoxels.clear();
+	
+	for(int i=0; i<_coord.size(); i++){
+		
+		ofVec3f coord	(0);
+		int row			=0;
+		int page		=0;
+		int index		=0;
+		unsigned char value	=0;
+		
+		for(int z=0; z<volDepth; z++){
+			coord.z=z;
+			
+			if (z==_coord[i].z){
+			for(int y=0; y<volHeight; y++){
+				coord.y=y;
+				
+				if (y==_coord[i].y) {
+				for(int x=0; x<volWidth; x++){
+					coord.x=x;
+					
+					if (x==_coord[i].x){
+						row = y*volWidth;
+						page = z*volWidth*volHeight;
+						index = x + row + page;
+
+						coord= ofVec3f(x,y,z);
+						value= voxels[index];
+						ofLogVerbose("volume") << "voxelCoord= " << coord;
+						ofLogVerbose("volume") << "voxelVal= " << value;
+						//return true;
+					}
+				}
+				}
+			}
+			}
+		}
+		//not found
+		//return false;
+
+	}
+//	return selectedVoxels;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

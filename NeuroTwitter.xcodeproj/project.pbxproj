@@ -11,6 +11,7 @@
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
 		082001AD18EB0C8E00E5C389 /* selectionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082001AB18EB0C8E00E5C389 /* selectionManager.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
+		089ECCCD18F19261004B2D14 /* ofxStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 089ECCCB18F19261004B2D14 /* ofxStats.cpp */; };
 		08B1B47E18DFEB2A0059F53C /* localizationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */; };
 		08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */; };
 		08F8283618DA771300EF951B /* ofxSuperLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8282F18DA771300EF951B /* ofxSuperLog.cpp */; };
@@ -149,6 +150,8 @@
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
 		082001AB18EB0C8E00E5C389 /* selectionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = selectionManager.cpp; path = Viz/selectionManager.cpp; sourceTree = "<group>"; };
 		082001AC18EB0C8E00E5C389 /* selectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = selectionManager.h; path = Viz/selectionManager.h; sourceTree = "<group>"; };
+		089ECCCB18F19261004B2D14 /* ofxStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStats.cpp; sourceTree = "<group>"; };
+		089ECCCC18F19261004B2D14 /* ofxStats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxStats.h; sourceTree = "<group>"; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
 		08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = localizationManager.cpp; path = Viz/localizationManager.cpp; sourceTree = "<group>"; };
 		08B1B47D18DFEB2A0059F53C /* localizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = localizationManager.h; path = Viz/localizationManager.h; sourceTree = "<group>"; };
@@ -413,6 +416,24 @@
 			children = (
 			);
 			name = PubMed;
+			sourceTree = "<group>";
+		};
+		089ECCC918F19261004B2D14 /* ofxStats */ = {
+			isa = PBXGroup;
+			children = (
+				089ECCCA18F19261004B2D14 /* src */,
+			);
+			name = ofxStats;
+			sourceTree = "<group>";
+		};
+		089ECCCA18F19261004B2D14 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				089ECCCB18F19261004B2D14 /* ofxStats.cpp */,
+				089ECCCC18F19261004B2D14 /* ofxStats.h */,
+			);
+			name = src;
+			path = ../../../addons/ofxStats/src;
 			sourceTree = "<group>";
 		};
 		08F827F718DA58A200EF951B /* ofxCameraSaveLoad */ = {
@@ -755,6 +776,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				089ECCC918F19261004B2D14 /* ofxStats */,
 				08F8281518DA771300EF951B /* ofxSuperLog */,
 				08F827F718DA58A200EF951B /* ofxCameraSaveLoad */,
 				A492CE86424AB8905550BFD8 /* ofxUI */,
@@ -1184,6 +1206,7 @@
 				FFD1EBFCA24DFB4E4427B4FE /* ofxUILabelButton.cpp in Sources */,
 				C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */,
 				9A83D1B3FB64456BC907667F /* ofxUIMinimalSlider.cpp in Sources */,
+				089ECCCD18F19261004B2D14 /* ofxStats.cpp in Sources */,
 				F440B307990F8F5CE40B9111 /* ofxUIMovingGraph.cpp in Sources */,
 				222C3AB10FA3158602718602 /* ofxUIMultiImageButton.cpp in Sources */,
 				F9C20834354ACC8337320B8C /* ofxUIMultiImageToggle.cpp in Sources */,

@@ -40,7 +40,7 @@ void vizManager::setup()
 	bMovingCursor	= false;
 	bActive			= true;
 	bDraw			= true;
-	bCamLoaded		= 0;
+	bCamLoaded		= 0;	// ugly bug
 	
 	update();
 }
@@ -49,8 +49,8 @@ void vizManager::setup()
 void vizManager::initVolume()
 {
 	// Init Volume
-	volume2D.load("volumes/Colin27T1_tight/");
-	//	volume2D.load("volumes/talairach_nii/");
+	//volume2D.load("volumes/Colin27T1_tight/");
+	volume2D.load("volumes/talairach_nii/");
 	volume2D.setup(boxW, boxH);
 
 	volSize		= volume2D.getVolSize();
@@ -351,7 +351,7 @@ void vizManager::draw()
 
 		drawMesh();
 		
-		// draz neares point
+		// draw nearest point
 		if (!bMovingCursor && bActive) drawNearestPoint();
 	}
 	
@@ -734,8 +734,9 @@ void vizManager::keyPressed(int key ){
 			//ofSetWindowPosition(0, 0);
 			//ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
+//			selectVoxels();
+			
 			break;
-
 		case 'c':
 			selection.clear();
 			break;
@@ -807,6 +808,16 @@ void vizManager::moveCursor()
 }
 
 
+//--------------------------------------------------------------
+void vizManager::selectVoxels()
+{
+	vector<ofVec3f> positions;
+	vector<float> radius;
+	positions.push_back(ofVec3f(50, 50, 50));
+	radius.push_back(0);
+	
+	volume2D.selectVoxels(positions, radius);
+}
 
 
 

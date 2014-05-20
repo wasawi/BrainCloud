@@ -4,7 +4,10 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	ofSetFrameRate(30);
+	ofSetFrameRate(60);
+	
+	// Setup stats
+	setupStats();
 	
 	// Setup log
 	setupLog();
@@ -22,6 +25,9 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	// update stats
+    stats->update();
+
 }
 
 //--------------------------------------------------------------
@@ -31,6 +37,8 @@ void ofApp::draw()
 	ofBackgroundGradient(100,20);
 	myVizManager.draw();
 
+	// draw stats
+    stats->draw();
 }
 
 //--------------------------------------------------------------
@@ -49,13 +57,13 @@ void ofApp::keyPressed(int key)
 			helpMessage->isEnabled() ?	helpMessage->disable(): helpMessage->enable();
 			break;
 		case 'l':
-//			myTwitterManager.twitterClient.loadCacheFile();
+			myTwitterManager.twitterClient.loadCacheFile();
 			break;
 		case 'f':
 			myTwitterManager.scrollCanvas->toggleFBO();
 			break;
 		case 's':
-			myTwitterManager.scrollCanvas->toggleScrollBar();
+//			myTwitterManager.scrollCanvas->toggleScrollBar();
 			break;
 		case OF_KEY_F1:
 			ofSetLogLevel(OF_LOG_SILENT);
@@ -229,8 +237,25 @@ void ofApp::setupHelpMessage()
 
 
 
+//--------------------------------------------------------------
+void ofApp::setupStats()
+{
+	int w= 260;
+	int h= 50;
+	int max= 110;
+	int time= 400;
+	
+	// create ofxStats object
+	stats = new ofxStats();
 
-
+	// set stats position and size
+	stats->setPosition(0, ofGetHeight()-h);
+	stats->setSize(w, h);
+	// set maximun varlue of graph
+	stats->setMaxValue(max);
+	// set lap time to update graph (milliseconds)
+	stats->setLapTime(time);
+}
 
 
 
