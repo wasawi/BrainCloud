@@ -49,29 +49,28 @@ void vizManager::setup()
 void vizManager::initVolume()
 {
 	// Init Volume
-	//volume2D.load("volumes/Colin27T1_tight/");
-	volume2D.load("volumes/talairach_nii/");
-	volume2D.setup(boxW, boxH);
+	//vol.load("volumes/Colin27T1_tight/");
+	vol.loadVolume("volumes/talairach_nii/");
+	vol.setup(boxW, boxH);
 
-	volSize		= volume2D.getVolSize();
+	volSize		= vol.getSize();
 	volWidth	= volSize.x;
 	volHeight	= volSize.y;
 	volDepth	= volSize.z;
 }
 
-
 //--------------------------------------------------------------
 void vizManager::initVolumeRendering()
 {
 	// Init Volume Rendering
-    myVolume.setup(volume2D.getVolSize(), true);
-	myVolume.setVolume(volume2D.getVoxels());
-    myVolume.setRenderSettings(FBOq, Zq, density, thresh);
-	myVolume.setVolumeTextureFilterMode(GL_LINEAR);
-	myVolume.setSlices(&uiClamp);
-	myVolume.setRayPlane(&rayPlane);
+    volRender.setup(&vol);
+
+    volRender.setRenderSettings(FBOq, Zq, density, thresh);
+	volRender.setVolumeTextureFilterMode(GL_LINEAR);
+	vol.setSlices(&uiClamp);
+	vol.setRayPlane(&rayPlane);
 	
-	cubeSize	= myVolume.getCubeSize();
+	cubeSize	= volRender.getCubeSize();
 }
 
 //--------------------------------------------------------------
@@ -151,10 +150,10 @@ void vizManager::updateTalLabel()
 //--------------------------------------------------------------
 void vizManager::updateTalAtlasLabel()
 {
-//	voxelValue = volume2D.getVoxelValue();
-//	voxelNumber = volume2D.getVoxelNumber();
+//	voxelValue = vol.getVoxelValue();
+//	voxelNumber = vol.getVoxelNumber();
 	//mapping from pixel value to index value on the Talairach Atlas
-	int mapValue= ofMap(volume2D.getVoxelValue(), 0, 255, 0, 1105);
+	int mapValue= ofMap(vol.getVoxelValue(), 0, 255, 0, 1105);
 	outputLabels [2] = talairachAtlas.getHemisphere(mapValue);
 	outputLabels [3] = talairachAtlas.getLobe(mapValue);
 	outputLabels [4] = talairachAtlas.getGyrus(mapValue);
@@ -181,7 +180,7 @@ void vizManager::createPointCloud()
 				page = z*volWidth*volHeight;
 				index = x + row + page;
 				
-				int _val = volume2D.getVoxels()[index];
+				int _val = vol.getVoxels()[index];
 				int mapValue= ofMap(_val, 0, 255, 0, 1105);
 
 				if (talairachAtlas.getTissueType(mapValue) == "Gray Matter" && _val<2){
@@ -261,9 +260,9 @@ void vizManager::updateSlicesImage()
 {
 	// update de Depth of the slices drawn by volumeSlice
 	// this uptade must only run when there is a gui event
-	volume2D.redraw(CORONAL, volCoord.z);
-	volume2D.redraw(SAGITTAL, volCoord.x);
-	volume2D.redraw(AXIAL, volCoord.y);
+	vol.redraw(CORONAL, volCoord.z);
+	vol.redraw(SAGITTAL, volCoord.x);
+	vol.redraw(AXIAL, volCoord.y);
 }
 
 //--------------------------------------------------------------
@@ -403,10 +402,10 @@ void vizManager::drawVolume()
 	// Draw Volume
 	ofSetColor(255);
 	cam.begin();
-	myVolume.updateVolume();
+	volRender.update();
 	cam.end();
 	
-	myVolume.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
+	volRender.draw(0, ofGetHeight(), ofGetWidth(), -ofGetHeight());
 }
 //--------------------------------------------------------------
 void vizManager::drawSlices()
@@ -424,15 +423,15 @@ void vizManager::drawSlices()
 	//Draw Slices
 	ofPushView();
 		ofTranslate(dist, dist);
-		volume2D.draw(CORONAL);
+		vol.draw(CORONAL);
 	
 	ofPushView();
 		ofTranslate( 0, boxH+ dist);
-		volume2D.draw(SAGITTAL);
+		vol.draw(SAGITTAL);
 	
 	ofPushView();
 		ofTranslate( 0, boxH+ dist);
-		volume2D.draw(AXIAL);
+		vol.draw(AXIAL);
 	
 	ofPopView();
 	ofPopView();
@@ -627,50 +626,50 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	if(name == "FBO quality")
 	{
 		ofLogVerbose() << "FBO quality " << FBOq;
-		myVolume.setXyQuality(FBOq);
+		volRender.setXyQuality(FBOq);
 	}
 	else if(name == "Z quality")
 	{
 		ofLogVerbose() << "Z quality " << Zq;
-		myVolume.setZQuality(Zq);
+		volRender.setZQuality(Zq);
 	}
 	else if(name == "Threshold")
 	{
 		ofLogVerbose() << "Threshold " << thresh;
-		myVolume.setThreshold(thresh);
+		volRender.setThreshold(thresh);
 	}
 	else if(name == "Density")
 	{
 		ofLogVerbose() << "Density " << density;
-		myVolume.setDensity(density);
+		volRender.setDensity(density);
 	}
 	else if(name == "Dithering")
 	{
 		ofLogVerbose() << "Dithering " << dithering;
-		myVolume.setDithering(dithering);
+		volRender.setDithering(dithering);
 	}
 	else if(name == "Clip depth")
 	{
 		ofLogVerbose() << "Cut Plane Depth " << clipPlaneDepth;
-		myVolume.setClipDepth(clipPlaneDepth);
+		volRender.setClipDepth(clipPlaneDepth);
 	}
 	else if(name == "Elevation clip angle")
 	{
 		ofLogVerbose() << "Elevation " << elevation;
-		myVolume.setElevation(elevation);
+		volRender.setElevation(elevation);
 	}
 	else if(name == "Azimuth clip angle")
 	{
 		ofLogVerbose() << "Azimuth " << azimuth;
-		myVolume.setAzimuth(azimuth);
+		volRender.setAzimuth(azimuth);
 	}
 	else if(name == "linearFilter")
 	{
 		ofLogVerbose() << "linearFilter " << linearFilter;
 		if (linearFilter){
-            myVolume.setVolumeTextureFilterMode(GL_LINEAR);
+            volRender.setVolumeTextureFilterMode(GL_LINEAR);
         }else {
-            myVolume.setVolumeTextureFilterMode(GL_NEAREST);
+            volRender.setVolumeTextureFilterMode(GL_NEAREST);
         };
 	}
 	else if(name == "coronalDepth")
@@ -750,7 +749,7 @@ void vizManager::keyPressed(int key ){
 			break;
 		case 't':
 			// talairach tests
-			int voxelValue = volume2D.getVoxelValue();
+			int voxelValue = vol.getVoxelValue();
 			//mapping from pixel value to index value on the Talairach Atlas
 			int currentValue= ofMap(voxelValue, 0, 255, 0, 1105);
 			
@@ -769,8 +768,10 @@ void vizManager::mousePressed(ofMouseEventArgs& e)
 //--------------------------------------------------------------
 void vizManager::select()
 {
+	ofRay	mouseRay;
 	ofVec3f farPoint;
 	float radius;
+	
 	ofVec3f screenMouse = ofVec3f(ofGetMouseX(), ofGetMouseY(),0);
 	ofVec3f worldMouse = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 0.0f));
 	ofVec3f worldMouseEnd = cam.screenToWorld(ofVec3f(screenMouse.x, screenMouse.y, 1.0f));
@@ -797,8 +798,10 @@ void vizManager::addSelection()
 //--------------------------------------------------------------
 void vizManager::moveCursor()
 {
+	bool	doesIntersect;
+	
 	cam.begin();
-	doesIntersect = myVolume.getIntersection(&cam, intersectionPosition);
+	doesIntersect = vol.getIntersection(&cam, intersectionPosition);
 	if (doesIntersect) {
 		updateVolume2Slices();
 		updateCoordinates();
@@ -816,7 +819,7 @@ void vizManager::selectVoxels()
 	positions.push_back(ofVec3f(50, 50, 50));
 	radius.push_back(0);
 	
-	volume2D.selectVoxels(positions, radius);
+//	vol.selectVoxels(positions, radius);
 }
 
 

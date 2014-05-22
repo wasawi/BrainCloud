@@ -4,7 +4,8 @@
 #include "tweet3d.h"
 #include "ofxVolumetrics.h"
 #include "ofxUI.h"
-#include "volume.h"
+//#include "volume.h"
+#include "myVolume.h"
 #include "myCamera.h"
 #include "ofUtils.h"
 #include "talairachLabels.h"
@@ -140,12 +141,12 @@ private:
 	int	bCamLoaded;
 
 	// Volume Rendering
-    ofxVolumetrics myVolume;
+    ofxVolumetrics volRender;
 	ofFbo myfboRender;
 	ofVec3f cubeSize;
 
 	// Volume Slice
-	volume	volume2D;
+	myVolume	vol;
 	int volWidth, volHeight, volDepth;
 	ofVec3f volSize;
 	
@@ -178,8 +179,6 @@ private:
 
 	// ofxRay objects
 	ofPlane rayPlane;
-	ofRay	mouseRay;
-	bool	doesIntersect;
 	ofVec3f intersectionPosition;
 	
 	// Mesh
