@@ -17,6 +17,7 @@ vizManager::~vizManager()
 //--------------------------------------------------------------
 void vizManager::setup()
 {
+	
 	//setup GUIs
 	initGui();
 
@@ -40,9 +41,12 @@ void vizManager::setup()
 	bMovingCursor	= false;
 	bActive			= true;
 	bDraw			= true;
-	bCamLoaded		= 0;	// ugly bug
-	
+
 	update();
+
+	
+	// camera
+	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 }
 
 //--------------------------------------------------------------
@@ -346,7 +350,7 @@ void vizManager::draw()
 		
 		drawSlices();
 
-//		drawTalairach();
+		drawTalairach();
 
 		drawMesh();
 		
@@ -354,14 +358,14 @@ void vizManager::draw()
 		if (!bMovingCursor && bActive) drawNearestPoint();
 	}
 	
-	
+/*
 	// this is really ugly.. needs a fix
 	if(bCamLoaded<3){
 		// camera
 		ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 		cout << "camLoaded"<< endl;
 		bCamLoaded++;
-	}
+	}*/
 }
 
 //--------------------------------------------------------------
@@ -625,47 +629,47 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	
 	if(name == "FBO quality")
 	{
-		ofLogVerbose() << "FBO quality " << FBOq;
+		ofLogVerbose("vizManager") << "FBO quality " << FBOq;
 		volRender.setXyQuality(FBOq);
 	}
 	else if(name == "Z quality")
 	{
-		ofLogVerbose() << "Z quality " << Zq;
+		ofLogVerbose("vizManager") << "Z quality " << Zq;
 		volRender.setZQuality(Zq);
 	}
 	else if(name == "Threshold")
 	{
-		ofLogVerbose() << "Threshold " << thresh;
+		ofLogVerbose("vizManager") << "Threshold " << thresh;
 		volRender.setThreshold(thresh);
 	}
 	else if(name == "Density")
 	{
-		ofLogVerbose() << "Density " << density;
+		ofLogVerbose("vizManager") << "Density " << density;
 		volRender.setDensity(density);
 	}
 	else if(name == "Dithering")
 	{
-		ofLogVerbose() << "Dithering " << dithering;
+		ofLogVerbose("vizManager") << "Dithering " << dithering;
 		volRender.setDithering(dithering);
 	}
 	else if(name == "Clip depth")
 	{
-		ofLogVerbose() << "Cut Plane Depth " << clipPlaneDepth;
+		ofLogVerbose("vizManager") << "Cut Plane Depth " << clipPlaneDepth;
 		volRender.setClipDepth(clipPlaneDepth);
 	}
 	else if(name == "Elevation clip angle")
 	{
-		ofLogVerbose() << "Elevation " << elevation;
+		ofLogVerbose("vizManager") << "Elevation " << elevation;
 		volRender.setElevation(elevation);
 	}
 	else if(name == "Azimuth clip angle")
 	{
-		ofLogVerbose() << "Azimuth " << azimuth;
+		ofLogVerbose("vizManager") << "Azimuth " << azimuth;
 		volRender.setAzimuth(azimuth);
 	}
 	else if(name == "linearFilter")
 	{
-		ofLogVerbose() << "linearFilter " << linearFilter;
+		ofLogVerbose("vizManager") << "linearFilter " << linearFilter;
 		if (linearFilter){
             volRender.setVolumeTextureFilterMode(GL_LINEAR);
         }else {
@@ -674,37 +678,37 @@ void vizManager::guiEvent(ofxUIEventArgs &e)
 	}
 	else if(name == "coronalDepth")
 	{
-		ofLogVerbose() <<	"coronalDepth " << uiCoord.z;
+		ofLogVerbose("vizManager") <<	"coronalDepth " << uiCoord.z;
 	}
 	else if(name == "sagittalDepth")
 	{
-		ofLogVerbose() <<	"sagittalDepth " << uiCoord.x;
+		ofLogVerbose("vizManager") <<	"sagittalDepth " << uiCoord.x;
 	}
 	else if(name == "axialDepth")
 	{
-		ofLogVerbose() <<	"axialDepth " << uiCoord.y;
+		ofLogVerbose("vizManager") <<	"axialDepth " << uiCoord.y;
 	}
 	else if (name== "coronalPad")
 	{
-		ofLogVerbose() <<	"coronalPad.x =  " << uiCoord.x;
-		ofLogVerbose() <<	"coronalPad.y =  " << uiCoord.y;
+		ofLogVerbose("vizManager") <<	"coronalPad.x =  " << uiCoord.x;
+		ofLogVerbose("vizManager") <<	"coronalPad.y =  " << uiCoord.y;
 	}
 	else if (name== "sagittalPad")
 	{
-		ofLogVerbose() <<	"SagittalPad.x = " << uiCoord.z;
-		ofLogVerbose() <<	"SagittalPad.y = " << uiCoord.y;
+		ofLogVerbose("vizManager") <<	"SagittalPad.x = " << uiCoord.z;
+		ofLogVerbose("vizManager") <<	"SagittalPad.y = " << uiCoord.y;
 	}
 	else if (name== "axialPad")
 	{
-		ofLogVerbose() <<	"axialPad.x = " << uiCoord.x;
-		ofLogVerbose() <<	"axialPad.y = " << uiCoord.z;
+		ofLogVerbose("vizManager") <<	"axialPad.x = " << uiCoord.x;
+		ofLogVerbose("vizManager") <<	"axialPad.y = " << uiCoord.z;
 	}
 	/*
 	else if(name == "latitude")
 	{
 		ofxUISlider *slider = (ofxUISlider *) e.widget;
 		latitude = floor(slider->getScaledValue());
-		ofLogVerbose() <<	"latitude " << latitude;
+		ofLogVerbose("vizManager") <<	"latitude " << latitude;
 	}*/
 //	if (allowEvent)
 		update();
@@ -801,7 +805,7 @@ void vizManager::moveCursor()
 	bool	doesIntersect;
 	
 	cam.begin();
-	doesIntersect = vol.getIntersection(&cam, intersectionPosition);
+	doesIntersect = vol.getIntersection(&cam, cubeSize, intersectionPosition);
 	if (doesIntersect) {
 		updateVolume2Slices();
 		updateCoordinates();

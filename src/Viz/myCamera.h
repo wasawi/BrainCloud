@@ -1,10 +1,11 @@
 #pragma once
 
 //#include "ofMain.h"
-#include "ofCamera.h"
+//#include "ofCamera.h"
+#include "ofEasyCam.h"
 #include "ofEvents.h"
 
-class myCamera : public ofCamera {
+class myCamera : public ofEasyCam {
 public:
 	myCamera();
 	~myCamera();

@@ -6,7 +6,6 @@
 #include "ofxUI.h"
 //#include "volume.h"
 #include "myVolume.h"
-#include "myCamera.h"
 #include "ofUtils.h"
 #include "talairachLabels.h"
 #include "ofxTalairach.h"
@@ -73,8 +72,7 @@ public:
 	void selectVoxels();
 	
 	//Camera
-	//	ofEasyCam cam;
-	myCamera cam;
+	ofEasyCam cam;
 	
 	// guis
 	ofxUICanvas *guiVolume;
@@ -107,6 +105,7 @@ private:
 	void updateSlices2Volume();
 	void updateVolume2Slices();
 	
+	
 	void updateTalCoords();
 	void updateTalAtlasLabel();
 	void updateTalLabel();
@@ -135,11 +134,6 @@ private:
 	ofxXmlSettings XML;
 	string message;
 	
-	//Camera
-//	ofMatrix4x4 posMat;
-//	float latitude;
-	int	bCamLoaded;
-
 	// Volume Rendering
     ofxVolumetrics volRender;
 	ofFbo myfboRender;
