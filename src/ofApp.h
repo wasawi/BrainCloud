@@ -54,8 +54,8 @@ class ofApp : public ofBaseApp
 	void 	setupHelpMessage();
 	
     // ofxStats
-    ofxStats* stats;
-	void	setupStats();
+    ofxStats*	stats;
+	void		setupStats();
 };
 
 #endif

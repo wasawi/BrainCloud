@@ -17,10 +17,10 @@ vizManager::~vizManager()
 //--------------------------------------------------------------
 void vizManager::setup()
 {
-	
+	ofSetLogLevel(OF_LOG_NOTICE);
 	//setup GUIs
 	initGui();
-
+	
 	// Talairach Atlas
 	initTalairach();
 	
@@ -29,7 +29,7 @@ void vizManager::setup()
 	
 	// Init Volume
 	initVolume();
-	
+
 	// Volume rendering
 	initVolumeRendering();
 		
@@ -41,19 +41,22 @@ void vizManager::setup()
 	bMovingCursor	= false;
 	bActive			= true;
 	bDraw			= true;
-
+	
 	update();
+//	updateSlicesImage();
 
 	
 	// camera
 	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
+	
+	ofSetLogLevel(OF_LOG_VERBOSE);
 }
 
 //--------------------------------------------------------------
 void vizManager::initVolume()
 {
 	// Init Volume
-	//vol.load("volumes/Colin27T1_tight/");
+//	vol.loadVolume("volumes/Colin27T1_tight/");
 	vol.loadVolume("volumes/talairach_nii/");
 	vol.setup(boxW, boxH);
 
@@ -358,14 +361,6 @@ void vizManager::draw()
 		if (!bMovingCursor && bActive) drawNearestPoint();
 	}
 	
-/*
-	// this is really ugly.. needs a fix
-	if(bCamLoaded<3){
-		// camera
-		ofxLoadCamera(cam, "GUI/cameraSettings.txt");
-		cout << "camLoaded"<< endl;
-		bCamLoaded++;
-	}*/
 }
 
 //--------------------------------------------------------------

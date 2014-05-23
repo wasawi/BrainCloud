@@ -4,7 +4,7 @@
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-	ofSetFrameRate(60);
+	ofSetFrameRate(20);
 	
 	// Setup stats
 	setupStats();

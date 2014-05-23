@@ -4,124 +4,18 @@
 
 #include "myVolume.h"
 
-/*
-myVolume::myVolume()
-{
-}
-//--------------------------------------------------------------
-myVolume::~myVolume()
-{
-}
-*/
-
-//--------------------------------------------------------------
-void myVolume::loadAsRGBAPow2(string path)
-{
-	ofxImageSequencePlayer imageSequence;
-	imageSequence.init(path + "IM-0001-0", 3, ".tif", 0);
-	
-	int channels =4;
-	
-	// calculate myVolume size
-	w	= imageSequence.getWidth();
-    h	= imageSequence.getHeight();
-    d	= imageSequence.getSequenceLength();
-	
-	ofLogNotice("myVolume::loadColor") << "setting up myVolume data buffer at " << w << "x" << h << "x" << d;
-//	unsigned char* voxels;
-//	voxels = new unsigned char[(int) (w*h*d)*channels];
-
-	voxels.allocate(w, h, d, channels);
-	
-	// fill my array with voxels
-    for(int z=0; z<d; z++)
-    {
-        imageSequence.loadFrame(z);
-		for(int y=0; y<h; y++)
-        {
-			for(int x=0; x<w; x++)
-			{
-				if (x<w && y<h)
-				{													// get values from image
-					int i = ((x + y*w) + z*w*h)*channels;			// the pointer position at Array
-					int sample = imageSequence.getPixels()[(int)(x+y*w)];		// the pixel on the image
-					ofColor c;
-					c.set(sample);
-					
-					voxels[i] = c.r;
-					voxels[i+1] = c.g;
-					voxels[i+2] = c.b;
-					voxels[i+3] = sample;
-					//					ofLogVerbose("vizManager") << sample << " ";
-				}
-            }
-        }
-    }//end for
-	
-	ofxVoxels origin;
-	origin.setFromVoxels(voxels.getVoxels(), w, h, d, channels);
-	
-	// we will put the original pixels here with an added padding
-	allocate(ofNextPow2(w), ofNextPow2(h),ofNextPow2(d), channels);
-	origin.pasteInto(*this, 0, 0, 0);
-}
-
-
-void myVolume::loadAsRGBA(string path)
-{
-	ofxImageSequencePlayer imageSequence;
-	imageSequence.init(path + "IM-0001-0", 3, ".tif", 0);
-	
-	int channels =4;
-	
-	// calculate myVolume size
-	w	= imageSequence.getWidth();
-    h	= imageSequence.getHeight();
-    d	= imageSequence.getSequenceLength();
-	
-	ofLogNotice("myVolume::loadMono")
-	<< "setting up myVolume data buffer at "
-	<< w << "x" << h << "x" << d;
-	
-	voxels.allocate(w, h, d, channels);
-
-	// fill my array with voxels
-    for(int z=0; z<d; z++)
-    {
-        imageSequence.loadFrame(z);
-		voxels.copyFrontSliceFrom(imageSequence.getPixelsRef(), z);
-    }
-
-}
-void myVolume::loadAsMono(string path)
-{
-	ofxImageSequencePlayer imageSequence;
-	imageSequence.init(path + "IM-0001-0", 3, ".tif", 0);
-	
-	// calculate myVolume size
-	w	= imageSequence.getWidth();
-    h	= imageSequence.getHeight();
-    d	= imageSequence.getSequenceLength();
-	
-	ofLogNotice("myVolume::loadMono")
-	<< "setting up myVolume data buffer at "
-	<< w << "x" << h << "x" << d;
-	
-	voxels.allocate(w, h, d, OF_IMAGE_GRAYSCALE);
-	
-	// fill my array with voxels
-    for(int z=0; z<d; z++)
-    {
-        imageSequence.loadFrame(z);
-		voxels.copyFrontSliceFrom(imageSequence.getPixelsRef(), z);
-    }
-}
 
 //--------------------------------------------------------------
 void myVolume::setup(float bW, float bH)
 {
 	boxW		= bW;
 	boxH		= bH;
+	
+	w = width;
+	h = height;
+	d = depth;
+	
+	cout << "*******************total voxels " << getVoxelsRef().getVoxelCount()<< endl;
 	
 	// Needed to align the myVolume at the center of the box
 	// Attention! this is not correct..
@@ -130,17 +24,21 @@ void myVolume::setup(float bW, float bH)
 	halfW = (boxW - w) /2;
 	halfD = (boxW - d) /2;
 	
-/*	//allocate my pixls type of the image slices
-	coronalPixels.allocate(w, d, OF_IMAGE_GRAYSCALE);
-	coronalPixels.set(255);
-	sagittalPixels.allocate(d, h, OF_IMAGE_GRAYSCALE);
-	sagittalPixels.set(255);
-	axialPixels.allocate(w, h, OF_IMAGE_GRAYSCALE);
-	axialPixels.set(255);	
- */
+	ofLogNotice("ofxVolume::loadVolume") << "Loading volume "
+	<< w << "x" << h << "x" << d << endl;
+	
+	//allocate my pixls type of the image slices
+	coronal.allocate(w, d, this->getVoxelsRef().getImageType());
+	sagittal.allocate(h, d, this->getVoxelsRef().getImageType());
+	axial.allocate(w, h, this->getVoxelsRef().getImageType());
+	
 }
 
 int myVolume::getVoxelValue(){
+	
+	ofColor color = voxels.getColor(w, h, d);
+	float b= color.getBrightness();
+	ofLogVerbose("volume") << "value = " << b;
 	
 	int value	=0;
 	for(int z=0; z<d; z++){
@@ -232,6 +130,8 @@ bool myVolume::getVoxelCoordAndVal(int _index, ofxIntPoint& _coord, int& _val){
 //--------------------------------------------------------------
 int myVolume::getVoxelNumber(){
 	
+	
+	
 	int value	=0;
 	for(int z=0; z<d; z++){
 		if (z==axialS){
@@ -307,8 +207,8 @@ void myVolume::redraw(slice vP, int depth)
 		if(depth>=0 && depth<h)
 		{
 			insideCoronal=true;
-//			redrawCoronal();
 			voxels.copyTopSliceTo(coronal.getPixelsRef(), depth);
+			coronal.update();
 		}else{
 			insideCoronal=false;
 //			coronalS = MIN(h, MAX(depth, 0));
@@ -320,8 +220,9 @@ void myVolume::redraw(slice vP, int depth)
 		if(depth>=0 && depth<w)
 		{
 			insideSagittal=true;
-//			redrawSagittal();
-			voxels.copyRightSliceTo(sagittal.getPixelsRef(), depth);
+			voxels.copyLeftSliceTo(sagittal.getPixelsRef(), depth);
+			sagittal.update();
+
 		}else{
 			insideSagittal=false;
 //			sagittalS = MIN(w, MAX(depth, 0));
@@ -335,6 +236,7 @@ void myVolume::redraw(slice vP, int depth)
 			insideAxial=true;
 //			redrawAxial();
 			voxels.copyFrontSliceTo(axial.getPixelsRef(), depth);
+			axial.update();
 		}else{
 			insideAxial=false;
 //			axialS = MIN(d, MAX(depth, 0));
@@ -369,78 +271,7 @@ void myVolume::drawBox()
 	ofPopStyle();
 	ofSetColor(255);
 }
-/*
-//--------------------------------------------------------------
-void myVolume::redrawCoronal()
-{
-	for(int z=0; z<d; z++)
-	{
-		for(int y=0; y<h; y++)
-		{
-			if (y==coronalS){
-				for(int x=0; x<w; x++)
-				{
-					int line = y*w;
-					int page = z*w*h;
-					int i = x + line + page;					// the position at the pixel array
-					coronalPixels[x+(z*w)] = getVoxels()[i];	// get the correct voxel and put it to the pixel array
-				}
-			}
-		}
-	}
-	
-	//draw image
-	coronal.setFromPixels(coronalPixels.getPixels(), w, d, OF_IMAGE_GRAYSCALE);
-	coronal.mirror(true, false);
-}
 
-//--------------------------------------------------------------
-void myVolume::redrawSagittal()
-{
-	for(int z=0; z<d; z++)
-    {
-		for(int y=0; y<h; y++)
-        {
-			for(int x=0; x<w; x++)
-			{
-				if (x==sagittalS){
-					int line = y*w;
-					int page = z*w*h;
-					int i = x + line + page;					// the position at the pixel array
-					sagittalPixels[z+(y*d)] = getVoxels()[i];	// get the correct voxel and put it to the pixel array
-				}
-			}
-		}
-    }
-	
-	//draw image
-	sagittal.setFromPixels(sagittalPixels.getPixels(), d, h, OF_IMAGE_GRAYSCALE);
-	sagittal.rotate90(3);
-}
-
-//--------------------------------------------------------------
-void myVolume::redrawAxial()
-{
-	for(int z=0; z<d; z++)
-    {
-		if (z==axialS){
-			for(int y=0; y<h; y++)
-			{
-				for(int x=0; x<w; x++)
-				{
-					int line = y*w;
-					int page = z*w*h;
-					int i = x + line + page;			// the position at the pixel array
-					axialPixels[x+line] = getVoxels()[i];	// get the correct voxel and put it to the pixel array
-				}
-			}
-		}
-    }
-	
-	//draw image
-	axial.setFromPixels(axialPixels.getPixels(), w, h, OF_IMAGE_GRAYSCALE);
-}
-*/
 
 /*
 //--------------------------------------------------------------
@@ -568,12 +399,6 @@ bool myVolume::inside(ofxPoint _coord){
 }
 
 
-void myVolume::destroy(){
-
-	
-}
-
-
 
 
 
@@ -588,7 +413,7 @@ void myVolume::setRayPlane(ofPlane* _rayPlane)
 }
 
 //--------------------------------------------------------------
-bool myVolume::getIntersection(ofCamera* cam,ofVec3f &intersectionPosition)
+bool myVolume::getIntersection(ofCamera* cam, ofVec3f& cubeSize, ofVec3f& intersectionPosition)
 {
     rayPlane->setCenter(ofVec3f(0,0,planeCoords->y)*cubeSize*-.5);
     rayPlane->setScale(cubeSize*.5);
@@ -617,7 +442,7 @@ bool myVolume::getIntersection(ofCamera* cam,ofVec3f &intersectionPosition)
 	
     string label = doesIntersect ? "hits" : "misses";
     label += + " at " + ofToString(intersectionPosition);
-    ofLogVerbose("Volumetrix") << label;
+    ofLogVerbose("myVolume") << label;
 	
     return doesIntersect;
 }
@@ -631,3 +456,7 @@ bool myVolume::getIntersection(ofCamera* cam,ofVec3f &intersectionPosition)
 
 
 
+/*
+ void myVolume::destroy(){
+ }
+ */

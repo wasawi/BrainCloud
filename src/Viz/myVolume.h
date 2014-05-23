@@ -12,21 +12,13 @@
 //Volume Cutting Viepoint
 enum slice
 {
-	CORONAL,	//	collar
+	CORONAL,	//	diadema
 	SAGITTAL,	//	cresta
-	AXIAL		//	diadema
+	AXIAL		//	collar
 };
 
 class myVolume : public ofxVolume{
 public:
-	/*
-	ofxVolume();
-    virtual ~ofxVolume();
-	*/
-	
-	void loadAsRGBA(string path="");
-	void loadAsRGBAPow2(string path="");
-	void loadAsMono(string path="");
 	void setup(float bW, float bH);
 	void redraw(slice vP, int depth);
 	void destroy();
@@ -55,41 +47,34 @@ public:
 	
 	void setSlices(ofVec3f* _planes);
     void setRayPlane(ofPlane* _rayPlane);
-    bool getIntersection(ofCamera* cam,ofVec3f &intersectionPosition);
+    bool getIntersection(ofCamera* cam, ofVec3f& cubeSize, ofVec3f& intersectionPosition);
 	
 	
 protected:
 private:
 	void drawBox();
-/*
+	vector <ofxPoint> getVoxelsinRadius(ofxPoint& _coord, float& _radius);
+
 	void redrawSagittal();
 	void redrawAxial();
 	void redrawCoronal();
-*/
-	
-	ofxBox outerBox;
+
+	bool inside(ofxPoint _coord);
+		
 	//the box outside the volume useful if volume is non symetrical and you nedd a symetrical box to handle gui or others..
 
 	
 	//ofRay objects
     ofVec3f*	planeCoords;
-    ofRectangle plane;
     ofPlane*	rayPlane;
     ofRay       mouseRay;
-//	ofVec3f volOffset;
-//    ofVec3f voxelSize;
-    ofVec3f cubeSize;
-//    ofVec3f cubePos;
 	
-	vector <ofxPoint> getVoxelsinRadius(ofxPoint& _coord, float& _radius);
-	bool inside(ofxPoint _coord);
+
+	ofxBox		outerBox;
 	
-	int w,h,d;
-	int halfH;
-	int halfW;
-	int halfD;
-	float boxW;
-	float boxH;
+	int			w,h,d;
+	int			halfH, halfW, halfD;
+	float		boxW, boxH;
 	
 	// the depth of the current cutting plane
 	int coronalS;
@@ -101,12 +86,7 @@ private:
 	ofImage sagittal;
 	ofImage axial;
 	
-/*	// one pixel array for cutting plane
-	ofPixels coronalPixels;
-	ofPixels sagittalPixels;
-	ofPixels axialPixels;
-*/
-	
+	// check if inside
 	bool insideCoronal;
 	bool insideSagittal;
 	bool insideAxial;
