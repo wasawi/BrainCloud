@@ -164,6 +164,17 @@ string removeEmojis(string s){
 	return returnString;
 }
 
+//--------------------------------------------------------------
+ofCamera ofGetCurrentCamera(){
+
+	//get camera attributes
+	ofCamera cam;
+	ofMatrix4x4 camMat;
+//	camMat = cam.getModelViewMatrix();
+	camMat = ofGetCurrentMatrix(OF_MATRIX_MODELVIEW);
+	cam.setTransformMatrix(camMat);
+	return cam;
+}
 
 
 

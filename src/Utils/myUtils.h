@@ -14,3 +14,5 @@
 	string ofPasteText();
 
 	string removeEmojis(string s);
+
+	ofCamera ofGetCurrentCamera();
