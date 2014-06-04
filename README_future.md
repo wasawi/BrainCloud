@@ -10,14 +10,20 @@ Define the state of the project as for today:
 
 
 
-CURRENT:
+
+FUTURE:
 ----------------------------------------------
 Sopport for input data:
-	Tiff sequence
+	DICOM
+	Nifti
 
 NTDB:
-	Running on SQLite
+	Running on MySQL + C++ to serve data
 
 Platforms
+	Win
 	Mac
+	Web (js)
+	iOs
+	Android
 
