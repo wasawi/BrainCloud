@@ -9,11 +9,12 @@
 #include "selectionManager.h"
 
 selectionManager::selectionManager(){
-	
+	currentTool = BOX;
+	ofSetCircleResolution(60);
+	clear();
 }
 //--------------------------------------------------------------
 selectionManager::~selectionManager(){
-	this->clear();
 }
 
 //----------------------------------------------
@@ -23,33 +24,54 @@ void selectionManager::setup(){
 
 //----------------------------------------------
 void selectionManager::draw(ofCamera& cam){
-	ofSetCircleResolution(60);
 
-	for( int i = 0; i < spheres.size(); i++){
-		ofNode posNode;
-        posNode.setGlobalPosition(spheres[i].position);
-        posNode.lookAt(cam.getGlobalPosition(), cam.getUpDir());
-		//        posNode.lookAt(cam.getPosition()); this will do, but the object will rotate ugly.
-        ofQuaternion posQuat = posNode.getGlobalOrientation();
-		
-        float ang = 0;
-        ofPoint vec;
-        posQuat.getRotate(ang, vec);
+	// this would be better:
+//	ofCamera cam = ofGetCurrentCamera();
+	
+	if (currentTool == BOX){
+		for( int i = 0; i < boxes.size(); i++){
+			ofPushMatrix();
+			ofTranslate(boxes[i].position);
 
-        ofPushMatrix();
-		ofTranslate(spheres[i].position);
-		ofRotate(ang, vec.x, vec.y, vec.z);
+			ofPushStyle();
+			ofSetColor(255,50);
+			ofDrawBox(ofVec3f(0), boxes[i].size.x,boxes[i].size.y,boxes[i].size.z);
 
-        ofPushStyle();
-		ofSetColor(255,50);
-		ofCircle(0,0,0,spheres[i].radius);
+			ofSetColor(255);
+			ofNoFill();
+			ofDrawBox(ofVec3f(0), boxes[i].size.x,boxes[i].size.y,boxes[i].size.z);
+			ofPopStyle();
 
-		ofSetColor(255);
-		ofNoFill();
-		ofCircle(0,0,0,spheres[i].radius);
-        ofPopStyle();
-		
-		ofPopMatrix();
+			ofPopMatrix();
+		}
+	}else{
+
+		for( int i = 0; i < spheres.size(); i++){
+			ofNode posNode;
+			posNode.setGlobalPosition(spheres[i].position);
+			posNode.lookAt(cam.getGlobalPosition(), cam.getUpDir());
+			//        posNode.lookAt(cam.getPosition()); this will do, but the object will rotate ugly.
+			ofQuaternion posQuat = posNode.getGlobalOrientation();
+			
+			float ang = 0;
+			ofPoint vec;
+			posQuat.getRotate(ang, vec);
+
+			ofPushMatrix();
+			ofTranslate(spheres[i].position);
+			ofRotate(ang, vec.x, vec.y, vec.z);
+
+			ofPushStyle();
+			ofSetColor(255,50);
+			ofCircle(0,0,0,spheres[i].radius);
+
+			ofSetColor(255);
+			ofNoFill();
+			ofCircle(0,0,0,spheres[i].radius);
+			ofPopStyle();
+			
+			ofPopMatrix();
+		}
 	}
 }
 
@@ -65,51 +87,104 @@ void selectionManager::save(){
 
 //----------------------------------------------
 void selectionManager::select(ofVec3f pos, float r){
-	selectionSphere.setPosition(pos);
-	selectionSphere.setRadius(r);
+	if (currentTool == BOX){
+		selectionBox.setPosition(pos);
+		selectionBox.setSize(ofVec3f(r*2));
+	}else{
+		selectionSphere.setPosition(pos);
+		selectionSphere.setRadius(r);
+	}
 }
 
 
 //----------------------------------------------
 void selectionManager::add(){
-
-	ofSpherePrimitive sphereCopy;
-
-	sphereCopy=selectionSphere;
 	
-	sphereSelection sphere;
-	sphere.position=selectionSphere.getPosition();
-	sphere.radius=selectionSphere.getRadius();
-	
-	spheres.push_back(sphere);
-
-/*	cout <<"pos "<< selectionSphere.getPosition()<< endl;
-	cout <<"r "<< selectionSphere.getRadius()<< endl;
-	
-	for( int i = 0; i < spheres.size(); i++){
-		cout <<"posV "<< spheres[i].position<< endl;
-		cout <<"rV "<< spheres[i].radius<< endl;
+	if (currentTool == BOX){
+		ofxBox b;
+		b.position=selectionBox.getPosition();
+		b.size=selectionBox.getSize();
+		boxes.push_back(b);
+	}else{
+		sphere s;
+		s.position=selectionSphere.getPosition();
+		s.radius=selectionSphere.getRadius();
+		spheres.push_back(s);
 	}
- */
 }
 
 //----------------------------------------------
 void selectionManager::clear(){
-
-	for( int i = 0; i < spheres.size(); i++){
-		spheres.clear();
+	
+	if (currentTool == BOX){
+		for( int i = 0; i < boxes.size(); i++){
+			boxes.clear();
+		}
+	}else{
+		for( int i = 0; i < spheres.size(); i++){
+			spheres.clear();
+		}
 	}
-
-//	voxels.clear();
 }
 
 
-//--------------------------------------------------------------
-void selectionManager::drawSphereAxis(ofVec3f position, float radius, float stripWidth, int circleRes){
-	
-	position=selectionSphere.getPosition();
-	radius=selectionSphere.getRadius();
+void selectionManager::drawAxis(){
 
+	if (currentTool == BOX){
+		drawBoxAxis();
+	}else{
+		drawSphereAxis();
+	}
+}
+
+//--------------------------------------------------------------
+void selectionManager::drawBoxAxis(){
+	
+	ofVec3f position	= selectionBox.getPosition();
+	float	w			= selectionBox.getWidth();
+	
+	ofPushMatrix();
+	ofTranslate(position);
+	
+	ofPushStyle();
+	ofNoFill();
+	
+	// daw cirles
+	ofPushView();
+	
+	// draw x axis
+	ofSetColor(ofColor::red);
+	ofDrawBox(ofVec3f(0), w,w,0);
+	// draw y axis
+	ofRotateY(90);
+	ofSetColor(ofColor::green);
+	ofDrawBox(ofVec3f(0), w,w,0);
+	// draw z axis
+	ofRotateX(90);
+	ofSetColor(ofColor::blue);
+	ofDrawBox(ofVec3f(0), w,w,0);
+	
+	ofPopView();
+	
+	// draw x axis
+	ofSetColor(ofColor::red);
+	ofLine(0, 0, 0, w/2, 0, 0);
+	// draw y axis
+	ofSetColor(ofColor::green);
+	ofLine(0, 0, 0, 0, w/2, 0);
+	// draw z axis
+	ofSetColor(ofColor::blue);
+	ofLine(0, 0, 0, 0, 0, w/2);
+	
+	ofPopStyle();
+	ofPopMatrix();
+}
+
+//--------------------------------------------------------------
+void selectionManager::drawSphereAxis(){
+	
+	ofVec3f position=selectionSphere.getPosition();
+	float	radius=selectionSphere.getRadius();
 	
 	ofPushMatrix();
 	ofTranslate(position);
@@ -149,9 +224,16 @@ void selectionManager::drawSphereAxis(ofVec3f position, float radius, float stri
 }
 
 //--------------------------------------------------------------
-vector<sphereSelection> selectionManager::getSelection(){
-
+vector<sphere> selectionManager::getSpheres(){
 	return spheres;
+}
+//--------------------------------------------------------------
+vector<ofxBox> selectionManager::getBoxes(){
+	return boxes;
+}
+//--------------------------------------------------------------
+void selectionManager::setCurrentTool(tool newTool){
+	currentTool = newTool;
 }
 
 

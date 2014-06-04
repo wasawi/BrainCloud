@@ -34,7 +34,7 @@ void vizManager::setup()
 	initVolumeRendering();
 		
 	// point cloud
-	createPointCloud();
+//	createPointCloud();
 
 	//states
 	bSelecting		= false;
@@ -45,7 +45,6 @@ void vizManager::setup()
 	update();
 //	updateSlicesImage();
 
-	
 	// camera
 	ofxLoadCamera(cam, "GUI/cameraSettings.txt");
 	
@@ -56,8 +55,8 @@ void vizManager::setup()
 void vizManager::initVolume()
 {
 	// Init Volume
-//	vol.loadVolume("volumes/Colin27T1_tight/");
-	vol.loadVolume("volumes/talairach_nii/");
+	vol.loadVolume("volumes/Colin27T1_tight/");
+//	vol.loadVolume("volumes/talairach_nii/");
 	vol.setup(boxW, boxH);
 
 	volSize		= vol.getSize();
@@ -74,6 +73,8 @@ void vizManager::initVolumeRendering()
 
     volRender.setRenderSettings(FBOq, Zq, density, thresh);
 	volRender.setVolumeTextureFilterMode(GL_LINEAR);
+	volRender.setSlices(&uiClamp);
+	
 	vol.setSlices(&uiClamp);
 	vol.setRayPlane(&rayPlane);
 	
@@ -355,10 +356,10 @@ void vizManager::draw()
 
 		drawTalairach();
 
-		drawMesh();
+//		drawMesh();
 		
 		// draw nearest point
-		if (!bMovingCursor && bActive) drawNearestPoint();
+//		if (!bMovingCursor && bActive) drawNearestPoint();
 	}
 	
 }
@@ -368,7 +369,7 @@ void vizManager::drawSelection()
 {
 //	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	cam.begin();
-	if(bSelecting) selection.drawSphereAxis();
+	if(bSelecting) selection.drawAxis();
 	selection.draw(cam);
 	cam.end();
 //	ofEnableBlendMode(OF_BLENDMODE_ALPHA);

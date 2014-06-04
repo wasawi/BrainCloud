@@ -8,11 +8,18 @@
 
 #pragma once
 #include "ofMain.h"
+#include "myUtils.h"
+#include "ofxBox.h"
 
-
-struct sphereSelection{
+struct sphere{
 	float	radius;
 	ofVec3f	position;
+};
+
+enum tool
+{
+	BOX,
+	SPHERE,
 };
 
 class selectionManager{
@@ -30,25 +37,29 @@ public:
 	void add();
 	void clear();
 
-	void drawSphereAxis(ofVec3f position=ofVec3f(0), float radius=20, float stripWidth = 10, int circleRes = 60);
+	void drawAxis();
+	void drawBoxAxis();
+	void drawSphereAxis();
 
-	//getters
+	//setters
+	void setCurrentTool(tool newTool);
 	
-	vector<sphereSelection> getSelection();
+	//getters
+	vector<ofxBox> getBoxes();
+	vector<sphere> getSpheres();
+
 	
 protected:
 private:
-	
-	struct voxel{
-		int		index;
-		ofVec3f	position;
-	};
-	
+		
 	string myFilePath;
-	vector<voxel> voxels;
-	vector<sphereSelection> spheres;
+	tool currentTool;
+	
+	// selection objects
+	vector<ofxBox> boxes;
+	vector<sphere> spheres;
 	
 	//selection
 	ofSpherePrimitive selectionSphere;
-
+	ofxBox selectionBox;
 };
