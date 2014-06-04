@@ -25,7 +25,8 @@ private:
 	
 	// events
 //	void searchQuery(string s);
-	void searchQuery(guiEvent &e);
+	void search(guiEvent &e);
+	void post(string tweet);
 	void setOneTweetToGui(guiEvent &e);
 	void cleanImgUsers( std::vector <ofImage> & a );
 	void textInputEvent(ofxUIEventArgs &e);

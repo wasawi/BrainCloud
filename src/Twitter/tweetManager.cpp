@@ -77,13 +77,12 @@ void tweetManager::setup(string CONSUMER_KEY, string CONSUMER_SECRET){
     twitterClient.setAutoLoadImages(true, false); // Loads images into memory as ofImage;
 	
 	twitterClient.authorize(CONSUMER_KEY, CONSUMER_SECRET);
-	
+
+	// we need listeners here because the events are not coming from this class
 	// listen to new searches. maybe we will need to place it somewhere else and use removelistener
-    ofAddListener(guiEvent::newSearch, this, &tweetManager::searchQuery);
-
+    ofAddListener(guiEvent::newSearch, this, &tweetManager::search);
 	// listen when tweets are received
-	ofAddListener(guiEvent::gotTweet, this, &tweetManager::setOneTweetToGui);
-
+	ofAddListener(guiEvent::tweetReceived, this, &tweetManager::setOneTweetToGui);
 	// listen to tab
 	ofAddListener(guiEvent::tabSelected, this, &tweetManager::changeTabBar);
 
@@ -94,9 +93,14 @@ void tweetManager::setup(string CONSUMER_KEY, string CONSUMER_SECRET){
 }
 
 //--------------------------------------------------------------
-void tweetManager::searchQuery(guiEvent &e) {
+void tweetManager::search(guiEvent &e) {
 	twitterClient.startQuery(e.message);
 	ofLogVerbose("tweetManager ") << "query = " << e.message;
+}
+//--------------------------------------------------------------
+void tweetManager::post(string tweet) {
+	twitterClient.postStatus(tweet);
+	ofLogVerbose("tweetManager ") << "post = " << tweet;
 }
 
 //--------------------------------------------------------------
@@ -151,7 +155,7 @@ void tweetManager::setupPostCanvas(){
 							 searchFieldX,
 							 0)->setAutoClear(true);
 	
-	postCanvas->addWidgetDown(new ofxUILabelButton("Post",
+	postCanvas->addWidgetDown(new ofxUILabelButton("PostBtn",
 												   postBtn,
 												   buttonW,
 												   buttonH,
@@ -287,7 +291,7 @@ void tweetManager::textInputEvent(ofxUIEventArgs &e)
 			ofLogVerbose("TweetManager") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
 			
-			//send text to Twitter
+			//send search query to Twitter API
 			static guiEvent newEvent;
 			newEvent.message =  textinput->getTextString();
 			newEvent.value	= nResponses;
@@ -332,7 +336,8 @@ void tweetManager::textInputEvent(ofxUIEventArgs &e)
 void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 {
 	string name = e.widget->getName();
-	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+//	ofxUILabelToggle *toggle = (ofxUILabelToggle *) e.widget;
+	string tweet, link;
 	
 	if(name == "PostField")
 	{
@@ -341,12 +346,10 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 		{
 			ofLogVerbose("TweetManager") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
-			
-			//send text to Twitter
-			static guiEvent newEvent;
-			newEvent.message =  textinput->getTextString();
-			newEvent.value	= nResponses;
-			ofNotifyEvent(guiEvent::newSearch, newEvent);
+
+			//send tweet to Twitter API
+			tweet= textinput->getTextString();
+			post(tweet);
 		}
 		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
 		{
@@ -364,10 +367,7 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 		{
 			ofLogVerbose("TweetManager") << "ON LOAD: ";
 		}
-		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
-		string output = textinput->getTextString();
-		ofLogVerbose("TweetManager") << output;
-		
+		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();		
 	}
 	else if(name == "URLfield")
 	{
@@ -376,12 +376,6 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 		{
 			ofLogVerbose("TweetManager") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);
-			
-			//send text to Twitter
-			static guiEvent newEvent;
-			newEvent.message =  textinput->getTextString();
-			newEvent.value	= nResponses;
-//			ofNotifyEvent(guiEvent::newSearch, newEvent);
 		}
 		else if(textinput->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_FOCUS)
 		{
@@ -400,14 +394,14 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 			ofLogVerbose("TweetManager") << "ON LOAD: ";
 		}
 		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
-		string output = textinput->getTextString();
-		ofLogVerbose("TweetManager") << output;
-		
+		link = textinput->getTextString();
+		ofLogVerbose("TweetManager:URLfield") << link;
 	}
-	else if(name == "Post")
+	else if(name == "PostBtn")
 	{
-		ofxUILabelButton *btn = (ofxUILabelButton *) e.widget;
-/*		if(btn->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
+
+/*		ofxUILabelButton *btn = (ofxUILabelButton *) e.widget;
+		if(btn->getInputTriggerType() == OFX_UI_TEXTINPUT_ON_ENTER)
 		{
 			ofLogVerbose("TweetManager") << "ON ENTER: ";
 			//ofUnregisterKeyEvents((guiManager*)this);

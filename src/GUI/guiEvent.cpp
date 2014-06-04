@@ -8,5 +8,6 @@
 #include "guiEvent.h"
 
 ofEvent <guiEvent> guiEvent::newSearch;
-ofEvent <guiEvent> guiEvent::gotTweet;
+ofEvent <guiEvent> guiEvent::tweetReceived;
 ofEvent <guiEvent> guiEvent::tabSelected;
+//ofEvent <guiEvent> guiEvent::postTweet;
