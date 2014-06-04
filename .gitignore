@@ -112,9 +112,8 @@ Release*/
 *~.xml
 
 #These are my own commands
-bin/data/logs
-bin/data/postTweet.json
-bin/data/getTweet.json
-bin/data/cache.json
 TODO.md
 *.json
+bin/data/GUI
+bin/data/twitter
+bin/data/logs
