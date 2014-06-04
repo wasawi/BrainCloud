@@ -19,8 +19,10 @@ enum slice
 
 class myVolume : public ofxVolume{
 public:
+	// slices
 	void setup(float bW, float bH);
 	void redraw(slice vP, int depth);
+	void draw(slice vP);
 	void destroy();
 	
 	// Getters
@@ -37,7 +39,7 @@ public:
 	void colourRandomVoxels(int count);
 	void colourRandomBoxes(int count);
 	
-	void draw(slice vP);
+
 //	vector<unsigned char> selectVoxels(vector <ofxPoint> _coord, vector <float> radius);
 	
 	// selection
@@ -52,14 +54,14 @@ public:
 	
 protected:
 private:
+	// methods for slices
 	void drawBox();
+	bool inside(ofxPoint _coord);
+	
 	vector <ofxPoint> getVoxelsinRadius(ofxPoint& _coord, float& _radius);
 
-	void redrawSagittal();
-	void redrawAxial();
-	void redrawCoronal();
 
-	bool inside(ofxPoint _coord);
+
 		
 	//the box outside the volume useful if volume is non symetrical and you nedd a symetrical box to handle gui or others..
 

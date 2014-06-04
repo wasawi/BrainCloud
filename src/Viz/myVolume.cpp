@@ -4,7 +4,8 @@
 
 #include "myVolume.h"
 
-
+//--------------------------------------------------------------
+//	All about slices
 //--------------------------------------------------------------
 void myVolume::setup(float bW, float bH)
 {
@@ -15,17 +16,12 @@ void myVolume::setup(float bW, float bH)
 	h = height;
 	d = depth;
 	
-	cout << "*******************total voxels " << getVoxelsRef().getVoxelCount()<< endl;
-	
 	// Needed to align the myVolume at the center of the box
 	// Attention! this is not correct..
 	// will give problems if W & H are not d same
 	halfH = (boxW - h) /2;
 	halfW = (boxW - w) /2;
 	halfD = (boxW - d) /2;
-	
-	ofLogNotice("ofxVolume::loadVolume") << "Loading volume "
-	<< w << "x" << h << "x" << d << endl;
 	
 	//allocate my pixls type of the image slices
 	coronal.allocate(w, d, this->getVoxelsRef().getImageType());
@@ -34,6 +30,87 @@ void myVolume::setup(float bW, float bH)
 	
 }
 
+//--------------------------------------------------------------
+void myVolume::redraw(slice vP, int depth)
+{
+	// try clamp the value like this out = MIN(h, MAX(in, 0));
+	if(vP==CORONAL)
+	{
+		coronalS = depth;	// maybe talairch will need unclamped position??
+		if(depth>=0 && depth<h)
+		{
+			insideCoronal=true;
+			voxels.copyTopSliceTo(coronal.getPixelsRef(), depth);
+			coronal.update();
+		}else{
+			insideCoronal=false;
+			//			coronalS = MIN(h, MAX(depth, 0));
+		}
+	}
+	else if(vP==SAGITTAL)
+	{
+		sagittalS = depth;
+		if(depth>=0 && depth<w)
+		{
+			insideSagittal=true;
+			voxels.copyLeftSliceTo(sagittal.getPixelsRef(), depth);
+			sagittal.update();
+			
+		}else{
+			insideSagittal=false;
+			//			sagittalS = MIN(w, MAX(depth, 0));
+		}
+	}
+	else if (vP==AXIAL)
+	{
+		axialS = depth;
+		if(depth>=0 && depth<d)
+		{
+			insideAxial=true;
+			//			redrawAxial();
+			voxels.copyFrontSliceTo(axial.getPixelsRef(), depth);
+			axial.update();
+		}else{
+			insideAxial=false;
+			//			axialS = MIN(d, MAX(depth, 0));
+		}
+	}
+}
+//--------------------------------------------------------------
+void myVolume::draw(slice vP)
+{
+	drawBox();
+	if(vP==CORONAL)
+	{
+		if(insideCoronal) coronal.draw(halfW, halfD);	// otherwise set to black (do not draw).
+	}
+	else if(vP==SAGITTAL)
+	{
+		if(insideSagittal) sagittal.draw(halfH, halfD);	// otherwise set to black (do not draw).
+	}
+	else if(vP==AXIAL)
+	{
+		if(insideAxial) axial.draw(halfW, halfH);		// otherwise set to black (do not draw).
+	}
+}
+//--------------------------------------------------------------
+void myVolume::drawBox()
+{
+	// Draw Box
+	ofPushStyle();
+	ofSetColor(0);
+	ofRect(0, 0, boxW, boxH);
+	ofPopStyle();
+	ofSetColor(255);
+}
+
+
+
+//--------------------------------------------------------------
+//	extending volume methods
+//--------------------------------------------------------------
+
+//--------------------------------------------------------------
 int myVolume::getVoxelValue(){
 	
 	ofColor color = voxels.getColor(w, h, d);
@@ -197,80 +274,7 @@ void myVolume::colourRandomBoxes(int count)
 }
 
 
-//--------------------------------------------------------------
-void myVolume::redraw(slice vP, int depth)
-{
-	// try clamp the value like this out = MIN(h, MAX(in, 0));
-	if(vP==CORONAL)
-	{
-		coronalS = depth;	// maybe talairch will need unclamped position??
-		if(depth>=0 && depth<h)
-		{
-			insideCoronal=true;
-			voxels.copyTopSliceTo(coronal.getPixelsRef(), depth);
-			coronal.update();
-		}else{
-			insideCoronal=false;
-//			coronalS = MIN(h, MAX(depth, 0));
-		}
-	}
-	else if(vP==SAGITTAL)
-	{
-		sagittalS = depth;
-		if(depth>=0 && depth<w)
-		{
-			insideSagittal=true;
-			voxels.copyLeftSliceTo(sagittal.getPixelsRef(), depth);
-			sagittal.update();
 
-		}else{
-			insideSagittal=false;
-//			sagittalS = MIN(w, MAX(depth, 0));
-		}
-	}
-	else if (vP==AXIAL)
-	{
-		axialS = depth;
-		if(depth>=0 && depth<d)
-		{
-			insideAxial=true;
-//			redrawAxial();
-			voxels.copyFrontSliceTo(axial.getPixelsRef(), depth);
-			axial.update();
-		}else{
-			insideAxial=false;
-//			axialS = MIN(d, MAX(depth, 0));
-		}
-	}
-}
-
-//--------------------------------------------------------------
-void myVolume::draw(slice vP)
-{
-	drawBox();
-	if(vP==CORONAL)
-	{
-		if(insideCoronal) coronal.draw(halfW, halfD);	// otherwise set to black (do not draw).
-	}
-	else if(vP==SAGITTAL)
-	{
-		if(insideSagittal) sagittal.draw(halfH, halfD);	// otherwise set to black (do not draw).
-	}
-	else if(vP==AXIAL)
-	{
-		if(insideAxial) axial.draw(halfW, halfH);		// otherwise set to black (do not draw).
-	}
-}
-//--------------------------------------------------------------
-void myVolume::drawBox()
-{
-	// Draw Box
-	ofPushStyle();
-	ofSetColor(0);
-	ofRect(0, 0, boxW, boxH);
-	ofPopStyle();
-	ofSetColor(255);
-}
 
 
 /*
