@@ -9,7 +9,8 @@
 #include "selectionManager.h"
 
 selectionManager::selectionManager(){
-	currentTool = BOX;
+	currentTool = SPHERE;
+//	currentTool = BOX;
 	ofSetCircleResolution(60);
 	clear();
 }
@@ -25,28 +26,21 @@ void selectionManager::setup(){
 //----------------------------------------------
 void selectionManager::draw(ofCamera& cam){
 
-	// this would be better:
-//	ofCamera cam = ofGetCurrentCamera();
 	
 	if (currentTool == BOX){
 		for( int i = 0; i < boxes.size(); i++){
-			ofPushMatrix();
-			ofTranslate(boxes[i].position);
-
-			ofPushStyle();
-			ofSetColor(255,50);
-			ofDrawBox(ofVec3f(0), boxes[i].size.x,boxes[i].size.y,boxes[i].size.z);
-
-			ofSetColor(255);
-			ofNoFill();
-			ofDrawBox(ofVec3f(0), boxes[i].size.x,boxes[i].size.y,boxes[i].size.z);
-			ofPopStyle();
-
-			ofPopMatrix();
+			
+			drawBox(boxes[i].position, boxes[i].size.x);
 		}
 	}else{
 
 		for( int i = 0; i < spheres.size(); i++){
+
+			// We need to orient the shphere depending on the position of the camera
+			// It will b better to ge the actual camera position instead of passing it as argument.
+			// this would be better:
+			//	ofCamera cam = ofGetCurrentCamera();
+			
 			ofNode posNode;
 			posNode.setGlobalPosition(spheres[i].position);
 			posNode.lookAt(cam.getGlobalPosition(), cam.getUpDir());
@@ -61,15 +55,8 @@ void selectionManager::draw(ofCamera& cam){
 			ofTranslate(spheres[i].position);
 			ofRotate(ang, vec.x, vec.y, vec.z);
 
-			ofPushStyle();
-			ofSetColor(255,50);
-			ofCircle(0,0,0,spheres[i].radius);
+			drawSphere(ofVec3f(0), spheres[i].radius);
 
-			ofSetColor(255);
-			ofNoFill();
-			ofCircle(0,0,0,spheres[i].radius);
-			ofPopStyle();
-			
 			ofPopMatrix();
 		}
 	}
@@ -131,97 +118,12 @@ void selectionManager::clear(){
 void selectionManager::drawAxis(){
 
 	if (currentTool == BOX){
-		drawBoxAxis();
+		drawBoxAxis(selectionBox.getPosition(), selectionBox.getWidth());
 	}else{
-		drawSphereAxis();
+		drawSphereAxis(selectionSphere.getPosition(), selectionSphere.getRadius());
 	}
 }
 
-//--------------------------------------------------------------
-void selectionManager::drawBoxAxis(){
-	
-	ofVec3f position	= selectionBox.getPosition();
-	float	w			= selectionBox.getWidth();
-	
-	ofPushMatrix();
-	ofTranslate(position);
-	
-	ofPushStyle();
-	ofNoFill();
-	
-	// daw cirles
-	ofPushView();
-	
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofDrawBox(ofVec3f(0), w,w,0);
-	// draw y axis
-	ofRotateY(90);
-	ofSetColor(ofColor::green);
-	ofDrawBox(ofVec3f(0), w,w,0);
-	// draw z axis
-	ofRotateX(90);
-	ofSetColor(ofColor::blue);
-	ofDrawBox(ofVec3f(0), w,w,0);
-	
-	ofPopView();
-	
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofLine(0, 0, 0, w/2, 0, 0);
-	// draw y axis
-	ofSetColor(ofColor::green);
-	ofLine(0, 0, 0, 0, w/2, 0);
-	// draw z axis
-	ofSetColor(ofColor::blue);
-	ofLine(0, 0, 0, 0, 0, w/2);
-	
-	ofPopStyle();
-	ofPopMatrix();
-}
-
-//--------------------------------------------------------------
-void selectionManager::drawSphereAxis(){
-	
-	ofVec3f position=selectionSphere.getPosition();
-	float	radius=selectionSphere.getRadius();
-	
-	ofPushMatrix();
-	ofTranslate(position);
-	
-	ofPushStyle();
-	ofNoFill();
-	
-	// daw cirles
-	ofPushView();
-	
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofCircle(0, 0, 0, radius);
-	// draw y axis
-	ofRotateY(90);
-	ofSetColor(ofColor::green);
-	ofCircle(0, 0, 0, radius);
-	// draw z axis
-	ofRotateX(90);
-	ofSetColor(ofColor::blue);
-	ofCircle(0, 0, 0, radius);
-	
-	ofPopView();
-
-	// draw x axis
-	ofSetColor(ofColor::red);
-	ofLine(0, 0, 0, radius, 0, 0);
-	// draw y axis
-	ofSetColor(ofColor::green);
-	ofLine(0, 0, 0, 0, radius, 0);
-	// draw z axis
-	ofSetColor(ofColor::blue);
-	ofLine(0, 0, 0, 0, 0, radius);
-	
-	ofPopStyle();
-	ofPopMatrix();
-}
 
 //--------------------------------------------------------------
 vector<sphere> selectionManager::getSpheres(){

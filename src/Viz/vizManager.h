@@ -83,6 +83,7 @@ public:
 	bool	bSelecting;
 	bool	bActive;
 	bool	bDraw;
+	bool	bPointCloud;
 	
 private:
 

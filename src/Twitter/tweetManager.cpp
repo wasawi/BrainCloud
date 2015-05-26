@@ -367,7 +367,7 @@ void tweetManager::postCanvasEvent(ofxUIEventArgs &e)
 		{
 			ofLogVerbose("TweetManager") << "ON LOAD: ";
 		}
-		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();		
+		ofLogVerbose("TweetManager") << textinput->getInputTriggerType();
 	}
 	else if(name == "URLfield")
 	{

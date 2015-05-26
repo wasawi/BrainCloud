@@ -9,12 +9,19 @@
 /* Begin PBXBuildFile section */
 		028A1A54F7661FB669A7DFF8 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4ACD81C4476FF24E4A29315D /* Ray.cpp */; };
 		04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48CCCEA0C681DE8B4945111B /* ofxUIToggle.cpp */; };
+		08126A8619608CC900092A04 /* myDraws.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08126A8419608CC900092A04 /* myDraws.cpp */; };
 		082001AD18EB0C8E00E5C389 /* selectionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082001AB18EB0C8E00E5C389 /* selectionManager.cpp */; };
 		082D680C192D0F2000042490 /* ofxImageSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082D6805192D0F2000042490 /* ofxImageSequence.cpp */; };
 		082D680D192D0F2000042490 /* ofxVolume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082D6807192D0F2000042490 /* ofxVolume.cpp */; };
 		082D680E192D0F2000042490 /* ofxVoxels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 082D6809192D0F2000042490 /* ofxVoxels.cpp */; };
 		084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A8896AC3BECAAA504E3828F4 /* ofxUIEventArgs.cpp */; };
 		089ECCCD18F19261004B2D14 /* ofxStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 089ECCCB18F19261004B2D14 /* ofxStats.cpp */; };
+		08A744A7193F3ACF00C624B3 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 08A74499193F3ACF00C624B3 /* sqlite3.c */; };
+		08A744A8193F3ACF00C624B3 /* Column.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A7449D193F3ACF00C624B3 /* Column.cpp */; };
+		08A744A9193F3ACF00C624B3 /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A7449F193F3ACF00C624B3 /* Database.cpp */; };
+		08A744AA193F3ACF00C624B3 /* Statement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A744A3193F3ACF00C624B3 /* Statement.cpp */; };
+		08A744AB193F3ACF00C624B3 /* Transaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A744A5193F3ACF00C624B3 /* Transaction.cpp */; };
+		08A744AE193F488E00C624B3 /* SQLiteManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08A744AC193F488E00C624B3 /* SQLiteManager.cpp */; };
 		08B1B47E18DFEB2A0059F53C /* localizationManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */; };
 		08C93D14192E32750075F418 /* myVolume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08C93D12192E32750075F418 /* myVolume.cpp */; };
 		08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08F8280C18DA58A200EF951B /* ofxCameraSaveLoad.cpp */; };
@@ -26,7 +33,6 @@
 		22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E592342D8B7FB73A6F64D /* ofxUIFPSSlider.cpp */; };
 		222C3AB10FA3158602718602 /* ofxUIMultiImageButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17E06821FB98542FDB806E50 /* ofxUIMultiImageButton.cpp */; };
 		26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2689C5C8A97002C218125F2F /* ofxUIImageSlider.cpp */; };
-		2E592F90ED46A225F36431CF /* ofxTwitter3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 024DDBA5871B37FE4D21881E /* ofxTwitter3d.cpp */; };
 		37BE17853C4F3BA04E10C8A8 /* ofxOAuth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 70FE2C9BC0FB311D0994A1B9 /* ofxOAuth.cpp */; };
 		3CB7D2F1C94EDF626EA83342 /* ofxUIScrollableSliderCanvas.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 629904C075E9391E0D36155C /* ofxUIScrollableSliderCanvas.cpp */; };
 		3D4EA8E172D3E4A30FEFA969 /* ofxUIImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 938F5A098A216B403906129C /* ofxUIImage.cpp */; };
@@ -61,7 +67,6 @@
 		9D44DC88EF9E7991B4A09951 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 832BDC407620CDBA568B713D /* tinyxmlerror.cpp */; };
 		9F5C6DD965B4F3A6DB5B88F8 /* ofxUI2DGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */; };
 		A0C1C42F6293BEC48CA02D5D /* Base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F822BE6973957EF1D983414B /* Base.cpp */; };
-		A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3F85DCF19C282DE4049266F1 /* tweet3d.cpp */; };
 		ADE7C2AFC51E3F7E5E389026 /* ofxUISortableList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5613D5D24B00D8AD909F7E6A /* ofxUISortableList.cpp */; };
 		AE281BEBF3A00F1FC37F3DA0 /* ofxUIWaveform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9345327AA463407B3DADBADE /* ofxUIWaveform.cpp */; };
 		AE32F1807796B1050E082651 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0F867B04BF36A560C2493C09 /* json_value.cpp */; };
@@ -145,11 +150,12 @@
 
 /* Begin PBXFileReference section */
 		01DCC0911400F9ACF5B65578 /* ofxXmlSettings.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxXmlSettings.h; path = ../../../addons/ofxXmlSettings/src/ofxXmlSettings.h; sourceTree = SOURCE_ROOT; };
-		024DDBA5871B37FE4D21881E /* ofxTwitter3d.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxTwitter3d.cpp; path = src/Twitter/ofxTwitter3d.cpp; sourceTree = SOURCE_ROOT; };
 		02677FA320D6C63B228A7562 /* ofxUIWidgetWithLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIWidgetWithLabel.h; path = ../../../addons/ofxUI/src/ofxUIWidgetWithLabel.h; sourceTree = SOURCE_ROOT; };
 		02FF3B8D243CFB85AE0909EB /* ofxUI2DGraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUI2DGraph.cpp; path = ../../../addons/ofxUI/src/ofxUI2DGraph.cpp; sourceTree = SOURCE_ROOT; };
 		065EBAA29F0D9C24EAC889F3 /* multi.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = multi.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/multi.h; sourceTree = SOURCE_ROOT; };
 		06C7032F68D99A145A53CB6F /* ofxUITextInput.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUITextInput.cpp; path = ../../../addons/ofxUI/src/ofxUITextInput.cpp; sourceTree = SOURCE_ROOT; };
+		08126A8419608CC900092A04 /* myDraws.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = myDraws.cpp; path = Utils/myDraws.cpp; sourceTree = "<group>"; };
+		08126A8519608CC900092A04 /* myDraws.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = myDraws.h; path = Utils/myDraws.h; sourceTree = "<group>"; };
 		082001AB18EB0C8E00E5C389 /* selectionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = selectionManager.cpp; path = Viz/selectionManager.cpp; sourceTree = "<group>"; };
 		082001AC18EB0C8E00E5C389 /* selectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = selectionManager.h; path = Viz/selectionManager.h; sourceTree = "<group>"; };
 		082D67DA192B682500042490 /* ofxPoint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxPoint.h; sourceTree = "<group>"; };
@@ -162,6 +168,25 @@
 		082D6811192D21B600042490 /* ofxBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxBox.h; sourceTree = "<group>"; };
 		089ECCCB18F19261004B2D14 /* ofxStats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ofxStats.cpp; sourceTree = "<group>"; };
 		089ECCCC18F19261004B2D14 /* ofxStats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ofxStats.h; sourceTree = "<group>"; };
+		08A74494193F3ACF00C624B3 /* Doxyfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		08A74495193F3ACF00C624B3 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		08A74496193F3ACF00C624B3 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		08A74498193F3ACF00C624B3 /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		08A74499193F3ACF00C624B3 /* sqlite3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
+		08A7449A193F3ACF00C624B3 /* sqlite3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
+		08A7449C193F3ACF00C624B3 /* Assertion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Assertion.h; sourceTree = "<group>"; };
+		08A7449D193F3ACF00C624B3 /* Column.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Column.cpp; sourceTree = "<group>"; };
+		08A7449E193F3ACF00C624B3 /* Column.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Column.h; sourceTree = "<group>"; };
+		08A7449F193F3ACF00C624B3 /* Database.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
+		08A744A0193F3ACF00C624B3 /* Database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
+		08A744A1193F3ACF00C624B3 /* Exception.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Exception.h; sourceTree = "<group>"; };
+		08A744A2193F3ACF00C624B3 /* SQLiteC++.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SQLiteC++.h"; sourceTree = "<group>"; };
+		08A744A3193F3ACF00C624B3 /* Statement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Statement.cpp; sourceTree = "<group>"; };
+		08A744A4193F3ACF00C624B3 /* Statement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Statement.h; sourceTree = "<group>"; };
+		08A744A5193F3ACF00C624B3 /* Transaction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Transaction.cpp; sourceTree = "<group>"; };
+		08A744A6193F3ACF00C624B3 /* Transaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transaction.h; sourceTree = "<group>"; };
+		08A744AC193F488E00C624B3 /* SQLiteManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SQLiteManager.cpp; path = Twitter/SQLiteManager.cpp; sourceTree = "<group>"; };
+		08A744AD193F488E00C624B3 /* SQLiteManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SQLiteManager.h; path = Twitter/SQLiteManager.h; sourceTree = "<group>"; };
 		08A9C84B3CA68561BE01FF37 /* ofxUIWidget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUIWidget.cpp; path = ../../../addons/ofxUI/src/ofxUIWidget.cpp; sourceTree = SOURCE_ROOT; };
 		08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = localizationManager.cpp; path = Viz/localizationManager.cpp; sourceTree = "<group>"; };
 		08B1B47D18DFEB2A0059F53C /* localizationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = localizationManager.h; path = Viz/localizationManager.h; sourceTree = "<group>"; };
@@ -213,13 +238,11 @@
 		388AAF8A80C304BB3E971E09 /* FTGLBitmapFont.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = FTGLBitmapFont.h; path = ../../../addons/ofxFTGL/libs/FTGL/include/FTGL/FTGLBitmapFont.h; sourceTree = SOURCE_ROOT; };
 		38EBD5650A3BF5A499B07525 /* ofxUISuperCanvas.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxUISuperCanvas.cpp; path = ../../../addons/ofxUI/src/ofxUISuperCanvas.cpp; sourceTree = SOURCE_ROOT; };
 		394ABEAB4D6448D998E47B56 /* ofxTalairach.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTalairach.h; path = ../../../addons/ofxTalairach/src/ofxTalairach.h; sourceTree = SOURCE_ROOT; };
-		3A34BCED94C473EFF3839A95 /* ofxTwitter3d.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitter3d.h; path = src/Twitter/ofxTwitter3d.h; sourceTree = SOURCE_ROOT; };
 		3B869EDFC4EA231621749621 /* json_batchallocator.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = json_batchallocator.h; path = ../../../addons/ofxJSON/libs/jsoncpp/src/json_batchallocator.h; sourceTree = SOURCE_ROOT; };
 		3C33C697B6CB25A1D135A619 /* guiEvent.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = guiEvent.h; path = src/GUI/guiEvent.h; sourceTree = SOURCE_ROOT; };
 		3C6AB2D7EED3856AAA37E28C /* ofxFTGLSimpleLayout.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxFTGLSimpleLayout.cpp; path = ../../../addons/ofxFTGL/src/ofxFTGLSimpleLayout.cpp; sourceTree = SOURCE_ROOT; };
 		3C9066FB257B904A547019ED /* ofxUIDragableLabelButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIDragableLabelButton.h; path = ../../../addons/ofxUI/src/ofxUIDragableLabelButton.h; sourceTree = SOURCE_ROOT; };
 		3F53D53B3E0B050EAB28D4FF /* ofxVolumetrics.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxVolumetrics.h; path = ../../../addons/ofxVolumetrics/src/ofxVolumetrics.h; sourceTree = SOURCE_ROOT; };
-		3F85DCF19C282DE4049266F1 /* tweet3d.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = tweet3d.cpp; path = src/Twitter/tweet3d.cpp; sourceTree = SOURCE_ROOT; };
 		4117B8C24D49837D3DF9C23B /* ofxUIToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIToggle.h; path = ../../../addons/ofxUI/src/ofxUIToggle.h; sourceTree = SOURCE_ROOT; };
 		4223FD7CA89046EB33E92E0E /* mprintf.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = mprintf.h; path = ../../../addons/ofxOAuth/libs/libcurl/include/curl/mprintf.h; sourceTree = SOURCE_ROOT; };
 		45059B570045BB913F91B079 /* ofxTwitterSearch.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxTwitterSearch.h; path = ../../../addons/ofxTwitter/src/ofxTwitterSearch.h; sourceTree = SOURCE_ROOT; };
@@ -320,7 +343,6 @@
 		C2521BB676B6430F84A0C207 /* Projector.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = Projector.h; path = ../../../addons/ofxRay/src/ofxRay/Projector.h; sourceTree = SOURCE_ROOT; };
 		C38D6DCC3AB9AAE213A64015 /* ofxUIScrollableCanvas.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIScrollableCanvas.h; path = ../../../addons/ofxUI/src/ofxUIScrollableCanvas.h; sourceTree = SOURCE_ROOT; };
 		C6305369801B450557086284 /* ofxUISpectrum.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUISpectrum.h; path = ../../../addons/ofxUI/src/ofxUISpectrum.h; sourceTree = SOURCE_ROOT; };
-		C7046300ADADCD50882670D9 /* tweet3d.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = tweet3d.h; path = src/Twitter/tweet3d.h; sourceTree = SOURCE_ROOT; };
 		C7B4B8AD9464A693A3683D0F /* ofxUISpacer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUISpacer.h; path = ../../../addons/ofxUI/src/ofxUISpacer.h; sourceTree = SOURCE_ROOT; };
 		C9F8CA58B35FC37FA28DCB84 /* ofxOAuthVerifierCallbackServer.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxOAuthVerifierCallbackServer.h; path = ../../../addons/ofxOAuth/src/ofxOAuthVerifierCallbackServer.h; sourceTree = SOURCE_ROOT; };
 		CCEC29A4351C40BA86F2E491 /* ofxUIMinimalSlider.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxUIMinimalSlider.h; path = ../../../addons/ofxUI/src/ofxUIMinimalSlider.h; sourceTree = SOURCE_ROOT; };
@@ -500,6 +522,63 @@
 			path = ../../../addons/ofxStats/src;
 			sourceTree = "<group>";
 		};
+		08A74491193F3ACF00C624B3 /* ofxSQLiteCpp */ = {
+			isa = PBXGroup;
+			children = (
+				08A74492193F3ACF00C624B3 /* libs */,
+			);
+			name = ofxSQLiteCpp;
+			sourceTree = "<group>";
+		};
+		08A74492193F3ACF00C624B3 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				08A74493193F3ACF00C624B3 /* SQLiteCpp */,
+			);
+			name = libs;
+			path = ../../../addons/ofxSQLiteCpp/libs;
+			sourceTree = "<group>";
+		};
+		08A74493193F3ACF00C624B3 /* SQLiteCpp */ = {
+			isa = PBXGroup;
+			children = (
+				08A74494193F3ACF00C624B3 /* Doxyfile */,
+				08A74495193F3ACF00C624B3 /* LICENSE.txt */,
+				08A74496193F3ACF00C624B3 /* README.md */,
+				08A74497193F3ACF00C624B3 /* sqlite3 */,
+				08A7449B193F3ACF00C624B3 /* src */,
+			);
+			path = SQLiteCpp;
+			sourceTree = "<group>";
+		};
+		08A74497193F3ACF00C624B3 /* sqlite3 */ = {
+			isa = PBXGroup;
+			children = (
+				08A74498193F3ACF00C624B3 /* README.txt */,
+				08A74499193F3ACF00C624B3 /* sqlite3.c */,
+				08A7449A193F3ACF00C624B3 /* sqlite3.h */,
+			);
+			path = sqlite3;
+			sourceTree = "<group>";
+		};
+		08A7449B193F3ACF00C624B3 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				08A7449C193F3ACF00C624B3 /* Assertion.h */,
+				08A7449D193F3ACF00C624B3 /* Column.cpp */,
+				08A7449E193F3ACF00C624B3 /* Column.h */,
+				08A7449F193F3ACF00C624B3 /* Database.cpp */,
+				08A744A0193F3ACF00C624B3 /* Database.h */,
+				08A744A1193F3ACF00C624B3 /* Exception.h */,
+				08A744A2193F3ACF00C624B3 /* SQLiteC++.h */,
+				08A744A3193F3ACF00C624B3 /* Statement.cpp */,
+				08A744A4193F3ACF00C624B3 /* Statement.h */,
+				08A744A5193F3ACF00C624B3 /* Transaction.cpp */,
+				08A744A6193F3ACF00C624B3 /* Transaction.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
 		08F827F718DA58A200EF951B /* ofxCameraSaveLoad */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,10 +670,8 @@
 				374505B6865245282826FE21 /* ofxExampleTwitterClient.h */,
 				C1B0810229C8FFF3A9199639 /* tweetManager.cpp */,
 				BE7C036126A2987823D1CA4D /* tweetManager.h */,
-				024DDBA5871B37FE4D21881E /* ofxTwitter3d.cpp */,
-				3A34BCED94C473EFF3839A95 /* ofxTwitter3d.h */,
-				3F85DCF19C282DE4049266F1 /* tweet3d.cpp */,
-				C7046300ADADCD50882670D9 /* tweet3d.h */,
+				08A744AC193F488E00C624B3 /* SQLiteManager.cpp */,
+				08A744AD193F488E00C624B3 /* SQLiteManager.h */,
 			);
 			name = Twitter;
 			sourceTree = "<group>";
@@ -611,16 +688,16 @@
 		36B8F0CD90028AF47E0E03C4 /* Viz */ = {
 			isa = PBXGroup;
 			children = (
-				08C93D12192E32750075F418 /* myVolume.cpp */,
-				08C93D13192E32750075F418 /* myVolume.h */,
-				08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */,
-				08B1B47D18DFEB2A0059F53C /* localizationManager.h */,
 				8D66DD895E835C0F19854FFF /* vizManager.cpp */,
 				640FBAA3409D36542C6F294F /* vizManager.h */,
-				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
-				8D024AC6312D1AF090EE7EA3 /* talairachLabels.h */,
 				082001AB18EB0C8E00E5C389 /* selectionManager.cpp */,
 				082001AC18EB0C8E00E5C389 /* selectionManager.h */,
+				08B1B47C18DFEB2A0059F53C /* localizationManager.cpp */,
+				08B1B47D18DFEB2A0059F53C /* localizationManager.h */,
+				08C93D12192E32750075F418 /* myVolume.cpp */,
+				08C93D13192E32750075F418 /* myVolume.h */,
+				D0BAB9E2720EBFAD6B621EEB /* talairachLabels.cpp */,
+				8D024AC6312D1AF090EE7EA3 /* talairachLabels.h */,
 			);
 			name = Viz;
 			sourceTree = "<group>";
@@ -728,6 +805,8 @@
 		85C7093CD15404193A7664FD /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				08126A8419608CC900092A04 /* myDraws.cpp */,
+				08126A8519608CC900092A04 /* myDraws.h */,
 				46EE25F76881F15D6D4E541E /* myUtils.cpp */,
 				091AE9D2CADD954B5834021F /* myUtils.h */,
 			);
@@ -840,19 +919,20 @@
 			children = (
 				082D680F192D21B600042490 /* ofxBox */,
 				082D67D8192B682500042490 /* ofxPoint */,
+				082D6801192D0F2000042490 /* ofxVolume */,
+				08F827F718DA58A200EF951B /* ofxCameraSaveLoad */,
+				CA3F382B01A67D889933EFD3 /* ofxFTGL */,
+				2865DAEF86B1907A704CA70B /* ofxJSON */,
+				32A2B0EDC109D0EF4192515F /* ofxOAuth */,
+				C882B4798A3582410D94BAC0 /* ofxRay */,
+				08A74491193F3ACF00C624B3 /* ofxSQLiteCpp */,
 				089ECCC918F19261004B2D14 /* ofxStats */,
 				08F8281518DA771300EF951B /* ofxSuperLog */,
-				08F827F718DA58A200EF951B /* ofxCameraSaveLoad */,
-				A492CE86424AB8905550BFD8 /* ofxUI */,
-				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
-				32A2B0EDC109D0EF4192515F /* ofxOAuth */,
-				2865DAEF86B1907A704CA70B /* ofxJSON */,
-				41F0A25FE7C0DD0B544A5B80 /* ofxTwitter */,
-				CA3F382B01A67D889933EFD3 /* ofxFTGL */,
-				082D6801192D0F2000042490 /* ofxVolume */,
-				3B8B1A8A9EDEB195D158A21F /* ofxVolumetrics */,
-				C882B4798A3582410D94BAC0 /* ofxRay */,
 				50ADC59862E74BF2AA75FF06 /* ofxTalairach */,
+				41F0A25FE7C0DD0B544A5B80 /* ofxTwitter */,
+				A492CE86424AB8905550BFD8 /* ofxUI */,
+				3B8B1A8A9EDEB195D158A21F /* ofxVolumetrics */,
+				1F4FB5C423662B96ADFDCC0B /* ofxXmlSettings */,
 			);
 			name = addons;
 			sourceTree = "<group>";
@@ -1241,8 +1321,6 @@
 				082D680E192D0F2000042490 /* ofxVoxels.cpp in Sources */,
 				9C5E559D688144C1BDD6115B /* guiEvent.cpp in Sources */,
 				D999941B6F2BDE0A87EEE06A /* guiManager.cpp in Sources */,
-				2E592F90ED46A225F36431CF /* ofxTwitter3d.cpp in Sources */,
-				A93E6291974E93F77FE4E045 /* tweet3d.cpp in Sources */,
 				082001AD18EB0C8E00E5C389 /* selectionManager.cpp in Sources */,
 				8913F0EFD789AED0AA86CA0D /* tweetManager.cpp in Sources */,
 				E6131276F1083D191F872A06 /* myUtils.cpp in Sources */,
@@ -1262,15 +1340,18 @@
 				084025DA517D8329301FE1B6 /* ofxUIEventArgs.cpp in Sources */,
 				7252706DA14C1BE63950ADDA /* ofxUIFPS.cpp in Sources */,
 				22030CBDCC25D815E7ED6757 /* ofxUIFPSSlider.cpp in Sources */,
+				08A744AB193F3ACF00C624B3 /* Transaction.cpp in Sources */,
 				3D4EA8E172D3E4A30FEFA969 /* ofxUIImage.cpp in Sources */,
 				7F2CD93F681F3C1547B3BF2C /* ofxUIImageButton.cpp in Sources */,
 				FBD0CD0AFE3849C14E829CAF /* ofxUIImageSampler.cpp in Sources */,
 				26874B150C8535AEA0F24C8C /* ofxUIImageSlider.cpp in Sources */,
 				FB8AA9FA6535767BE31806BC /* ofxUIImageToggle.cpp in Sources */,
+				08A744A7193F3ACF00C624B3 /* sqlite3.c in Sources */,
 				7C3DC84C9BFCBD2866DB2B6C /* ofxUILabel.cpp in Sources */,
 				FFD1EBFCA24DFB4E4427B4FE /* ofxUILabelButton.cpp in Sources */,
 				C30B3A2A37F8F32EE7318718 /* ofxUILabelToggle.cpp in Sources */,
 				082D680C192D0F2000042490 /* ofxImageSequence.cpp in Sources */,
+				08126A8619608CC900092A04 /* myDraws.cpp in Sources */,
 				9A83D1B3FB64456BC907667F /* ofxUIMinimalSlider.cpp in Sources */,
 				089ECCCD18F19261004B2D14 /* ofxStats.cpp in Sources */,
 				F440B307990F8F5CE40B9111 /* ofxUIMovingGraph.cpp in Sources */,
@@ -1281,6 +1362,7 @@
 				1587708E3CAC72997E43504E /* ofxUIRangeSlider.cpp in Sources */,
 				59C5F2F5D7254C33C00F97CB /* ofxUIRectangle.cpp in Sources */,
 				FE0F1DB69ACCD163E9DA2A15 /* ofxUIRotarySlider.cpp in Sources */,
+				08A744A8193F3ACF00C624B3 /* Column.cpp in Sources */,
 				43BADBB2FE0F17D34B57A705 /* ofxUIScrollableCanvas.cpp in Sources */,
 				3CB7D2F1C94EDF626EA83342 /* ofxUIScrollableSliderCanvas.cpp in Sources */,
 				71D220E16245067F59A3637C /* ofxUIScrollSlider.cpp in Sources */,
@@ -1292,6 +1374,7 @@
 				08F8281018DA58A200EF951B /* ofxCameraSaveLoad.cpp in Sources */,
 				5AE95ADB5549701423B6DA48 /* ofxUITabBar.cpp in Sources */,
 				C961BE22AB9A8CCF037FC18F /* ofxUITextArea.cpp in Sources */,
+				08A744A9193F3ACF00C624B3 /* Database.cpp in Sources */,
 				F8D05F7C7F785CE323983B47 /* ofxUITextInput.cpp in Sources */,
 				04C82720B149CE576B8CBB06 /* ofxUIToggle.cpp in Sources */,
 				E3A1109F67D711D6C256031E /* ofxUIToggleMatrix.cpp in Sources */,
@@ -1307,6 +1390,7 @@
 				37BE17853C4F3BA04E10C8A8 /* ofxOAuth.cpp in Sources */,
 				BEDFEE7400C58EA4E412B757 /* ofxJSONElement.cpp in Sources */,
 				7CED9FCC5BF62C4915C8D09F /* json_reader.cpp in Sources */,
+				08A744AE193F488E00C624B3 /* SQLiteManager.cpp in Sources */,
 				AE32F1807796B1050E082651 /* json_value.cpp in Sources */,
 				9B06C5CAE570B630A97E51C3 /* json_writer.cpp in Sources */,
 				532A84E38E54C4F6B8634CD6 /* ofxTwitter.cpp in Sources */,
@@ -1316,6 +1400,7 @@
 				202B3D901E332A2CAF54256D /* ofxTexture3d.cpp in Sources */,
 				7A5DDC993979FB5561F47EFE /* ofxVolumetrics.cpp in Sources */,
 				A0C1C42F6293BEC48CA02D5D /* Base.cpp in Sources */,
+				08A744AA193F3ACF00C624B3 /* Statement.cpp in Sources */,
 				08F8283618DA771300EF951B /* ofxSuperLog.cpp in Sources */,
 				DF2B08505F60BABD6D71FD96 /* Camera.cpp in Sources */,
 				08F8283718DA771300EF951B /* ofxSuperLogDisplay.cpp in Sources */,

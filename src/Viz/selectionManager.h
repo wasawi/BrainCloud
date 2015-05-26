@@ -10,6 +10,8 @@
 #include "ofMain.h"
 #include "myUtils.h"
 #include "ofxBox.h"
+#include "myDraws.h"
+
 
 struct sphere{
 	float	radius;
@@ -38,8 +40,6 @@ public:
 	void clear();
 
 	void drawAxis();
-	void drawBoxAxis();
-	void drawSphereAxis();
 
 	//setters
 	void setCurrentTool(tool newTool);

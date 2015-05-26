@@ -32,15 +32,16 @@ void vizManager::setup()
 
 	// Volume rendering
 	initVolumeRendering();
-		
+	
 	// point cloud
-//	createPointCloud();
-
+	createPointCloud();
+	
 	//states
 	bSelecting		= false;
 	bMovingCursor	= false;
 	bActive			= true;
 	bDraw			= true;
+	bPointCloud		= false;
 	
 	update();
 //	updateSlicesImage();
@@ -57,6 +58,8 @@ void vizManager::initVolume()
 	// Init Volume
 	vol.loadVolume("volumes/Colin27T1_tight/");
 //	vol.loadVolume("volumes/talairach_nii/");
+//	vol.loadVolume("volumes/neurona/");
+	
 	vol.setup(boxW, boxH);
 
 	volSize		= vol.getSize();
@@ -172,6 +175,7 @@ void vizManager::updateTalAtlasLabel()
 //--------------------------------------------------------------
 void vizManager::createPointCloud()
 {
+	bPointCloud = true;
 	mesh.clear();
 	
 	ofVec3f point = ofVec3f(0.0f,0.0f,0.0f);
@@ -351,12 +355,10 @@ void vizManager::draw()
 		if (!bMovingCursor && ofGetMousePressed()) cam.drawArcBall();
 		
 		drawSelection();
-		
 		drawSlices();
-
 		drawTalairach();
 
-//		drawMesh();
+		if (bPointCloud) drawMesh();
 		
 		// draw nearest point
 //		if (!bMovingCursor && bActive) drawNearestPoint();
@@ -734,12 +736,15 @@ void vizManager::keyPressed(int key ){
 			//ofSetVerticalSync(false);
 			//ofSetFullscreen(false);
 //			selectVoxels();
-			
+			volRender.save("pixels.png");
 			break;
 		case 'c':
 			selection.clear();
 			break;
-
+		case 'p':
+			//createPointCloud();
+			bPointCloud=!bPointCloud;
+			break;
 		case 'r':
 			cam.bRotate = !cam.bRotate;
 			break;
@@ -809,7 +814,6 @@ void vizManager::moveCursor()
 	}
 	cam.end();
 }
-
 
 //--------------------------------------------------------------
 void vizManager::selectVoxels()
